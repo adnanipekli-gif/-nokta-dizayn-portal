@@ -7,7 +7,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey:"AIzaSyDCw4hbQiQoPOMS3SijH9ZKurvKivM_6Zk" "BURAYA_API_KEY_YAZIN",
+  apiKey:"AIzaSyDCw4hbQiQoPOMS3SijH9ZKurvKivM_6Zk",
   authDomain: "nokta-dizayn.firebaseapp.com",
   projectId:"nokta-dizayn",
   storageBucket:"nokta-dizayn.firebasestorage.app",
