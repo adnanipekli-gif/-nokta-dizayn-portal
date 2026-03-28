@@ -7,12 +7,12 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "BURAYA_API_KEY_YAZIN",
-  authDomain: "BURAYA_AUTH_DOMAIN_YAZIN",
-  projectId: "BURAYA_PROJECT_ID_YAZIN",
-  storageBucket: "BURAYA_STORAGE_BUCKET_YAZIN",
-  messagingSenderId: "BURAYA_SENDER_ID_YAZIN",
-  appId: "BURAYA_APP_ID_YAZIN"
+  apiKey:"AIzaSyDCw4hbQiQoPOMS3SijH9ZKurvKivM_6Zk" "BURAYA_API_KEY_YAZIN",
+  authDomain: "nokta-dizayn.firebaseapp.com",
+  projectId:"nokta-dizayn",
+  storageBucket:"nokta-dizayn.firebasestorage.app",
+  messagingSenderId: "872937330347",
+  appId: "1:872937330347:web:c487f9e43bacd1729ac9ee",
 };
 
 const app = initializeApp(firebaseConfig);
