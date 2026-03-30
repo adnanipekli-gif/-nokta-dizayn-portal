@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { loadData, saveData } from "./firebase";
 
 // ═══════════════════════════════════════════════════════════════
 // NOKTA DİZAYN v4.5 — MÜŞTERİ SUNUM + MİMARİ PROJE PORTALI
@@ -32,18 +33,35 @@ const EQUIPMENT={
     {id:"eco-ada-1",brand:"Ecocold",name:"Ada Soğutucu 200cm",model:"EC-ISL-2000",w:200,h:120,temp:"+2/+8°C",power:680,price:95000,color:"#2980B9"},
     {id:"eco-grb-1",brand:"Ecocold",name:"Grab&Go 100cm",model:"EC-GNG-1000",w:100,h:60,temp:"+2/+6°C",power:320,price:42000,color:"#16A085"},
     {id:"eco-grb-2",brand:"Ecocold",name:"Grab&Go 150cm",model:"EC-GNG-1500",w:150,h:60,temp:"+2/+6°C",power:440,price:56000,color:"#16A085"},
+    // Ecocold Navi — Bombe Cam Kasap Vitrini
+    {id:"eco-navi-150",brand:"Ecocold",name:"Navi Kasap Vitrini 150cm",model:"EC-NVI-1500",w:150,h:105,temp:"+0/+4°C",power:620,price:92000,color:"#E74C3C"},
+    {id:"eco-navi-200",brand:"Ecocold",name:"Navi Kasap Vitrini 200cm",model:"EC-NVI-2000",w:200,h:105,temp:"+0/+4°C",power:780,price:118000,color:"#E74C3C"},
+    {id:"eco-navi-250",brand:"Ecocold",name:"Navi Kasap Vitrini 250cm",model:"EC-NVI-2500",w:250,h:105,temp:"+0/+4°C",power:920,price:145000,color:"#E74C3C"},
+    // Ecocold Apple — Plug-in Dondurucu
+    {id:"eco-apple-212",brand:"Ecocold",name:"Apple Plug-in Dondurucu 212",model:"EC-APL-212",w:212,h:85,temp:"-18/-24°C",power:680,price:74000,color:"#2980B9"},
+    {id:"eco-apple-188",brand:"Ecocold",name:"Apple Plug-in Dondurucu 188",model:"EC-APL-188",w:188,h:85,temp:"-18/-24°C",power:580,price:64000,color:"#2980B9"},
+    // Ecocold Orange — Serisi Vitrin
+    {id:"eco-org-100",brand:"Ecocold",name:"Orange Vitrin 100cm",model:"EC-ORG-1000",w:100,h:90,temp:"+2/+8°C",power:360,price:48000,color:"#E67E22"},
+    {id:"eco-org-150",brand:"Ecocold",name:"Orange Vitrin 150cm",model:"EC-ORG-1500",w:150,h:90,temp:"+2/+8°C",power:500,price:64000,color:"#E67E22"},
+    {id:"eco-org-200",brand:"Ecocold",name:"Orange Vitrin 200cm",model:"EC-ORG-2000",w:200,h:90,temp:"+2/+8°C",power:640,price:82000,color:"#E67E22"},
   ]},
   sutluk:{label:"Sütlük",icon:"🥛",items:[
-    {id:"sut-opn-1",brand:"Sütlük",name:"Açık Sütlük 125cm",model:"SL-OPN-1250",w:125,h:60,temp:"+2/+6°C",power:380,price:35000,color:"#5DADE2"},
-    {id:"sut-opn-2",brand:"Sütlük",name:"Açık Sütlük 187cm",model:"SL-OPN-1875",w:187,h:60,temp:"+2/+6°C",power:480,price:48000,color:"#5DADE2"},
-    {id:"sut-opn-3",brand:"Sütlük",name:"Açık Sütlük 250cm",model:"SL-OPN-2500",w:250,h:65,temp:"+2/+6°C",power:620,price:62000,color:"#5DADE2"},
-    {id:"sut-cls-1",brand:"Sütlük",name:"Kapaklı Sütlük 125cm",model:"SL-CLS-1250",w:125,h:60,temp:"+1/+5°C",power:340,price:40000,color:"#85C1E9"},
-    {id:"sut-wal-1",brand:"Sütlük",name:"Duvar Tipi 200cm",model:"SL-WLL-2000",w:200,h:55,temp:"+2/+6°C",power:500,price:55000,color:"#AED6F1"},
+    // Ecocold Merga — Sütlük
+    {id:"eco-mrg-125",brand:"Ecocold",name:"Merga Sütlük 125cm",model:"EC-MRG-1250",w:125,h:60,temp:"+2/+6°C",power:360,price:38000,color:"#5DADE2"},
+    {id:"eco-mrg-187",brand:"Ecocold",name:"Merga Sütlük 187cm",model:"EC-MRG-1875",w:187,h:60,temp:"+2/+6°C",power:470,price:52000,color:"#5DADE2"},
+    {id:"eco-mrg-250",brand:"Ecocold",name:"Merga Sütlük 250cm",model:"EC-MRG-2500",w:250,h:65,temp:"+2/+6°C",power:600,price:66000,color:"#5DADE2"},
+    {id:"sut-cls-1",brand:"Ecocold",name:"Kapaklı Sütlük 125cm",model:"EC-CLS-1250",w:125,h:60,temp:"+1/+5°C",power:340,price:40000,color:"#85C1E9"},
+    {id:"sut-wal-1",brand:"Ecocold",name:"Duvar Tipi Sütlük 200cm",model:"EC-WLL-2000",w:200,h:55,temp:"+2/+6°C",power:500,price:55000,color:"#AED6F1"},
   ]},
   raf:{label:"Raf",icon:"🗄️",items:[
+    {id:"raf-gnd-s90",brand:"Pasifik Raf",name:"Tek Taraflı Gondol 90cm",model:"PR-SGL-0900",w:90,h:47,power:0,price:7500,color:"#9B59B6"},
     {id:"raf-gnd-1",brand:"Pasifik Raf",name:"Tek Taraflı Gondol 100cm",model:"PR-SGL-1000",w:100,h:47,power:0,price:8500,color:"#9B59B6"},
+    {id:"raf-gnd-s120",brand:"Pasifik Raf",name:"Tek Taraflı Gondol 120cm",model:"PR-SGL-1200",w:120,h:47,power:0,price:10000,color:"#9B59B6"},
+    {id:"raf-gnd-d90",brand:"Pasifik Raf",name:"Çift Taraflı Gondol 90cm",model:"PR-DBL-0900",w:90,h:90,power:0,price:12000,color:"#8E44AD"},
     {id:"raf-gnd-2",brand:"Pasifik Raf",name:"Çift Taraflı Gondol 100cm",model:"PR-DBL-1000",w:100,h:90,power:0,price:14000,color:"#8E44AD"},
+    {id:"raf-gnd-d120",brand:"Pasifik Raf",name:"Çift Taraflı Gondol 120cm",model:"PR-DBL-1200",w:120,h:90,power:0,price:16500,color:"#8E44AD"},
     {id:"raf-duv-1",brand:"Pasifik Raf",name:"Duvar Rafı 200cm",model:"PR-WLL-2000",w:200,h:40,power:0,price:11000,color:"#7D3C98"},
+    {id:"raf-end-1",brand:"Pasifik Raf",name:"Endcap 90cm",model:"PR-END-0900",w:90,h:90,power:0,price:9500,color:"#6C3483"},
     {id:"raf-prm",brand:"Pasifik Raf",name:"Promosyon Sepeti",model:"PR-PRM-080",w:80,h:80,power:0,price:3500,color:"#F39C12"},
   ]},
   unlu:{label:"Fırın",icon:"🥐",items:[
@@ -107,10 +125,10 @@ const SC=0.08;
 function cm(v){return v*SC}
 function fmt(n){return n.toLocaleString("tr-TR")}
 
-async function ld(k){try{const r=await window.storage.get(k);return r?JSON.parse(r.value):null}catch{return null}}
-async function sv(k,v){try{await window.storage.set(k,JSON.stringify(v))}catch(e){console.error(e)}}
-async function ldS(k){try{const r=await window.storage.get(k,true);return r?JSON.parse(r.value):null}catch{return null}}
-async function svS(k,v){try{await window.storage.set(k,JSON.stringify(v),true)}catch(e){console.error(e)}}
+async function ld(k){try{const v=await loadData(k);return v?JSON.parse(v):null}catch{return null}}
+async function sv(k,v){try{await saveData(k,JSON.stringify(v))}catch(e){console.error(e)}}
+async function ldS(k){try{const v=await loadData(k);return v?JSON.parse(v):null}catch{return null}}
+async function svS(k,v){try{await saveData(k,JSON.stringify(v))}catch(e){console.error(e)}}
 
 function Logo({sz=40}){return<div style={{width:sz,height:sz,borderRadius:sz*.18,background:"linear-gradient(135deg,#2980B9,#1a3a5f)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:sz*.38,fontWeight:900,color:"#ffffff",flexShrink:0}}>ND</div>}
 
@@ -120,7 +138,7 @@ export default function App(){
   useEffect(()=>{ld("ndv45-sess").then(s=>{if(s?.email)setUser(s);setReady(true)})},[]);
   const login=async email=>{const e=email.trim().toLowerCase();if(!e)return"e";const isA=ADMINS.includes(e);const us=await ldS("ndv45-users")||[];const f=us.find(u=>u.email===e);if(!isA&&!f)return"d";const s={email:e,role:isA?"admin":"user",name:f?.name||(isA?"Yönetici":""),at:Date.now()};setUser(s);await sv("ndv45-sess",s);return"ok"};
   const logout=async()=>{setUser(null);await sv("ndv45-sess",null)};
-  if(!ready)return<div style={{minHeight:"100vh",background:"#f0f2f5",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><Logo sz={56}/><div style={{fontSize:22,fontWeight:200,color:"#2980B9",letterSpacing:8,marginTop:14}}>NOKTA DİZAYN</div><div style={{color:"#9aa0a8",fontSize:15,marginTop:8}}>v4.5 Yükleniyor...</div></div>;
+  if(!ready)return<div style={{minHeight:"100vh",background:"#f4f6f9",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><Logo sz={56}/><div style={{fontSize:22,fontWeight:200,color:"#2980B9",letterSpacing:8,marginTop:14}}>NOKTA DİZAYN</div><div style={{color:"#9aa0a8",fontSize:15,marginTop:8}}>v4.5 Yükleniyor...</div></div>;
   if(!user)return<LoginPage onLogin={login}/>;
   return<Portal user={user} onLogout={logout}/>;
 }
@@ -128,13 +146,13 @@ export default function App(){
 function LoginPage({onLogin}){
   const[email,setEmail]=useState("");const[err,setErr]=useState("");const[busy,setBusy]=useState(false);
   const go=async()=>{if(!email.trim())return;setBusy(true);setErr("");const r=await onLogin(email);setBusy(false);if(r==="d")setErr("Bu e-posta kayıtlı değil. Yöneticinizden davet isteyin.")};
-  return<div style={{minHeight:"100vh",background:"#f0f2f5",display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+  return<div style={{minHeight:"100vh",background:"#f4f6f9",display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
     <div style={{width:"100%",maxWidth:380,textAlign:"center"}}>
       <Logo sz={56}/><h1 style={{fontSize:22,fontWeight:200,color:"#2980B9",letterSpacing:8,margin:"12px 0 2px"}}>NOKTA DİZAYN</h1>
       <p style={{fontSize:14,color:"#7a8390",letterSpacing:2,margin:"0 0 24px"}}>MİMARİ PROJE PORTALI v4.5</p>
       <div style={{background:"#ffffff",borderRadius:12,padding:24,border:"1px solid #dce0e5",textAlign:"left"}}>
         <label style={{fontSize:14,color:"#5a6878",letterSpacing:1,display:"block",marginBottom:5}}>E-POSTA</label>
-        <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="ornek@email.com" onKeyDown={e=>e.key==="Enter"&&go()} style={{width:"100%",padding:"11px 13px",background:"#f5f6f8",border:"1px solid #d0d5db",borderRadius:7,color:"#1a2a3a",fontSize:18,outline:"none",boxSizing:"border-box",marginBottom:4}}/>
+        <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="ornek@email.com" onKeyDown={e=>e.key==="Enter"&&go()} style={{width:"100%",padding:"11px 13px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:7,color:"#1a2a3a",fontSize:18,outline:"none",boxSizing:"border-box",marginBottom:4}}/>
         {err&&<div style={{fontSize:14,color:"#e74c3c",padding:"4px 0"}}>{err}</div>}
         <button onClick={go} disabled={busy} style={{width:"100%",padding:"11px",marginTop:8,background:email.trim()?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#dce0e5",border:"none",borderRadius:7,color:email.trim()?"#ffffff":"#333",fontSize:17,fontWeight:700,cursor:email.trim()?"pointer":"default"}}>{busy?"Giriş...":"GİRİŞ YAP"}</button>
       </div>
@@ -152,10 +170,10 @@ function Portal({user,onLogout}){
   const myP=isA?projects:projects.filter(p=>p.owner===user.email);
   const goHome=()=>{setPage("dash");setActive(null);setViewMode("editor")};
 
-  if(!ready)return<div style={{minHeight:"100vh",background:"#f0f2f5"}}></div>;
+  if(!ready)return<div style={{minHeight:"100vh",background:"#f4f6f9"}}></div>;
 
-  return<div style={{minHeight:"100vh",background:"#f0f2f5",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1a2a3a"}}>
-    <nav style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid #e8eaee",background:"#f5f6f8",flexWrap:"wrap",gap:4}}>
+  return<div style={{minHeight:"100vh",background:"#f4f6f9",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1a2a3a"}}>
+    <nav style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid #e8eaee",background:"#f8f9fb",flexWrap:"wrap",gap:4}}>
       <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}} onClick={goHome}>
         <Logo sz={26}/><div><div style={{fontSize:15,fontWeight:600,color:"#1a2a3a",letterSpacing:3}}>NOKTA DİZAYN</div><div style={{fontSize:10,color:"#7a8390",letterSpacing:2}}>v4.5 PRO — SUNUM + MİMARİ</div></div>
       </div>
@@ -188,14 +206,58 @@ function Portal({user,onLogout}){
 }
 
 function NBtn({onClick,t,a}){return<button onClick={onClick} style={{padding:"8px 14px",background:a?"#2980B922":"#dce0e5",border:a?"1px solid #2980B955":"1px solid #ccd2d9",borderRadius:4,color:a?"#2980B9":"#777",fontSize:13,cursor:"pointer"}}>{t}</button>}
-function MBtn({t,a,onClick}){return<button onClick={onClick} style={{padding:"6px 12px",background:a?"#2980B918":"#f0f2f5",border:a?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:3,color:a?"#2980B9":"#555",fontSize:12,cursor:"pointer"}}>{t}</button>}
+function MBtn({t,a,onClick}){return<button onClick={onClick} style={{padding:"6px 12px",background:a?"#2980B918":"#f4f6f9",border:a?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:3,color:a?"#2980B9":"#555",fontSize:12,cursor:"pointer"}}>{t}</button>}
 
 // ═══════════════════════════════════════════════════════════════
 // MÜŞTERİ SUNUM MODU — Fiyat bilgisi YOK, sadece görsel/konsept
 // ═══════════════════════════════════════════════════════════════
+// ─── GÖRSEL İYİLEŞTİR ────────────────────────────────────────────
+function generateDesignTips(project){
+  const zones=project.zones||[];const W=project.width,H=project.height;
+  const totalArea=(W*H)/10000;const tips=[];
+  // Genel oran önerileri
+  const zoneArea=zones.reduce((s,z)=>s+(z.w*z.h)/10000,0);
+  const coverage=zoneArea/totalArea;
+  if(coverage<0.5)tips.push({cat:"Alan Kullanımı",icon:"📐",color:"#E67E22",tip:`Mevcut bölgeler alanın %${Math.round(coverage*100)}'ini kaplıyor. Ek ürün bölgeleri veya gondol rafları ekleyerek kullanımı artırabilirsiniz.`});
+  if(coverage>0.85)tips.push({cat:"Sirkülasyon",icon:"🚶",color:"#E74C3C",tip:"Bölgeler alanın büyük kısmını kaplıyor. Müşteri sirkülasyonu için koridorları gözden geçirin (min 120cm önerilir)."});
+  // Bölge önerileri
+  const hasKasa=zones.some(z=>z.tid==="kasa");const hasSoguk=zones.some(z=>z.tid==="soguk"||z.tid==="sutluk");
+  const hasUnlu=zones.some(z=>z.tid==="unlu");const hasKahve=zones.some(z=>z.tid==="kahve");
+  if(!hasKasa)tips.push({cat:"Kasa Noktası",icon:"🖥️",color:"#E67E22",tip:"Kasa bölgesi tanımlanmamış. Girişe yakın, müşteri akışını yönlendiren bir kasa noktası önerilir."});
+  if(!hasSoguk)tips.push({cat:"Soğuk Bölge",icon:"❄️",color:"#2980B9",tip:"Soğuk içecek veya sütlük bölgesi yok. Bu bölgeler yüksek impulse satış potansiyeli taşır."});
+  if(hasUnlu&&!hasKahve)tips.push({cat:"Çapraz Satış",icon:"☕",color:"#8B4513",tip:"Unlu mamül bölgesi var ama kahve köşesi yok. Ekmek+kahve kombinasyonu sepet ortalamasını artırır."});
+  // Aydınlatma ve renk
+  tips.push({cat:"Aydınlatma",icon:"💡",color:"#F39C12",tip:"Ürün raflarında LED strip aydınlatma, vitrinlerde spotlight kullanımı ürün görünürlüğünü %30 artırabilir."});
+  // Soğutma yerleşimi
+  const coldZones=zones.filter(z=>["soguk","sutluk","grab","sarku","dondurma","et"].includes(z.tid));
+  if(coldZones.length>0&&coldZones.some(z=>z.y<H*0.1))tips.push({cat:"Soğutma Verimliliği",icon:"🌡️",color:"#3498DB",tip:"Soğutmalı bölgeler girişe yakın konumlanmış. Dış duvar veya arka duvara alınması enerji tasarrufu sağlar."});
+  // Premium sunum
+  if(zones.some(z=>z.tid==="sarku"))tips.push({cat:"Premium Sunum",icon:"✨",color:"#9B59B6",tip:"Şarküteri bölgesinde mermer/granit tezgah üstü, asma aydınlatma ve ürün etiket çerçeveleri premium algısını güçlendirir."});
+  if(tips.length===0)tips.push({cat:"Genel",icon:"👍",color:"#27AE60",tip:"Proje iyi yapılandırılmış görünüyor. Müşteri akışı, aydınlatma ve malzeme seçimlerine son kontrolü yapın."});
+  return tips;
+}
+
+function DesignTipsModal({project,onClose}){
+  const tips=generateDesignTips(project);
+  return<div style={{position:"fixed",inset:0,background:"rgba(26,58,95,0.55)",zIndex:50,display:"flex",alignItems:"center",justifyContent:"center",padding:16}} onClick={onClose}>
+    <div style={{background:"#ffffff",borderRadius:16,padding:24,maxWidth:560,width:"100%",maxHeight:"80vh",overflowY:"auto",boxShadow:"0 20px 60px rgba(0,0,0,0.2)"}} onClick={e=>e.stopPropagation()}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+        <div><div style={{fontSize:18,fontWeight:700,color:"#1a3a5f",letterSpacing:1}}>✨ Görsel İyileştirme Önerileri</div><div style={{fontSize:13,color:"#7a8390",marginTop:2}}>{project.name}</div></div>
+        <button onClick={onClose} style={{background:"none",border:"none",fontSize:18,cursor:"pointer",color:"#9aa0a8"}}>✕</button>
+      </div>
+      {tips.map((t,i)=><div key={i} style={{background:t.color+"0d",border:`1px solid ${t.color}33`,borderRadius:10,padding:"12px 14px",marginBottom:8,borderLeft:`4px solid ${t.color}`}}>
+        <div style={{fontSize:14,fontWeight:700,color:t.color,marginBottom:4}}>{t.icon} {t.cat}</div>
+        <div style={{fontSize:14,color:"#3a4a5a",lineHeight:1.7}}>{t.tip}</div>
+      </div>)}
+      <button onClick={onClose} style={{width:"100%",marginTop:8,padding:"10px",background:"linear-gradient(135deg,#2980B9,#1a3a5f)",border:"none",borderRadius:8,color:"#fff",fontSize:15,fontWeight:700,cursor:"pointer"}}>Kapat</button>
+    </div>
+  </div>;
+}
+
 function PresentationMode({project,onSave}){
   const[slide,setSlide]=useState("cover");
   const[walkIdx,setWalkIdx]=useState(0);
+  const[showTips,setShowTips]=useState(false);
   const zones=project.zones||[];
   const walls=project.walls||[];
   const W=project.width,H=project.height;
@@ -212,15 +274,17 @@ function PresentationMode({project,onSave}){
 
   const box={background:"#ffffff",borderRadius:12,padding:20,border:"1px solid #dce0e5",marginBottom:12};
 
-  return<div style={{flex:1,overflow:"auto",background:"#f0f2f5"}}>
+  return<div style={{flex:1,overflow:"auto",background:"#f4f6f9"}}>
+    {showTips&&<DesignTipsModal project={project} onClose={()=>setShowTips(false)}/>}
     {/* Slide navigation */}
-    <div style={{display:"flex",justifyContent:"center",gap:4,padding:"12px 8px",borderBottom:"1px solid #e8eaee",flexWrap:"wrap"}}>
+    <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:4,padding:"12px 8px",borderBottom:"1px solid #e8eaee",flexWrap:"wrap"}}>
       {slides.map((s,i)=><button key={s.id} onClick={()=>setSlide(s.id)} style={{
         padding:"6px 16px",background:slide===s.id?"#2980B922":"transparent",
         border:slide===s.id?"1px solid #2980B955":"1px solid #ccd2d9",
         borderRadius:20,color:slide===s.id?"#2980B9":"#555",fontSize:14,cursor:"pointer",
         fontWeight:slide===s.id?600:400,
       }}>{i+1}. {s.label}</button>)}
+      <button onClick={()=>setShowTips(true)} style={{padding:"6px 16px",background:"linear-gradient(135deg,#9B59B6,#6C3483)",border:"none",borderRadius:20,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",marginLeft:8}}>✨ Görsel İyileştir</button>
     </div>
 
     <div style={{maxWidth:700,margin:"0 auto",padding:"20px 16px"}}>
@@ -340,8 +404,8 @@ function PresentationMode({project,onSave}){
             </div>
           })()}
           <div style={{display:"flex",justifyContent:"center",gap:10,marginTop:12}}>
-            <button onClick={()=>setWalkIdx(Math.max(0,walkIdx-1))} disabled={walkIdx===0} style={{padding:"10px 24px",background:walkIdx>0?"#dce0e5":"#f0f2f5",border:"1px solid #ccd2d9",borderRadius:8,color:walkIdx>0?"#2980B9":"#333",fontSize:16,cursor:walkIdx>0?"pointer":"default"}}>← Önceki</button>
-            <button onClick={()=>setWalkIdx(Math.min(zones.length-1,walkIdx+1))} disabled={walkIdx>=zones.length-1} style={{padding:"10px 24px",background:walkIdx<zones.length-1?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#eaecf0",border:"none",borderRadius:8,color:walkIdx<zones.length-1?"#ffffff":"#333",fontSize:16,fontWeight:700,cursor:walkIdx<zones.length-1?"pointer":"default"}}>Sonraki →</button>
+            <button onClick={()=>setWalkIdx(Math.max(0,walkIdx-1))} disabled={walkIdx===0} style={{padding:"10px 24px",background:walkIdx>0?"#dce0e5":"#f4f6f9",border:"1px solid #ccd2d9",borderRadius:8,color:walkIdx>0?"#2980B9":"#333",fontSize:16,cursor:walkIdx>0?"pointer":"default"}}>← Önceki</button>
+            <button onClick={()=>setWalkIdx(Math.min(zones.length-1,walkIdx+1))} disabled={walkIdx>=zones.length-1} style={{padding:"10px 24px",background:walkIdx<zones.length-1?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#eef1f5",border:"none",borderRadius:8,color:walkIdx<zones.length-1?"#ffffff":"#333",fontSize:16,fontWeight:700,cursor:walkIdx<zones.length-1?"pointer":"default"}}>Sonraki →</button>
           </div>
         </>}
       </div>}
@@ -368,7 +432,7 @@ function PresentationMode({project,onSave}){
               Yukarıdaki yerleşim planı, 3D görünüm ve konsept board'u inceledikten sonra, bu konsepti onaylayarak detay çalışma sürecini başlatabilirsiniz.
             </div>
             <div style={{marginBottom:12}}>
-              <input id="approverName" placeholder="Onaylayan adı (opsiyonel)" style={{width:"100%",maxWidth:300,padding:"8px 12px",background:"#f5f6f8",border:"1px solid #d0d5db",borderRadius:6,color:"#1a2a3a",fontSize:16,outline:"none",boxSizing:"border-box",textAlign:"center"}}/>
+              <input id="approverName" placeholder="Onaylayan adı (opsiyonel)" style={{width:"100%",maxWidth:300,padding:"8px 12px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:6,color:"#1a2a3a",fontSize:16,outline:"none",boxSizing:"border-box",textAlign:"center"}}/>
             </div>
             <button onClick={()=>{
               const name=document.getElementById("approverName")?.value||"";
@@ -394,12 +458,14 @@ function PresentationMode({project,onSave}){
 function PlanSVG({project,zones,walls,highlightId,showLabels=true,showDims,small}){
   const W=project.width,H=project.height,PAD=small?25:40;
   const svgW=cm(W)+PAD*2,svgH=cm(H)+PAD*2;
-  return<svg viewBox={`0 0 ${svgW} ${svgH}`} style={{width:"100%",maxWidth:small?300:600,display:"block",margin:"0 auto"}}>
-    <defs><pattern id="pg" width={cm(100)} height={cm(100)} patternUnits="userSpaceOnUse"><path d={`M ${cm(100)} 0 L 0 0 0 ${cm(100)}`} fill="none" stroke="#d5d9de" strokeWidth="0.3"/></pattern></defs>
-    <rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="url(#pg)"/>
+  const uid=`pg-${W}-${H}`;
+  return<svg viewBox={`0 0 ${svgW} ${svgH}`} style={{width:"100%",maxWidth:small?300:600,display:"block",margin:"0 auto",background:"#ffffff",borderRadius:4}}>
+    <defs><pattern id={uid} width={cm(100)} height={cm(100)} patternUnits="userSpaceOnUse"><path d={`M ${cm(100)} 0 L 0 0 0 ${cm(100)}`} fill="none" stroke="#d5d9de" strokeWidth="0.3"/></pattern></defs>
+    <rect x={0} y={0} width={svgW} height={svgH} fill="#ffffff"/>
+    <rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill={`url(#${uid})`}/>
     <rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="none" stroke={small?"#ccd2d9":"#2a3545"} strokeWidth={small?2:3} rx={1}/>
     {/* Entrance */}
-    {(()=>{const e=project.entrance||{side:"bottom",position:50,widthCm:200};const eW=cm(e.widthCm);let ex,ey,ew,eh;if(e.side==="bottom"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD+cm(H)-2;ew=eW;eh=4}else if(e.side==="top"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD-2;ew=eW;eh=4}else if(e.side==="left"){ex=PAD-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=4;eh=eW}else{ex=PAD+cm(W)-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=4;eh=eW}return<><rect x={ex} y={ey} width={ew} height={eh} fill="#e8ecf0"/>{!small&&<text x={e.side==="bottom"?ex+ew/2:ex+10} y={e.side==="bottom"?ey+12:ey+eh/2} textAnchor="middle" fill="#2980B9" fontSize={small?4:6}>GİRİŞ</text>}</>})()}
+    {(()=>{const e=project.entrance||{side:"bottom",position:50,widthCm:200};const eW=cm(e.widthCm);let ex,ey,ew,eh;if(e.side==="bottom"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD+cm(H)-2;ew=eW;eh=4}else if(e.side==="top"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD-2;ew=eW;eh=4}else if(e.side==="left"){ex=PAD-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=4;eh=eW}else{ex=PAD+cm(W)-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=4;eh=eW}return<><rect x={ex} y={ey} width={ew} height={eh} fill="#edf0f5"/>{!small&&<text x={e.side==="bottom"?ex+ew/2:ex+10} y={e.side==="bottom"?ey+12:ey+eh/2} textAnchor="middle" fill="#2980B9" fontSize={small?4:6}>GİRİŞ</text>}</>})()}
     {showDims&&<><text x={PAD+cm(W)/2} y={PAD-8} textAnchor="middle" fill="#5a7090" fontSize={6}>{W}cm ({(W/100).toFixed(1)}m)</text><text x={PAD-10} y={PAD+cm(H)/2} textAnchor="middle" fill="#5a7090" fontSize={6} transform={`rotate(-90,${PAD-10},${PAD+cm(H)/2})`}>{H}cm</text></>}
     {walls.map(w=>{const wt=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];return<line key={w.id} x1={PAD+cm(w.x1)} y1={PAD+cm(w.y1)} x2={PAD+cm(w.x2)} y2={PAD+cm(w.y2)} stroke={wt.color} strokeWidth={cm(wt.th)*(small?0.5:1)} strokeLinecap="round" strokeDasharray={w.type==="glass"?"4,3":"none"} opacity={0.6}/>})}
     {zones.map(z=>{const isHL=highlightId===z.id;const rx=PAD+cm(z.x),ry=PAD+cm(z.y),rw=cm(z.w),rh=cm(z.h);return<g key={z.id}>
@@ -414,8 +480,9 @@ function Iso3D({project}){
   const zones=project.zones||[];const walls=project.walls||[];
   const W=project.width,H=project.height;
   const iX=(x,y)=>((x-y)*0.7)+300;const iY=(x,y,z=0)=>((x+y)*0.35)-z+250;
-  return<svg width="100%" viewBox="0 0 600 400" style={{display:"block",maxWidth:600,margin:"0 auto"}}>
-    <polygon points={`${iX(0,0)},${iY(0,0)} ${iX(W/20,0)},${iY(W/20,0)} ${iX(W/20,H/20)},${iY(W/20,H/20)} ${iX(0,H/20)},${iY(0,H/20)}`} fill="#dce0e5" stroke="#5a7090" strokeWidth={1}/>
+  return<svg width="100%" viewBox="0 0 600 400" style={{display:"block",maxWidth:600,margin:"0 auto",background:"#f8f9fb",borderRadius:8}}>
+    <rect x={0} y={0} width={600} height={400} fill="#f8f9fb"/>
+    <polygon points={`${iX(0,0)},${iY(0,0)} ${iX(W/20,0)},${iY(W/20,0)} ${iX(W/20,H/20)},${iY(W/20,H/20)} ${iX(0,H/20)},${iY(0,H/20)}`} fill="#e8edf5" stroke="#5a7090" strokeWidth={1}/>
     {Array.from({length:Math.floor(W/200)+1}).map((_,i)=><line key={`gv${i}`} x1={iX(i*10,0)} y1={iY(i*10,0)} x2={iX(i*10,H/20)} y2={iY(i*10,H/20)} stroke="#c8cdd2" strokeWidth={0.3}/>)}
     {Array.from({length:Math.floor(H/200)+1}).map((_,i)=><line key={`gh${i}`} x1={iX(0,i*10)} y1={iY(0,i*10)} x2={iX(W/20,i*10)} y2={iY(W/20,i*10)} stroke="#c8cdd2" strokeWidth={0.3}/>)}
     {walls.map((w,i)=>{const x1=w.x1/20,y1=w.y1/20,x2=w.x2/20,y2=w.y2/20;const wt=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];return<polygon key={i} points={`${iX(x1,y1)},${iY(x1,y1)} ${iX(x2,y2)},${iY(x2,y2)} ${iX(x2,y2)},${iY(x2,y2,15)} ${iX(x1,y1)},${iY(x1,y1,15)}`} fill={wt.color+"44"} stroke={wt.color} strokeWidth={0.5}/>})}
@@ -440,10 +507,10 @@ function Dash({projects,all,isA,user,onOpen,onNew,onTpl,onDel}){
   return<div style={{maxWidth:920,margin:"0 auto",padding:"16px 12px"}}>
     {/* Status bar */}
     <div style={{display:"flex",gap:4,marginBottom:10,overflowX:"auto",paddingBottom:4}}>
-      <div onClick={()=>setSFilt("all")} style={{padding:"6px 12px",background:sFilt==="all"?"#2980B915":"#f0f2f5",border:`1px solid ${sFilt==="all"?"#2980B944":"#dce0e5"}`,borderRadius:7,cursor:"pointer",minWidth:60,textAlign:"center",flexShrink:0}}>
+      <div onClick={()=>setSFilt("all")} style={{padding:"6px 12px",background:sFilt==="all"?"#2980B915":"#f4f6f9",border:`1px solid ${sFilt==="all"?"#2980B944":"#dce0e5"}`,borderRadius:7,cursor:"pointer",minWidth:60,textAlign:"center",flexShrink:0}}>
         <div style={{fontSize:16,fontWeight:700,color:"#2980B9"}}>{projects.length}</div><div style={{fontSize:11,color:"#5a6370"}}>Tümü</div>
       </div>
-      {STATUS_FLOW.map(s=>{const c=projects.filter(p=>p.status===s.id).length;return<div key={s.id} onClick={()=>setSFilt(sFilt===s.id?"all":s.id)} style={{padding:"6px 10px",background:sFilt===s.id?s.color+"22":"#f0f2f5",border:`1px solid ${sFilt===s.id?s.color+"55":"#dce0e5"}`,borderRadius:7,cursor:"pointer",minWidth:55,textAlign:"center",flexShrink:0}}>
+      {STATUS_FLOW.map(s=>{const c=projects.filter(p=>p.status===s.id).length;return<div key={s.id} onClick={()=>setSFilt(sFilt===s.id?"all":s.id)} style={{padding:"6px 10px",background:sFilt===s.id?s.color+"22":"#f4f6f9",border:`1px solid ${sFilt===s.id?s.color+"55":"#dce0e5"}`,borderRadius:7,cursor:"pointer",minWidth:55,textAlign:"center",flexShrink:0}}>
         <div style={{fontSize:18,fontWeight:700,color:s.color}}>{c}</div><div style={{fontSize:11,color:"#5a6370"}}>{s.icon}{s.label}</div>
       </div>})}
     </div>
@@ -451,7 +518,7 @@ function Dash({projects,all,isA,user,onOpen,onNew,onTpl,onDel}){
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12,flexWrap:"wrap",gap:6}}>
       <h2 style={{margin:0,fontSize:16,fontWeight:300,color:"#1a2a3a",letterSpacing:2}}>{isA?"Tüm Projeler":"Projelerim"}</h2>
       <div style={{display:"flex",gap:4}}>
-        <button onClick={onTpl} style={{padding:"7px 14px",background:"#eaecf0",border:"1px solid #ccd2d9",borderRadius:6,color:"#2980B9",fontSize:14,cursor:"pointer"}}>📂 Şablon</button>
+        <button onClick={onTpl} style={{padding:"7px 14px",background:"#eef1f5",border:"1px solid #ccd2d9",borderRadius:6,color:"#2980B9",fontSize:14,cursor:"pointer"}}>📂 Şablon</button>
         <button onClick={onNew} style={{padding:"7px 16px",background:"linear-gradient(135deg,#2980B9,#1a3a5f)",border:"none",borderRadius:6,color:"#ffffff",fontSize:14,fontWeight:700,cursor:"pointer"}}>+ Yeni</button>
       </div>
     </div>
@@ -471,7 +538,7 @@ function Dash({projects,all,isA,user,onOpen,onNew,onTpl,onDel}){
         </div>
         {cfm===p.id&&<div onClick={e=>e.stopPropagation()} style={{position:"absolute",inset:0,background:"rgba(255,255,255,0.95)",borderRadius:9,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,zIndex:5}}>
           <div style={{fontSize:13,color:"#e74c3c"}}>Silmek istediğinize emin misiniz?</div>
-          <div style={{display:"flex",gap:4}}><button onClick={()=>{onDel(p.id);setCfm(null)}} style={{padding:"4px 12px",background:"#e74c3c",border:"none",borderRadius:4,color:"#fff",fontSize:13,cursor:"pointer"}}>Sil</button><button onClick={()=>setCfm(null)} style={{padding:"4px 12px",background:"#eaecf0",border:"none",borderRadius:4,color:"#5a6878",fontSize:13,cursor:"pointer"}}>İptal</button></div>
+          <div style={{display:"flex",gap:4}}><button onClick={()=>{onDel(p.id);setCfm(null)}} style={{padding:"4px 12px",background:"#e74c3c",border:"none",borderRadius:4,color:"#fff",fontSize:13,cursor:"pointer"}}>Sil</button><button onClick={()=>setCfm(null)} style={{padding:"4px 12px",background:"#eef1f5",border:"none",borderRadius:4,color:"#5a6878",fontSize:13,cursor:"pointer"}}>İptal</button></div>
         </div>}
         <div style={{fontSize:15,fontWeight:600,color:"#1a2a3a",marginBottom:3,paddingRight:80}}>{p.name}</div>
         {p.customer&&<div style={{fontSize:12,color:"#2980B9",marginBottom:3}}>👤 {p.customer}</div>}
@@ -506,9 +573,9 @@ function NewProj({user,isA,users,onCancel,onCreate}){
     <Fld l="AD"><input value={n} onChange={e=>setN(e.target.value)} placeholder="Proje adı" style={inp}/></Fld>
     <Fld l="MÜŞTERİ"><input value={c} onChange={e=>setC(e.target.value)} placeholder="Müşteri adı" style={inp}/></Fld>
     {isA&&<Fld l="SAHİP"><select value={ow} onChange={e=>setOw(e.target.value)} style={{...inp,appearance:"auto"}}>{ADMINS.map(a=><option key={a} value={a}>{a.split("@")[0]}</option>)}{users.map(u=><option key={u.email} value={u.email}>{u.name}</option>)}</select></Fld>}
-    <Fld l="TİP"><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:4}}>{PROJ_TYPES.map(tp=><button key={tp.id} onClick={()=>setT(tp.id)} style={{padding:"7px 3px",background:t===tp.id?"#2980B915":"#f0f2f5",border:t===tp.id?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:6,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:15}}>{tp.i}</div><div style={{fontSize:11,color:t===tp.id?"#2980B9":"#444",marginTop:2}}>{tp.l}</div></button>)}</div></Fld>
+    <Fld l="TİP"><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:4}}>{PROJ_TYPES.map(tp=><button key={tp.id} onClick={()=>setT(tp.id)} style={{padding:"7px 3px",background:t===tp.id?"#2980B915":"#f4f6f9",border:t===tp.id?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:6,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:15}}>{tp.i}</div><div style={{fontSize:11,color:t===tp.id?"#2980B9":"#444",marginTop:2}}>{tp.l}</div></button>)}</div></Fld>
     <Fld l="ÖLÇÜ"><div style={{display:"flex",gap:6}}><input type="number" value={w} onChange={e=>setW(+e.target.value)} style={{...inp,flex:1}}/><input type="number" value={h} onChange={e=>setH(+e.target.value)} style={{...inp,flex:1}}/><div style={{padding:"7px 10px",background:"#eef0f3",borderRadius:5,fontSize:15,color:"#2980B9",fontWeight:600,alignSelf:"center"}}>{((w*h)/10000).toFixed(0)}m²</div></div></Fld>
-    <Fld l="GİRİŞ"><div style={{display:"flex",gap:4}}>{[{id:"bottom",l:"Alt"},{id:"top",l:"Üst"},{id:"left",l:"Sol"},{id:"right",l:"Sağ"}].map(s=><button key={s.id} onClick={()=>setEs(s.id)} style={{flex:1,padding:"6px",background:es===s.id?"#2980B915":"#f0f2f5",border:es===s.id?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:4,cursor:"pointer",fontSize:13,color:es===s.id?"#2980B9":"#444"}}>{s.l}</button>)}</div></Fld>
+    <Fld l="GİRİŞ"><div style={{display:"flex",gap:4}}>{[{id:"bottom",l:"Alt"},{id:"top",l:"Üst"},{id:"left",l:"Sol"},{id:"right",l:"Sağ"}].map(s=><button key={s.id} onClick={()=>setEs(s.id)} style={{flex:1,padding:"6px",background:es===s.id?"#2980B915":"#f4f6f9",border:es===s.id?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:4,cursor:"pointer",fontSize:13,color:es===s.id?"#2980B9":"#444"}}>{s.l}</button>)}</div></Fld>
     <div style={{display:"flex",gap:6,justifyContent:"flex-end",marginTop:4}}>
       <button onClick={onCancel} style={{padding:"8px 18px",background:"none",border:"1px solid #dce0e5",borderRadius:6,color:"#5a6370",fontSize:14,cursor:"pointer"}}>İptal</button>
       <button onClick={go} disabled={!n.trim()} style={{padding:"8px 24px",background:n.trim()?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#dce0e5",border:"none",borderRadius:6,color:n.trim()?"#ffffff":"#333",fontSize:15,fontWeight:700,cursor:n.trim()?"pointer":"default"}}>OLUŞTUR</button>
@@ -612,7 +679,7 @@ function Editor({project,user,onSave}){
         {tab==="add"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:3}}>{ZONE_PRESETS.map(t2=><button key={t2.id+Math.random()} onClick={()=>addZone(t2)} style={{padding:"6px 2px",background:"#ffffff",border:"1px solid #dce0e5",borderRadius:5,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:18}}>{t2.icon}</div><div style={{fontSize:11,color:"#5a6878",marginTop:1}}>{t2.label}</div></button>)}</div>}
         {tab==="draw"&&<div>
           {[{id:"wall",l:"🧱 Duvar",c:"#4a5568"},{id:"elec",l:"⚡ Elektrik",c:"#F1C40F"},{id:"plumb",l:"💧 Tesisat",c:"#3498DB"},{id:"measure",l:"📏 Ölçü",c:"#E67E22"}].map(d=>
-            <button key={d.id} onClick={()=>{setDrawMode(drawMode===d.id?null:d.id);setDrawStart(null)}} style={{display:"block",width:"100%",padding:"5px 7px",marginBottom:2,background:drawMode===d.id?d.c+"22":"#f0f2f5",border:drawMode===d.id?`1px solid ${d.c}55`:"1px solid #dce0e5",borderRadius:4,color:drawMode===d.id?d.c:"#666",fontSize:13,cursor:"pointer",textAlign:"left"}}>{d.l}{drawMode===d.id?" ✓":""}</button>)}
+            <button key={d.id} onClick={()=>{setDrawMode(drawMode===d.id?null:d.id);setDrawStart(null)}} style={{display:"block",width:"100%",padding:"5px 7px",marginBottom:2,background:drawMode===d.id?d.c+"22":"#f4f6f9",border:drawMode===d.id?`1px solid ${d.c}55`:"1px solid #dce0e5",borderRadius:4,color:drawMode===d.id?d.c:"#666",fontSize:13,cursor:"pointer",textAlign:"left"}}>{d.l}{drawMode===d.id?" ✓":""}</button>)}
           {drawMode==="wall"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{WALL_TYPES.map(wt=><MBtn key={wt.id} t={wt.label} a={drawType===wt.id} onClick={()=>setDrawType(wt.id)}/>)}</div>}
           {drawMode==="elec"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{ELEC_TYPES.map(et=><MBtn key={et.id} t={et.icon+et.label} a={drawType===et.id} onClick={()=>setDrawType(et.id)}/>)}</div>}
           {drawMode==="plumb"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{PLUMB_TYPES.map(pt=><MBtn key={pt.id} t={pt.icon+pt.label} a={drawType===pt.id} onClick={()=>setDrawType(pt.id)}/>)}</div>}
@@ -642,19 +709,19 @@ function Editor({project,user,onSave}){
           <span>{zoneArea.toFixed(1)}/{totalArea.toFixed(0)}m²</span><span style={{color:"#2980B9"}}>₺{fmt(totalCost)}</span><span style={{color:"#F1C40F"}}>{(totalPower/1000).toFixed(1)}kW</span>
         </div>
         <div style={{display:"flex",gap:2,flexWrap:"wrap"}}>
-          {[{id:"report",t:"📋Rapor"},{id:"pricing",t:"💰Teklif"},{id:"energy",t:"⚡Enerji"},{id:"status",t:"📊Durum"}].map(b=><button key={b.id} onClick={()=>setPanel(panel===b.id?null:b.id)} style={{padding:"3px 6px",background:"#eaecf0",border:"1px solid #ccd2d9",borderRadius:3,color:"#5a6878",fontSize:11,cursor:"pointer"}}>{b.t}</button>)}
-          <button onClick={saveVer} style={{padding:"3px 6px",background:"#eaecf0",border:"1px solid #ccd2d9",borderRadius:3,color:"#5a6878",fontSize:11,cursor:"pointer"}}>💾Rev</button>
+          {[{id:"report",t:"📋Rapor"},{id:"pricing",t:"💰Teklif"},{id:"energy",t:"⚡Enerji"},{id:"status",t:"📊Durum"}].map(b=><button key={b.id} onClick={()=>setPanel(panel===b.id?null:b.id)} style={{padding:"3px 6px",background:"#eef1f5",border:"1px solid #ccd2d9",borderRadius:3,color:"#5a6878",fontSize:11,cursor:"pointer"}}>{b.t}</button>)}
+          <button onClick={saveVer} style={{padding:"3px 6px",background:"#eef1f5",border:"1px solid #ccd2d9",borderRadius:3,color:"#5a6878",fontSize:11,cursor:"pointer"}}>💾Rev</button>
         </div>
       </div>
     </div>
 
-    <div style={{flex:1,overflow:"auto",background:"#eaecf0",position:"relative"}}>
+    <div style={{flex:1,overflow:"auto",background:"#eef1f5",position:"relative"}}>
       {panel&&<OverlayPanel type={panel} project={project} zones={zones} walls={walls} totalCost={totalCost} netCost={netCost} kdvAmt={kdvAmt} totalPower={totalPower} monthlyE={monthlyE} onClose={()=>setPanel(null)} onStatus={setStatus} onDiscount={d=>onSave({...project,discount:d})}/>}
       <div style={{padding:8,display:"flex",justifyContent:"center"}}>
         <svg ref={svgRef} viewBox={`0 0 ${svgW} ${svgH}`} style={{width:"100%",maxWidth:700,display:"block",touchAction:"none",cursor:drawMode?"crosshair":"default"}} onClick={canvasClick}>
           <defs><pattern id="g1" width={cm(100)} height={cm(100)} patternUnits="userSpaceOnUse"><path d={`M ${cm(100)} 0 L 0 0 0 ${cm(100)}`} fill="none" stroke="#d5d9de" strokeWidth="0.3"/></pattern><filter id="gl"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="#e8ecf0"/><rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="none" stroke="#5a7090" strokeWidth={3} rx={1}/>
-          {(()=>{const e=project.entrance||{side:"bottom",position:50,widthCm:200};const eW=cm(e.widthCm);let ex,ey,ew,eh;if(e.side==="bottom"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD+cm(H)-2;ew=eW;eh=5}else if(e.side==="top"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD-2;ew=eW;eh=5}else if(e.side==="left"){ex=PAD-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=5;eh=eW}else{ex=PAD+cm(W)-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=5;eh=eW}return<><rect x={ex} y={ey} width={ew} height={eh} fill="#e8ecf0"/><text x={e.side==="bottom"?ex+ew/2:ex+10} y={e.side==="bottom"?ey+14:ey+eh/2} textAnchor="middle" fill="#2980B9" fontSize={6}>GİRİŞ</text></>})()}
+          <rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="#edf0f5"/><rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="none" stroke="#5a7090" strokeWidth={3} rx={1}/>
+          {(()=>{const e=project.entrance||{side:"bottom",position:50,widthCm:200};const eW=cm(e.widthCm);let ex,ey,ew,eh;if(e.side==="bottom"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD+cm(H)-2;ew=eW;eh=5}else if(e.side==="top"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD-2;ew=eW;eh=5}else if(e.side==="left"){ex=PAD-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=5;eh=eW}else{ex=PAD+cm(W)-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=5;eh=eW}return<><rect x={ex} y={ey} width={ew} height={eh} fill="#edf0f5"/><text x={e.side==="bottom"?ex+ew/2:ex+10} y={e.side==="bottom"?ey+14:ey+eh/2} textAnchor="middle" fill="#2980B9" fontSize={6}>GİRİŞ</text></>})()}
           <text x={PAD+cm(W)/2} y={PAD-10} textAnchor="middle" fill="#5a7090" fontSize={6}>{W}cm</text>
           <text x={PAD-12} y={PAD+cm(H)/2} textAnchor="middle" fill="#5a7090" fontSize={6} transform={`rotate(-90,${PAD-12},${PAD+cm(H)/2})`}>{H}cm</text>
           {layers.walls&&walls.map(w=>{const wt=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];return<line key={w.id} x1={PAD+cm(w.x1)} y1={PAD+cm(w.y1)} x2={PAD+cm(w.x2)} y2={PAD+cm(w.y2)} stroke={wt.color} strokeWidth={cm(wt.th)} strokeLinecap="round" strokeDasharray={w.type==="glass"?"4,3":"none"} opacity={0.6}/>})}
@@ -692,7 +759,7 @@ function OverlayPanel({type,project,zones,walls,totalCost,netCost,kdvAmt,totalPo
     <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{borderBottom:"1px solid #ccd2d9"}}><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Ürün</th><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Marka</th><th style={{textAlign:"right",padding:3,color:"#5a6878"}}>Fiyat</th></tr></thead>
       <tbody>{allEq.map((eq,i)=><tr key={eq.uid||i} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:3,color:"#1a2a3a"}}>{eq.name}</td><td style={{padding:3,color:eq.color}}>{eq.brand}</td><td style={{padding:3,textAlign:"right",color:"#2980B9"}}>₺{fmt(eq.price)}</td></tr>)}</tbody></table></div>
     <div style={bx}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}><span style={{fontSize:14,color:"#5a6878"}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:60,padding:"2px 5px",background:"#f5f6f8",border:"1px solid #d0d5db",borderRadius:3,color:"#1a2a3a",fontSize:15,textAlign:"right",outline:"none"}}/></div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}><span style={{fontSize:14,color:"#5a6878"}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:60,padding:"2px 5px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:3,color:"#1a2a3a",fontSize:15,textAlign:"right",outline:"none"}}/></div>
       {[{l:"Ara Toplam",v:totalCost},{l:`İskonto (%${project.discount||0})`,v:-(totalCost*(project.discount||0)/100)},{l:"Net",v:netCost},{l:`KDV (%${KDV*100})`,v:kdvAmt},{l:"GENEL TOPLAM",v:netCost+kdvAmt,b:true}].map((r,i)=>
         <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"3px 0",borderTop:r.b?"1px solid #2980B944":"none",fontSize:r.b?12:10,fontWeight:r.b?700:400,color:r.b?"#2980B9":"#888"}}><span>{r.l}</span><span>₺{fmt(Math.round(r.v))}</span></div>)}
     </div>
@@ -722,11 +789,11 @@ function OverlayPanel({type,project,zones,walls,totalCost,netCost,kdvAmt,totalPo
 }
 
 // ─── 3D & FIELD VIEWS ───────────────────────────────────────────
-function View3D({project}){return<div style={{flex:1,overflow:"auto",background:"#eaecf0",padding:16,display:"flex",justifyContent:"center"}}><div style={{textAlign:"center"}}><div style={{fontSize:16,color:"#2980B9",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#e8ecf0",borderRadius:10,border:"1px solid #dce0e5",padding:8}}><Iso3D project={project}/></div></div></div>}
+function View3D({project}){return<div style={{minHeight:"calc(100vh - 49px)",overflow:"auto",background:"#f4f6f9",padding:16,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><div style={{width:"100%",maxWidth:700,textAlign:"center"}}><div style={{fontSize:16,color:"#2980B9",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#ffffff",borderRadius:10,border:"1px solid #dce0e5",padding:12}}><Iso3D project={project}/></div></div></div>}
 
 function FieldView({project}){
   const zones=project.zones||[];
-  return<div style={{flex:1,overflow:"auto",background:"#eaecf0",padding:16}}><div style={{maxWidth:600,margin:"0 auto"}}>
+  return<div style={{flex:1,overflow:"auto",background:"#eef1f5",padding:16}}><div style={{maxWidth:600,margin:"0 auto"}}>
     <div style={{fontSize:16,color:"#2980B9",letterSpacing:2,marginBottom:4}}>🔧 SAHA GÖRÜNÜMÜ</div>
     <div style={{fontSize:13,color:"#5a6370",marginBottom:12}}>{project.name}{project.customer&&` — ${project.customer}`}</div>
     {zones.map(z=><div key={z.id} style={{background:"#ffffff",borderRadius:8,padding:12,border:`1px solid ${z.color}33`,marginBottom:8}}>
