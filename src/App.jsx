@@ -21,48 +21,46 @@ const STATUS_FLOW=[
 const KDV=0.20;const ELEC_KWH=4.2;
 
 const EQUIPMENT={
-  sogutma:{label:"Soğutma",icon:"❄️",items:[
-    {id:"eco-vrt-1",brand:"Ecocold",name:"Dikey Soğutucu 70cm",model:"EC-VRT-700",w:70,h:65,temp:"+2/+8°C",power:350,price:45000,color:"#2980B9"},
-    {id:"eco-vrt-2",brand:"Ecocold",name:"Dikey Soğutucu 100cm",model:"EC-VRT-1000",w:100,h:65,temp:"+2/+8°C",power:480,price:58000,color:"#2980B9"},
-    {id:"eco-vrt-3",brand:"Ecocold",name:"Dikey Soğutucu 140cm",model:"EC-VRT-1400",w:140,h:70,temp:"+2/+8°C",power:620,price:72000,color:"#2980B9"},
-    {id:"eco-hrz-1",brand:"Ecocold",name:"Yatay Dondurucu 150cm",model:"EC-HRZ-1500",w:150,h:75,temp:"-18/-24°C",power:420,price:38000,color:"#3498DB"},
-    {id:"eco-vtr-1",brand:"Ecocold",name:"Şarküteri Vitrini 150cm",model:"EC-DLI-1500",w:150,h:100,temp:"+0/+4°C",power:580,price:85000,color:"#C0392B"},
-    {id:"eco-vtr-2",brand:"Ecocold",name:"Şarküteri Vitrini 200cm",model:"EC-DLI-2000",w:200,h:100,temp:"+0/+4°C",power:720,price:110000,color:"#C0392B"},
-    {id:"eco-vtr-3",brand:"Ecocold",name:"Şarküteri Vitrini 250cm",model:"EC-DLI-2500",w:250,h:100,temp:"+0/+4°C",power:850,price:135000,color:"#C0392B"},
-    {id:"eco-pst-1",brand:"Ecocold",name:"Pasta Vitrini 120cm",model:"EC-PST-1200",w:120,h:80,temp:"+2/+6°C",power:380,price:62000,color:"#1ABC9C"},
-    {id:"eco-ada-1",brand:"Ecocold",name:"Ada Soğutucu 200cm",model:"EC-ISL-2000",w:200,h:120,temp:"+2/+8°C",power:680,price:95000,color:"#2980B9"},
-    {id:"eco-grb-1",brand:"Ecocold",name:"Grab&Go 100cm",model:"EC-GNG-1000",w:100,h:60,temp:"+2/+6°C",power:320,price:42000,color:"#16A085"},
-    {id:"eco-grb-2",brand:"Ecocold",name:"Grab&Go 150cm",model:"EC-GNG-1500",w:150,h:60,temp:"+2/+6°C",power:440,price:56000,color:"#16A085"},
-    // Ecocold Navi — Bombe Cam Kasap Vitrini
-    {id:"eco-navi-150",brand:"Ecocold",name:"Navi Kasap Vitrini 150cm",model:"EC-NVI-1500",w:150,h:105,temp:"+0/+4°C",power:620,price:92000,color:"#E74C3C"},
-    {id:"eco-navi-200",brand:"Ecocold",name:"Navi Kasap Vitrini 200cm",model:"EC-NVI-2000",w:200,h:105,temp:"+0/+4°C",power:780,price:118000,color:"#E74C3C"},
-    {id:"eco-navi-250",brand:"Ecocold",name:"Navi Kasap Vitrini 250cm",model:"EC-NVI-2500",w:250,h:105,temp:"+0/+4°C",power:920,price:145000,color:"#E74C3C"},
-    // Ecocold Apple — Plug-in Dondurucu
-    {id:"eco-apple-212",brand:"Ecocold",name:"Apple Plug-in Dondurucu 212",model:"EC-APL-212",w:212,h:85,temp:"-18/-24°C",power:680,price:74000,color:"#2980B9"},
-    {id:"eco-apple-188",brand:"Ecocold",name:"Apple Plug-in Dondurucu 188",model:"EC-APL-188",w:188,h:85,temp:"-18/-24°C",power:580,price:64000,color:"#2980B9"},
-    // Ecocold Orange — Serisi Vitrin
-    {id:"eco-org-100",brand:"Ecocold",name:"Orange Vitrin 100cm",model:"EC-ORG-1000",w:100,h:90,temp:"+2/+8°C",power:360,price:48000,color:"#E67E22"},
-    {id:"eco-org-150",brand:"Ecocold",name:"Orange Vitrin 150cm",model:"EC-ORG-1500",w:150,h:90,temp:"+2/+8°C",power:500,price:64000,color:"#E67E22"},
-    {id:"eco-org-200",brand:"Ecocold",name:"Orange Vitrin 200cm",model:"EC-ORG-2000",w:200,h:90,temp:"+2/+8°C",power:640,price:82000,color:"#E67E22"},
+  currency:"EUR",
+  sogutma:{label:"Soğutma",icon:"❄️",currency:"EUR",items:[
+    // NAVİ — Bombe Cam Kasap & Şarküteri Vitrini (Derinlik 1165mm)
+    {id:"navi3750",brand:"Ecocold",name:"Navi Kasap Vitrini 375cm",model:"NAVİ-1165/3750",w:375,h:116,sicaklik:"0/+4°C",power:450,price:2350,curr:"EUR",color:"#E74C3C"},
+    {id:"navi2500",brand:"Ecocold",name:"Navi Kasap Vitrini 250cm",model:"NAVİ-1165/2500",w:250,h:116,sicaklik:"0/+4°C",power:320,price:1605,curr:"EUR",color:"#E74C3C"},
+    {id:"navi1875",brand:"Ecocold",name:"Navi Kasap Vitrini 187cm",model:"NAVİ-1165/1875",w:187,h:116,sicaklik:"0/+4°C",power:260,price:1420,curr:"EUR",color:"#E74C3C"},
+    {id:"navi625",brand:"Ecocold",name:"Navi Kasap Vitrini 62cm",model:"NAVİ-1165/625",w:62,h:116,sicaklik:"0/+4°C",power:120,price:890,curr:"EUR",color:"#E74C3C"},
+    // APPLE — Plug-in Dondurucu (Negatif)
+    {id:"apple212",brand:"Ecocold",name:"Apple 212 Dondurucu",model:"APPLE-212-NT",w:212,h:90,sicaklik:"-18/-22°C",power:600,price:980,curr:"EUR",color:"#2980B9"},
+    // Merkezi Soğutma
+    {id:"merkezi30",brand:"Ecocold",name:"Pozitif Merkezi Soğutma 30.3kW",model:"ZBD45+2xZB45",w:120,h:100,sicaklik:"-10/+45°C",power:4590,price:9820,curr:"EUR",color:"#1A5276"},
   ]},
-  sutluk:{label:"Sütlük",icon:"🥛",items:[
-    // Ecocold Merga — Sütlük
-    {id:"eco-mrg-125",brand:"Ecocold",name:"Merga Sütlük 125cm",model:"EC-MRG-1250",w:125,h:60,temp:"+2/+6°C",power:360,price:38000,color:"#5DADE2"},
-    {id:"eco-mrg-187",brand:"Ecocold",name:"Merga Sütlük 187cm",model:"EC-MRG-1875",w:187,h:60,temp:"+2/+6°C",power:470,price:52000,color:"#5DADE2"},
-    {id:"eco-mrg-250",brand:"Ecocold",name:"Merga Sütlük 250cm",model:"EC-MRG-2500",w:250,h:65,temp:"+2/+6°C",power:600,price:66000,color:"#5DADE2"},
-    {id:"sut-cls-1",brand:"Ecocold",name:"Kapaklı Sütlük 125cm",model:"EC-CLS-1250",w:125,h:60,temp:"+1/+5°C",power:340,price:40000,color:"#85C1E9"},
-    {id:"sut-wal-1",brand:"Ecocold",name:"Duvar Tipi Sütlük 200cm",model:"EC-WLL-2000",w:200,h:55,temp:"+2/+6°C",power:500,price:55000,color:"#AED6F1"},
+  sutluk:{label:"Sütlük",icon:"🥛",currency:"EUR",items:[
+    // MERGA — Sütlük (855mm derinlik, 2040mm yükseklik, Zemin+4 raf)
+    {id:"merga3750",brand:"Ecocold",name:"Merga Sütlük 375cm",model:"MERGA-855/3750",w:375,h:86,sicaklik:"+2/+8°C",power:320,price:3100,curr:"EUR",color:"#5DADE2"},
+    {id:"merga2814",brand:"Ecocold",name:"Merga Sütlük 281cm",model:"MERGA-855/2814",w:281,h:86,sicaklik:"+2/+8°C",power:260,price:2670,curr:"EUR",color:"#5DADE2"},
+    {id:"merga2500",brand:"Ecocold",name:"Merga Sütlük 250cm",model:"MERGA-855/2500",w:250,h:86,sicaklik:"+2/+8°C",power:240,price:2250,curr:"EUR",color:"#5DADE2"},
+    {id:"merga1875",brand:"Ecocold",name:"Merga Sütlük 187cm",model:"MERGA-855/1875",w:187,h:86,sicaklik:"+2/+8°C",power:200,price:2000,curr:"EUR",color:"#5DADE2"},
+    {id:"merga1250",brand:"Ecocold",name:"Merga Sütlük 125cm",model:"MERGA-855/1250",w:125,h:86,sicaklik:"+2/+8°C",power:160,price:1510,curr:"EUR",color:"#5DADE2"},
   ]},
-  raf:{label:"Raf",icon:"🗄️",items:[
-    {id:"raf-gnd-s90",brand:"Pasifik Raf",name:"Tek Taraflı Gondol 90cm",model:"PR-SGL-0900",w:90,h:47,power:0,price:7500,color:"#9B59B6"},
-    {id:"raf-gnd-1",brand:"Pasifik Raf",name:"Tek Taraflı Gondol 100cm",model:"PR-SGL-1000",w:100,h:47,power:0,price:8500,color:"#9B59B6"},
-    {id:"raf-gnd-s120",brand:"Pasifik Raf",name:"Tek Taraflı Gondol 120cm",model:"PR-SGL-1200",w:120,h:47,power:0,price:10000,color:"#9B59B6"},
-    {id:"raf-gnd-d90",brand:"Pasifik Raf",name:"Çift Taraflı Gondol 90cm",model:"PR-DBL-0900",w:90,h:90,power:0,price:12000,color:"#8E44AD"},
-    {id:"raf-gnd-2",brand:"Pasifik Raf",name:"Çift Taraflı Gondol 100cm",model:"PR-DBL-1000",w:100,h:90,power:0,price:14000,color:"#8E44AD"},
-    {id:"raf-gnd-d120",brand:"Pasifik Raf",name:"Çift Taraflı Gondol 120cm",model:"PR-DBL-1200",w:120,h:90,power:0,price:16500,color:"#8E44AD"},
-    {id:"raf-duv-1",brand:"Pasifik Raf",name:"Duvar Rafı 200cm",model:"PR-WLL-2000",w:200,h:40,power:0,price:11000,color:"#7D3C98"},
-    {id:"raf-end-1",brand:"Pasifik Raf",name:"Endcap 90cm",model:"PR-END-0900",w:90,h:90,power:0,price:9500,color:"#6C3483"},
-    {id:"raf-prm",brand:"Pasifik Raf",name:"Promosyon Sepeti",model:"PR-PRM-080",w:80,h:80,power:0,price:3500,color:"#F39C12"},
+  raf:{label:"Raf",icon:"🗄️",currency:"EUR",items:[
+    // DUVAR ÜNİTESİ (H2200 D500)
+    {id:"duvar1000",brand:"Pasifik Raf",name:"Duvar Ünitesi 100cm",model:"DW-H2200-D500-L1000",w:100,h:50,power:0,price:101,curr:"EUR",color:"#9B59B6"},
+    {id:"duvar900",brand:"Pasifik Raf",name:"Duvar Ünitesi 90cm",model:"DW-H2200-D500-L900",w:90,h:50,power:0,price:94,curr:"EUR",color:"#9B59B6"},
+    {id:"duvar700",brand:"Pasifik Raf",name:"Duvar Ünitesi 70cm",model:"DW-H2200-D500-L700",w:70,h:50,power:0,price:80,curr:"EUR",color:"#9B59B6"},
+    {id:"duvar500",brand:"Pasifik Raf",name:"Duvar Ünitesi 50cm",model:"DW-H2200-D500-L500",w:50,h:50,power:0,price:68,curr:"EUR",color:"#9B59B6"},
+    // ORTA REYON / GONDOL (H1600 D400, çift taraf)
+    {id:"orta1000",brand:"Pasifik Raf",name:"Orta Reyon 100cm",model:"OR-H1600-D400-L1000",w:100,h:90,power:0,price:153,curr:"EUR",color:"#8E44AD"},
+    {id:"orta700",brand:"Pasifik Raf",name:"Orta Reyon 70cm",model:"OR-H1600-D400-L700",w:70,h:90,power:0,price:138,curr:"EUR",color:"#8E44AD"},
+    {id:"orta500",brand:"Pasifik Raf",name:"Orta Reyon 50cm",model:"OR-H1600-D400-L500",w:50,h:90,power:0,price:113,curr:"EUR",color:"#8E44AD"},
+    // TEK YÖN ORTA REYON (H1600 D400, tek taraf)
+    {id:"tekyon1000",brand:"Pasifik Raf",name:"Tek Yön Reyon 100cm",model:"TY-H1600-D400-L1000",w:100,h:50,power:0,price:82,curr:"EUR",color:"#7D3C98"},
+    {id:"tekyon900",brand:"Pasifik Raf",name:"Tek Yön Reyon 90cm",model:"TY-H1600-D400-L900",w:90,h:50,power:0,price:76,curr:"EUR",color:"#7D3C98"},
+    // ÖZEL ÜRÜNLER
+    {id:"manavduvar",brand:"Pasifik Raf",name:"Manav Duvar Reyonu",model:"MANAV-DW",w:100,h:100,power:0,price:958,curr:"EUR",color:"#27AE60"},
+    {id:"manavoran",brand:"Pasifik Raf",name:"Orta Manav Reyonu",model:"MANAV-OR",w:100,h:90,power:0,price:793,curr:"EUR",color:"#27AE60"},
+    {id:"kasabanko",brand:"Pasifik Raf",name:"Kasa Banko 200cm",model:"KASA-L2000",w:200,h:100,power:150,price:932,curr:"EUR",color:"#E67E22"},
+    {id:"unlumamul",brand:"Pasifik Raf",name:"Unlu Mamül Reyonu",model:"UNLU-SET",w:150,h:100,power:0,price:1347,curr:"EUR",color:"#D4A017"},
+    {id:"kuruyemis1000",brand:"Pasifik Raf",name:"Kuruyemiş Standı 100cm",model:"KY-L1000",w:100,h:100,power:0,price:195,curr:"EUR",color:"#B8860B"},
+    {id:"yumurta1000",brand:"Pasifik Raf",name:"Yumurta Standı 100cm",model:"YUM-L1000",w:100,h:100,power:0,price:260,curr:"EUR",color:"#F39C12"},
   ]},
   unlu:{label:"Fırın",icon:"🥐",items:[
     {id:"unl-srf-1",brand:"Nokta Dizayn",name:"Self-Servis Ekmek Rafı 120cm",model:"ND-BRD-1200",w:120,h:50,power:0,price:12000,color:"#D4A017"},
@@ -687,15 +685,17 @@ function Editor({project,user,onSave}){
         </div>}
         {tab==="equip"&&<div>
           {!sel&&<div style={{padding:5,background:"#2980B911",borderRadius:4,fontSize:12,color:"#2980B9",marginBottom:4}}>Önce bölge seçin</div>}
-          <div style={{display:"flex",flexWrap:"wrap",gap:2,marginBottom:4}}>{Object.entries(EQUIPMENT).map(([k,v])=><MBtn key={k} t={v.icon+v.label} a={eqCat===k} onClick={()=>setEqCat(k)}/>)}</div>
-          {EQUIPMENT[eqCat]?.items.map(eq=><div key={eq.id} style={{padding:"4px 5px",marginBottom:2,background:"#ffffff",borderRadius:4,border:"1px solid #dce0e5"}}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:2,marginBottom:4}}>{Object.entries(EQUIPMENT).filter(([k,v])=>v.items).map(([k,v])=><MBtn key={k} t={v.icon+v.label} a={eqCat===k} onClick={()=>setEqCat(k)}/>)}</div>
+          {EQUIPMENT[eqCat]?.items.map(eq=>{const sym=eq.curr==="EUR"?"€":"₺";return<div key={eq.id} style={{padding:"4px 5px",marginBottom:2,background:"#ffffff",borderRadius:4,border:"1px solid #dce0e5"}}>
             <div style={{fontSize:13,fontWeight:600,color:"#1a2a3a"}}>{eq.name}</div>
             <div style={{fontSize:11,color:"#5a6370"}}><span style={{color:eq.color}}>{eq.brand}</span> • {eq.model}</div>
+            {eq.sicaklik&&<div style={{fontSize:10,color:"#3498DB",marginTop:1}}>🌡️ {eq.sicaklik}</div>}
             <div style={{fontSize:11,color:"#7a8390",display:"flex",justifyContent:"space-between",marginTop:1}}>
-              <span>{eq.power>0?eq.power+"W":"—"} • ₺{fmt(eq.price)}</span>
+              <span>{eq.power>0?eq.power+"W":"—"} • <span style={{color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:600}}>{sym}{fmt(eq.price)}</span></span>
               {sel&&<button onClick={()=>updZone(sel.id,{equip:[...(sel.equip||[]),{...eq,uid:Date.now().toString()}]})} style={{padding:"1px 6px",background:"#2980B922",border:"1px solid #2980B944",borderRadius:2,color:"#2980B9",fontSize:11,cursor:"pointer"}}>+Ekle</button>}
             </div>
-          </div>)}
+          </div>})}
+
         </div>}
         {tab==="layers"&&<div>
           {[{k:"zones",l:"Bölgeler",c:"#2980B9"},{k:"walls",l:"Duvarlar",c:"#4a5568"},{k:"equip",l:"Ekipmanlar",c:"#27ae60"},{k:"elec",l:"Elektrik",c:"#F1C40F"},{k:"plumb",l:"Tesisat",c:"#3498DB"},{k:"measure",l:"Ölçüler",c:"#E67E22"}].map(ly=>
@@ -752,12 +752,12 @@ function OverlayPanel({type,project,zones,walls,totalCost,netCost,kdvAmt,totalPo
   if(type==="report")return<div style={w}><div style={i}>{hd("PROJE RAPORU")}
     <div style={bx}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:11,color:"#7a8390",letterSpacing:2}}>NOKTA DİZAYN</div><div style={{fontSize:16,fontWeight:600,color:"#1a2a3a",marginTop:2}}>{project.name}</div>{project.customer&&<div style={{fontSize:13,color:"#2980B9"}}>Müşteri: {project.customer}</div>}</div><Logo sz={36}/></div></div>
     {totalCost>0&&<div style={{...bx,textAlign:"center",background:"#2980B911",border:"1px solid #2980B922"}}><div style={{fontSize:12,color:"#2980B9",letterSpacing:2}}>TOPLAM (KDV DAHİL)</div><div style={{fontSize:20,fontWeight:700,color:"#2980B9",marginTop:3}}>₺{fmt(Math.round(netCost+kdvAmt))}</div></div>}
-    <div style={bx}>{zones.map(z=><div key={z.id} style={{padding:"5px 0",borderBottom:"1px solid #eef0f3"}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:14,fontWeight:600,color:"#1a2a3a"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><span style={{fontSize:12,color:"#5a6370"}}>{((z.w*z.h)/10000).toFixed(1)}m²</span></div>{(z.equip||[]).map(eq=><div key={eq.uid} style={{fontSize:12,color:"#5a6878",paddingLeft:10}}>• {eq.brand} {eq.name} — ₺{fmt(eq.price)}</div>)}</div>)}</div>
+    <div style={bx}>{zones.map(z=><div key={z.id} style={{padding:"5px 0",borderBottom:"1px solid #eef0f3"}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:14,fontWeight:600,color:"#1a2a3a"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><span style={{fontSize:12,color:"#5a6370"}}>{((z.w*z.h)/10000).toFixed(1)}m²</span></div>{(z.equip||[]).map(eq=>{const sym=eq.curr==="EUR"?"€":"₺";return<div key={eq.uid} style={{fontSize:12,color:"#5a6878",paddingLeft:10}}>• {eq.brand} {eq.name} — {sym}{fmt(eq.price)}</div>})}</div>)}</div>
   </div></div>;
 
   if(type==="pricing")return<div style={w}><div style={i}>{hd("FİYAT TEKLİFİ")}
     <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{borderBottom:"1px solid #ccd2d9"}}><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Ürün</th><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Marka</th><th style={{textAlign:"right",padding:3,color:"#5a6878"}}>Fiyat</th></tr></thead>
-      <tbody>{allEq.map((eq,i)=><tr key={eq.uid||i} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:3,color:"#1a2a3a"}}>{eq.name}</td><td style={{padding:3,color:eq.color}}>{eq.brand}</td><td style={{padding:3,textAlign:"right",color:"#2980B9"}}>₺{fmt(eq.price)}</td></tr>)}</tbody></table></div>
+      <tbody>{allEq.map((eq,i)=>{const sym=eq.curr==="EUR"?"€":"₺";return<tr key={eq.uid||i} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:3,color:"#1a2a3a"}}>{eq.name}</td><td style={{padding:3,color:eq.color}}>{eq.brand}</td><td style={{padding:3,textAlign:"right",color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:600}}>{sym}{fmt(eq.price)}</td></tr>})}</tbody></table></div>
     <div style={bx}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}><span style={{fontSize:14,color:"#5a6878"}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:60,padding:"2px 5px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:3,color:"#1a2a3a",fontSize:15,textAlign:"right",outline:"none"}}/></div>
       {[{l:"Ara Toplam",v:totalCost},{l:`İskonto (%${project.discount||0})`,v:-(totalCost*(project.discount||0)/100)},{l:"Net",v:netCost},{l:`KDV (%${KDV*100})`,v:kdvAmt},{l:"GENEL TOPLAM",v:netCost+kdvAmt,b:true}].map((r,i)=>
