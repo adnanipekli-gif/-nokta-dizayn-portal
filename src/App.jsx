@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { loadData, saveData } from "./firebase";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 // ═══════════════════════════════════════════════════════════════
 // NOKTA DİZAYN v4.5 — MÜŞTERİ SUNUM + MİMARİ PROJE PORTALI
@@ -34,6 +35,11 @@ const EQUIPMENT={
     {id:"apple212",brand:"Ecocold",name:"Apple 212 Dondurucu",model:"APPLE-212-NT",w:212,h:90,sicaklik:"-18/-22°C",power:600,price:980,curr:"EUR",color:"#2980B9"},
     // Merkezi Soğutma
     {id:"merkezi30",brand:"Ecocold",name:"Pozitif Merkezi Soğutma 30.3kW",model:"ZBD45+2xZB45",w:120,h:100,sicaklik:"-10/+45°C",power:4590,price:9820,curr:"EUR",color:"#1A5276"},
+    // CITRUS — Duvar Dolap
+    {id:"citrus188",brand:"Ecocold",name:"Citrus 188 Duvar Dolap",model:"CITRUS-188",w:188,h:60,sicaklik:"+2/+8°C",power:380,price:1850,curr:"EUR",color:"#E67E22"},
+    {id:"citrus250",brand:"Ecocold",name:"Citrus 250 Duvar Dolap",model:"CITRUS-250",w:250,h:60,sicaklik:"+2/+8°C",power:480,price:2200,curr:"EUR",color:"#E67E22"},
+    // DONUK HAVUZ
+    {id:"donukhavuz200",brand:"Ecocold",name:"Donuk Ada Havuzu 200cm",model:"HAVUZ-200-NT",w:200,h:110,sicaklik:"-18/-22°C",power:520,price:2800,curr:"EUR",color:"#2980B9"},
   ]},
   sutluk:{label:"Sütlük",icon:"🥛",currency:"EUR",markup:0,items:[
     // MERGA — Sütlük (855mm derinlik, 2040mm yükseklik, Zemin+4 raf)
@@ -92,6 +98,10 @@ const ZONE_PRESETS=[
   {id:"dondurma",label:"Dondurma",color:"#3498DB",icon:"🍦",dW:180,dH:100,material:"Yatay cam kapaklı dondurucu, LED iç aydınlatma",mood:"Dondurma ve buzlu ürünler. Cam kapak ile ürün görünürlüğü."},
   {id:"et",label:"Et Reyonu",color:"#E74C3C",icon:"🥩",dW:350,dH:150,material:"Soğutmalı et vitrini, kasap tezgahı, paslanmaz çelik",mood:"Profesyonel kasap reyonu. Taze et teşhiri, hijyenik sunum."},
   {id:"serbest",label:"Serbest",color:"#7F8C8D",icon:"📐",dW:200,dH:200,material:"Proje ihtiyacına göre belirlenecek",mood:"Özel kullanım alanı."},
+  {id:"manavduvar",label:"Manav Duvar Reyonu",color:"#27AE60",icon:"🥦",dW:400,dH:60,material:"Paslanmaz çelik raf, LED aydınlatma, fiyat etiketlik",mood:"Taze meyve sebze duvarı. Renk ile dekor, ferah ve canlı sunum."},
+  {id:"donukhavuz",label:"Donuk Havuz Dolap",color:"#2980B9",icon:"🧊",dW:250,dH:120,material:"Yatay cam kapaklı ada tipi dondurucu, LED iç aydınlatma",mood:"Derin donmuş ürünler. Ada konumu ile kolay erişim ve görünürlük."},
+  {id:"citrus",label:"Citrus Duvar Dolap",color:"#E67E22",icon:"🍊",dW:300,dH:60,material:"Duvar montajlı soğutmalı açık raf, beyaz LED",mood:"Taze meyve suları ve soğutulmuş ürünler. Duvar boyunca uzanan ferah sunum."},
+  {id:"grabngo",label:"Grab & Go Dolabı",color:"#8E44AD",icon:"🥤",dW:60,dH:60,material:"Soğutmalı self-servis dolap, dijital etiketlik",mood:"Tek kapılı hızlı erişim dolabı. Öğle paketleri, soğuk içecek, snack."},
 ];
 
 const TEMPLATES=[
@@ -466,6 +476,17 @@ function PlanSVG({project,zones,walls,highlightId,showLabels=true,showDims,small
     <rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="none" stroke={small?"#ccd2d9":"#2a3545"} strokeWidth={small?2:3} rx={1}/>
     {/* Entrance */}
     {(()=>{const e=project.entrance||{side:"bottom",position:50,widthCm:200};const eW=cm(e.widthCm);let ex,ey,ew,eh;if(e.side==="bottom"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD+cm(H)-2;ew=eW;eh=4}else if(e.side==="top"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD-2;ew=eW;eh=4}else if(e.side==="left"){ex=PAD-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=4;eh=eW}else{ex=PAD+cm(W)-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=4;eh=eW}return<><rect x={ex} y={ey} width={ew} height={eh} fill="#edf0f5"/>{!small&&<text x={e.side==="bottom"?ex+ew/2:ex+10} y={e.side==="bottom"?ey+12:ey+eh/2} textAnchor="middle" fill="#2980B9" fontSize={small?4:6}>GİRİŞ</text>}</>})()}
+    {/* Exits */}
+    {(project.exits||[]).map(ex=>{
+      const eW=cm(ex.widthCm||200);let x=0,y=0,w2=0,h2=0;
+      if(ex.side==="bottom"){x=PAD+cm(W)*(ex.position/100)-eW/2;y=PAD+cm(H)-2;w2=eW;h2=4}
+      else if(ex.side==="top"){x=PAD+cm(W)*(ex.position/100)-eW/2;y=PAD-2;w2=eW;h2=4}
+      else if(ex.side==="left"){x=PAD-2;y=PAD+cm(H)*(ex.position/100)-eW/2;w2=4;h2=eW}
+      else{x=PAD+cm(W)-2;y=PAD+cm(H)*(ex.position/100)-eW/2;w2=4;h2=eW}
+      const isH=(ex.side==="bottom"||ex.side==="top");
+      const tx=isH?x+(w2/2):x+10;const ty=isH?y+12:y+(h2/2);
+      return<g key={ex.id}><rect x={x} y={y} width={w2} height={h2} fill="#edf0f5"/>{!small&&<text x={tx} y={ty} textAnchor="middle" fill="#E74C3C" fontSize={6}>CIKIS</text>}</g>;
+    })}
     {showDims&&<><text x={PAD+cm(W)/2} y={PAD-8} textAnchor="middle" fill="#5a7090" fontSize={6}>{W}cm ({(W/100).toFixed(1)}m)</text><text x={PAD-10} y={PAD+cm(H)/2} textAnchor="middle" fill="#5a7090" fontSize={6} transform={`rotate(-90,${PAD-10},${PAD+cm(H)/2})`}>{H}cm</text></>}
     {walls.map(w=>{const wt=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];return<line key={w.id} x1={PAD+cm(w.x1)} y1={PAD+cm(w.y1)} x2={PAD+cm(w.x2)} y2={PAD+cm(w.y2)} stroke={wt.color} strokeWidth={cm(wt.th)*(small?0.5:1)} strokeLinecap="round" strokeDasharray={w.type==="glass"?"4,3":"none"} opacity={0.6}/>})}
     {zones.map(z=>{const isHL=highlightId===z.id;const rx=PAD+cm(z.x),ry=PAD+cm(z.y),rw=cm(z.w),rh=cm(z.h);return<g key={z.id}>
@@ -475,148 +496,103 @@ function PlanSVG({project,zones,walls,highlightId,showLabels=true,showDims,small
   </svg>;
 }
 
-// ─── THREE.JS 3D (shared) ───────────────────────────────────────
-const ZONE_3D_HEIGHTS={sutluk:2.04,sarku:1.3,et:1.3,soguk:2.0,grab:2.0,raf:1.6,unlu:1.8,kasa:0.9,tezgah:0.9,sandvic:0.9,kahve:0.9,dondurma:0.9,serbest:1.2};
-function ThreeD3D({project}){
-  const mountRef=useRef(null);
-  const camRef=useRef(null);
-  const ctrlRef=useRef(null);
-  const animRef=useRef(null);
+// ─── REACT THREE FIBER 3D ──────────────────────────────────────
+const ZONE_3D_H={sutluk:2.1,soguk:2.1,grab:2.1,sarku:1.3,et:1.3,dondurma:0.9,donukhavuz:0.9,raf:1.8,unlu:1.8,manavduvar:1.8,citrus:1.8,kasa:1.0,tezgah:1.0,sandvic:1.0,kahve:1.0,grabngo:1.0,serbest:1.2};
+
+function ZoneMesh3D({z}){
+  const u=v=>v/100;
+  const zh=ZONE_3D_H[z.tid]||1.2;
+  const w=u(z.w),d=u(z.h);
+  const edgesGeo=useMemo(()=>{const g=new THREE.BoxGeometry(w,zh,d);const e=new THREE.EdgesGeometry(g);g.dispose();return e;},[w,zh,d]);
+  return(
+    <group position={[u(z.x)+w/2,zh/2,u(z.y)+d/2]}>
+      <mesh castShadow>
+        <boxGeometry args={[w,zh,d]}/>
+        <meshLambertMaterial color={z.color} transparent opacity={0.72}/>
+      </mesh>
+      <lineSegments geometry={edgesGeo}>
+        <lineBasicMaterial color={z.color} transparent opacity={0.85}/>
+      </lineSegments>
+    </group>
+  );
+}
+
+function Scene3D({project}){
   const W=project.width,H=project.height;
   const zones=project.zones||[];
   const walls=project.walls||[];
   const u=v=>v/100;
-
-  useEffect(()=>{
-    const mount=mountRef.current;
-    if(!mount)return;
-    const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
-    renderer.setSize(mount.clientWidth||700,mount.clientHeight||480);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    renderer.shadowMap.enabled=true;
-    mount.appendChild(renderer.domElement);
-
-    const scene=new THREE.Scene();
-    scene.background=new THREE.Color(0xf4f6f9);
-
-    const aspect=(mount.clientWidth||700)/(mount.clientHeight||480);
-    const camera=new THREE.PerspectiveCamera(45,aspect,0.1,500);
-    const cx=u(W)/2,cz=u(H)/2;
-    camera.position.set(cx+u(W)*0.85,Math.max(u(W),u(H))*0.65,cz+u(H)*0.85);
-    camera.lookAt(cx,0,cz);
-    camRef.current=camera;
-
-    const controls=new OrbitControls(camera,renderer.domElement);
-    controls.enableDamping=true;
-    controls.dampingFactor=0.06;
-    controls.target.set(cx,0,cz);
-    controls.update();
-    ctrlRef.current=controls;
-
-    scene.add(new THREE.AmbientLight(0xffffff,0.65));
-    const sun=new THREE.DirectionalLight(0xffffff,0.9);
-    sun.position.set(cx+8,12,cz+6);
-    sun.castShadow=true;
-    scene.add(sun);
-
-    // Checkerboard floor
-    const c2d=document.createElement("canvas");
-    c2d.width=256;c2d.height=256;
-    const ctx2d=c2d.getContext("2d");
-    const ts=32;
-    for(let i=0;i<8;i++)for(let j=0;j<8;j++){ctx2d.fillStyle=(i+j)%2===0?"#e4e9f0":"#d8dfe9";ctx2d.fillRect(i*ts,j*ts,ts,ts);}
-    const floorTex=new THREE.CanvasTexture(c2d);
-    floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping;
-    floorTex.repeat.set(Math.max(1,Math.round(u(W))),Math.max(1,Math.round(u(H))));
-    const floor=new THREE.Mesh(new THREE.PlaneGeometry(u(W),u(H)),new THREE.MeshLambertMaterial({map:floorTex}));
-    floor.rotation.x=-Math.PI/2;floor.position.set(cx,0,cz);floor.receiveShadow=true;
-    scene.add(floor);
-
-    // Room boundary walls (transparent)
-    const wallMat=new THREE.MeshLambertMaterial({color:0x8aaac0,transparent:true,opacity:0.12,side:THREE.DoubleSide});
-    const wh=3.0,wt=0.08;
-    [[cx,wh/2,0,u(W),wh,wt],[cx,wh/2,u(H),u(W),wh,wt],[0,wh/2,cz,wt,wh,u(H)],[u(W),wh/2,cz,wt,wh,u(H)]].forEach(([x,y,z,bw,bh,bd])=>{
-      scene.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(bw,bh,bd),wallMat),{position:new THREE.Vector3(x,y,z)}));
-    });
-
-    // User-drawn walls
-    walls.forEach(w=>{
-      const wt2=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];
+  const cx=u(W)/2,cz=u(H)/2;
+  const wh=3.0;
+  const gs=Math.ceil(Math.max(u(W),u(H))*1.15);
+  return<>
+    <ambientLight intensity={0.6}/>
+    <directionalLight position={[cx+8,12,cz+6]} intensity={0.9} castShadow/>
+    {/* Floor */}
+    <mesh rotation={[-Math.PI/2,0,0]} position={[cx,0,cz]} receiveShadow>
+      <planeGeometry args={[u(W),u(H)]}/>
+      <meshLambertMaterial color="#dde4ee"/>
+    </mesh>
+    {/* Grid */}
+    <gridHelper args={[gs,gs,0x9aa0a8,0xd0d5de]} position={[cx,0.008,cz]}/>
+    {/* Room boundary walls */}
+    {[[cx,wh/2,0,u(W),wh,0.06],[cx,wh/2,u(H),u(W),wh,0.06],[0,wh/2,cz,0.06,wh,u(H)],[u(W),wh/2,cz,0.06,wh,u(H)]].map(([x,y,z,bw,bh,bd],i)=>(
+      <mesh key={i} position={[x,y,z]}>
+        <boxGeometry args={[bw,bh,bd]}/>
+        <meshLambertMaterial color="#8aaac0" transparent opacity={0.1}/>
+      </mesh>
+    ))}
+    {/* User walls */}
+    {walls.map(w=>{
+      const wt=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];
       const x1=u(w.x1),z1=u(w.y1),x2=u(w.x2),z2=u(w.y2);
       const len=Math.sqrt((x2-x1)**2+(z2-z1)**2);
-      if(len<0.01)return;
+      if(len<0.01)return null;
       const ang=Math.atan2(z2-z1,x2-x1);
       const wHeight=w.type==="half"?1.5:3.0;
-      const wThick=u(wt2.th);
       const isGlass=w.type==="glass";
-      const col=parseInt(wt2.color.replace("#",""),16);
-      const mat=new THREE.MeshLambertMaterial({color:col,transparent:isGlass,opacity:isGlass?0.25:0.85,side:THREE.DoubleSide});
-      const mesh=new THREE.Mesh(new THREE.BoxGeometry(len,wHeight,wThick),mat);
-      mesh.position.set((x1+x2)/2,wHeight/2,(z1+z2)/2);
-      mesh.rotation.y=-ang;
-      scene.add(mesh);
-    });
+      return(
+        <mesh key={w.id} position={[(x1+x2)/2,wHeight/2,(z1+z2)/2]} rotation={[0,-ang,0]}>
+          <boxGeometry args={[len,wHeight,u(wt.th)]}/>
+          <meshLambertMaterial color={wt.color} transparent={isGlass} opacity={isGlass?0.25:1}/>
+        </mesh>
+      );
+    })}
+    {/* Zones */}
+    {zones.map(z=><ZoneMesh3D key={z.id} z={z}/>)}
+  </>;
+}
 
-    // Zone boxes
-    zones.forEach(z=>{
-      const zh=ZONE_3D_HEIGHTS[z.tid]||1.5;
-      const bx2=u(z.x),bz=u(z.y),bw=u(z.w),bd=u(z.h);
-      const col=parseInt(z.color.replace("#",""),16);
-      const geo=new THREE.BoxGeometry(bw,zh,bd);
-      const mat=new THREE.MeshLambertMaterial({color:col,transparent:true,opacity:0.55});
-      const mesh=new THREE.Mesh(geo,mat);
-      mesh.position.set(bx2+bw/2,zh/2,bz+bd/2);
-      mesh.castShadow=true;
-      scene.add(mesh);
-      const edges=new THREE.EdgesGeometry(geo);
-      const line=new THREE.LineSegments(edges,new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0.85}));
-      line.position.copy(mesh.position);
-      scene.add(line);
-    });
-
-    // Grid
-    const gridSize=Math.ceil(Math.max(u(W),u(H))*1.1);
-    const grid=new THREE.GridHelper(gridSize,gridSize,0x9aa0a8,0xc8cdd4);
-    grid.position.set(cx,0.005,cz);
-    scene.add(grid);
-
-    const animate=()=>{animRef.current=requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);};
-    animate();
-
-    const obs=new ResizeObserver(()=>{
-      if(!mount||!renderer.domElement.parentNode)return;
-      const w=mount.clientWidth||700,h=mount.clientHeight||480;
-      camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);
-    });
-    obs.observe(mount);
-
-    return()=>{
-      obs.disconnect();
-      cancelAnimationFrame(animRef.current);
-      controls.dispose();
-      renderer.dispose();
-      if(mount.contains(renderer.domElement))mount.removeChild(renderer.domElement);
-    };
-  },[]);
+function ThreeD3D({project}){
+  const W=project.width,H=project.height;
+  const u=v=>v/100;
+  const cx=u(W)/2,cz=u(H)/2;
+  const orbRef=useRef(null);
+  const initPos=[cx+u(W)*0.85,Math.max(u(W),u(H))*0.65,cz+u(H)*0.85];
 
   const setView=type=>{
-    const cam=camRef.current,ctrl=ctrlRef.current;
-    if(!cam||!ctrl)return;
-    const cx=u(W)/2,cz=u(H)/2;
-    if(type==="iso"){cam.position.set(cx+u(W)*0.85,Math.max(u(W),u(H))*0.65,cz+u(H)*0.85);}
-    else if(type==="top"){cam.position.set(cx,Math.max(u(W),u(H))*1.3,cz);}
-    else if(type==="front"){cam.position.set(cx,2.5,cz-Math.max(u(W),u(H))*1.0);}
-    cam.lookAt(cx,0,cz);ctrl.target.set(cx,0,cz);ctrl.update();
+    const ctrl=orbRef.current;
+    if(!ctrl||!ctrl.object)return;
+    const cam=ctrl.object;
+    if(type==="iso")cam.position.set(cx+u(W)*0.85,Math.max(u(W),u(H))*0.65,cz+u(H)*0.85);
+    else if(type==="top")cam.position.set(cx,Math.max(u(W),u(H))*1.3,cz);
+    else if(type==="front")cam.position.set(cx,2.5,cz-Math.max(u(W),u(H)));
+    ctrl.target.set(cx,0,cz);ctrl.update();
   };
 
-  return<div style={{width:"100%",position:"relative"}}>
-    <div ref={mountRef} style={{width:"100%",height:480,borderRadius:8,overflow:"hidden",background:"#f4f6f9"}}/>
-    <div style={{position:"absolute",top:10,right:10,display:"flex",gap:4}}>
-      {[{id:"iso",l:"İzometrik"},{id:"top",l:"Üstten"},{id:"front",l:"Önden"}].map(v=>
-        <button key={v.id} onClick={()=>setView(v.id)} style={{padding:"5px 11px",background:"rgba(255,255,255,0.92)",border:"1px solid #ccd2d9",borderRadius:5,color:"#1a3a5f",fontSize:12,cursor:"pointer",fontWeight:600,boxShadow:"0 1px 4px rgba(0,0,0,0.1)"}}>{v.l}</button>
-      )}
+  return(
+    <div style={{width:"100%",position:"relative"}}>
+      <Canvas camera={{position:initPos,fov:50}} style={{width:"100%",height:500,background:"#e8ecf2"}} shadows>
+        <Scene3D project={project}/>
+        <OrbitControls ref={orbRef} enableDamping dampingFactor={0.05} target={[cx,0,cz]} makeDefault/>
+      </Canvas>
+      <div style={{position:"absolute",top:10,right:10,display:"flex",gap:4}}>
+        {[{id:"iso",l:"🏠 İzometrik"},{id:"top",l:"⬆️ Üstten"},{id:"front",l:"👁️ Önden"}].map(v=>
+          <button key={v.id} onClick={()=>setView(v.id)} style={{padding:"5px 11px",background:"rgba(255,255,255,0.92)",border:"1px solid #ccd2d9",borderRadius:5,color:"#1a3a5f",fontSize:12,cursor:"pointer",fontWeight:600,boxShadow:"0 1px 4px rgba(0,0,0,0.1)"}}>{v.l}</button>
+        )}
+      </div>
     </div>
-  </div>;
+  );
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -747,7 +723,8 @@ function UserMgmt({users,projects,onSave}){
 // ═══════════════════════════════════════════════════════════════
 function Editor({project,user,onSave}){
   const[zones,setZones]=useState(project.zones||[]);const[walls,setWalls]=useState(project.walls||[]);const[elec,setElec]=useState(project.elec||[]);const[plumb,setPlumb]=useState(project.plumb||[]);
-  const[selId,setSelId]=useState(null);const[tab,setTab]=useState("zones");const[eqCat,setEqCat]=useState("sogutma");
+  const[selId,setSelId]=useState(null);const[tab,setTab]=useState(()=>localStorage.getItem("ndv5-tab")||"zones");const[eqCat,setEqCat]=useState("sogutma");
+  useEffect(()=>{localStorage.setItem("ndv5-tab",tab)},[tab]);
   const[drag,setDrag]=useState(null);const[drawMode,setDrawMode]=useState(null);const[drawType,setDrawType]=useState("solid");const[drawStart,setDrawStart]=useState(null);const[measures,setMeasures]=useState([]);
   const[layers,setLayers]=useState({zones:true,walls:true,equip:true,elec:true,plumb:true,measure:true});
   const[panel,setPanel]=useState(null);
@@ -776,7 +753,19 @@ function Editor({project,user,onSave}){
     if(drawMode==="wall"){if(!drawStart)setDrawStart({x:cx,y:cy});else{save(zones,[...walls,{id:Date.now().toString(),type:drawType,x1:drawStart.x,y1:drawStart.y,x2:cx,y2:cy}]);setDrawStart(null)}}
     else if(drawMode==="elec"){save(zones,walls,[...elec,{id:Date.now().toString(),type:drawType,x:cx,y:cy}])}
     else if(drawMode==="plumb"){save(zones,walls,elec,[...plumb,{id:Date.now().toString(),type:drawType,x:cx,y:cy}])}
-    else if(drawMode==="measure"){if(!drawStart)setDrawStart({x:cx,y:cy});else{setMeasures(m=>[...m,{x1:drawStart.x,y1:drawStart.y,x2:cx,y2:cy}]);setDrawStart(null)}}};
+    else if(drawMode==="measure"){if(!drawStart)setDrawStart({x:cx,y:cy});else{setMeasures(m=>[...m,{x1:drawStart.x,y1:drawStart.y,x2:cx,y2:cy}]);setDrawStart(null)}}
+    else if(drawMode==="entrance"||drawMode==="exit"){
+      const rx=Math.max(0,Math.min(1,(pt.x-PAD)/cm(W))),ry=Math.max(0,Math.min(1,(pt.y-PAD)/cm(H)));
+      const dT=ry,dB=1-ry,dL=rx,dR=1-rx;const minD=Math.min(dT,dB,dL,dR);
+      let side,pos;
+      if(minD===dT){side="top";pos=Math.max(5,Math.min(95,rx*100));}
+      else if(minD===dB){side="bottom";pos=Math.max(5,Math.min(95,rx*100));}
+      else if(minD===dL){side="left";pos=Math.max(5,Math.min(95,ry*100));}
+      else{side="right";pos=Math.max(5,Math.min(95,ry*100));}
+      if(drawMode==="entrance"){onSave({...project,entrance:{side,position:Math.round(pos),widthCm:200},updatedAt:Date.now()});}
+      else{onSave({...project,exits:[...(project.exits||[]),{id:Date.now().toString(),side,position:Math.round(pos),widthCm:200}],updatedAt:Date.now()});}
+      setDrawMode(null);
+    }};
 
   const getPrice=(eq,catKey)=>{if(manualPrices[eq.id]!=null)return manualPrices[eq.id];const pct=markups[catKey??eqCat]||0;return pct===0?eq.price:Math.round(eq.price*(1+pct/100)*100)/100};
   const applyMarkup=cat=>{const pct=parseFloat(markupInput[cat]);if(!isNaN(pct))setMarkups(m=>({...m,[cat]:pct}))};
@@ -822,11 +811,13 @@ function Editor({project,user,onSave}){
         </>}
         {tab==="add"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:3}}>{ZONE_PRESETS.map(t2=><button key={t2.id+Math.random()} onClick={()=>addZone(t2)} style={{padding:"6px 2px",background:"#ffffff",border:"1px solid #dce0e5",borderRadius:5,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:18}}>{t2.icon}</div><div style={{fontSize:11,color:"#5a6878",marginTop:1}}>{t2.label}</div></button>)}</div>}
         {tab==="draw"&&<div>
-          {[{id:"wall",l:"🧱 Duvar",c:"#4a5568"},{id:"elec",l:"⚡ Elektrik",c:"#F1C40F"},{id:"plumb",l:"💧 Tesisat",c:"#3498DB"},{id:"measure",l:"📏 Ölçü",c:"#E67E22"}].map(d=>
+          {[{id:"wall",l:"🧱 Duvar",c:"#4a5568"},{id:"elec",l:"⚡ Elektrik",c:"#F1C40F"},{id:"plumb",l:"💧 Tesisat",c:"#3498DB"},{id:"measure",l:"📏 Ölçü",c:"#E67E22"},{id:"entrance",l:"🚪 Giriş",c:"#2980B9"},{id:"exit",l:"🚪 Çıkış",c:"#E74C3C"}].map(d=>
             <button key={d.id} onClick={()=>{setDrawMode(drawMode===d.id?null:d.id);setDrawStart(null)}} style={{display:"block",width:"100%",padding:"5px 7px",marginBottom:2,background:drawMode===d.id?d.c+"22":"#f4f6f9",border:drawMode===d.id?`1px solid ${d.c}55`:"1px solid #dce0e5",borderRadius:4,color:drawMode===d.id?d.c:"#666",fontSize:13,cursor:"pointer",textAlign:"left"}}>{d.l}{drawMode===d.id?" ✓":""}</button>)}
           {drawMode==="wall"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{WALL_TYPES.map(wt=><MBtn key={wt.id} t={wt.label} a={drawType===wt.id} onClick={()=>setDrawType(wt.id)}/>)}</div>}
           {drawMode==="elec"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{ELEC_TYPES.map(et=><MBtn key={et.id} t={et.icon+et.label} a={drawType===et.id} onClick={()=>setDrawType(et.id)}/>)}</div>}
           {drawMode==="plumb"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{PLUMB_TYPES.map(pt=><MBtn key={pt.id} t={pt.icon+pt.label} a={drawType===pt.id} onClick={()=>setDrawType(pt.id)}/>)}</div>}
+          {(drawMode==="entrance"||drawMode==="exit")&&<div style={{marginTop:4,fontSize:12,color:drawMode==="entrance"?"#2980B9":"#E74C3C",padding:"4px 6px",background:drawMode==="entrance"?"#2980B911":"#E74C3C11",borderRadius:3}}>Plan sınırına tıklayarak kapı yerleştirin</div>}
+          {drawMode==="exit"&&(project.exits||[]).length>0&&<button onClick={()=>onSave({...project,exits:[],updatedAt:Date.now()})} style={{marginTop:3,display:"block",width:"100%",padding:"3px 6px",background:"#E74C3C11",border:"1px solid #E74C3C33",borderRadius:3,color:"#E74C3C",fontSize:11,cursor:"pointer"}}>✕ Tüm çıkışları sil ({(project.exits||[]).length})</button>}
           {drawStart&&<div style={{marginTop:4,fontSize:12,color:"#2980B9",padding:3,background:"#2980B911",borderRadius:3}}>Nokta 1: ({drawStart.x},{drawStart.y})</div>}
         </div>}
         {tab==="equip"&&<div>
@@ -900,6 +891,16 @@ function Editor({project,user,onSave}){
           <defs><pattern id="g1" width={cm(100)} height={cm(100)} patternUnits="userSpaceOnUse"><path d={`M ${cm(100)} 0 L 0 0 0 ${cm(100)}`} fill="none" stroke="#d5d9de" strokeWidth="0.3"/></pattern><filter id="gl"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
           <rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="#edf0f5"/><rect x={PAD} y={PAD} width={cm(W)} height={cm(H)} fill="none" stroke="#5a7090" strokeWidth={3} rx={1}/>
           {(()=>{const e=project.entrance||{side:"bottom",position:50,widthCm:200};const eW=cm(e.widthCm);let ex,ey,ew,eh;if(e.side==="bottom"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD+cm(H)-2;ew=eW;eh=5}else if(e.side==="top"){ex=PAD+cm(W)*(e.position/100)-eW/2;ey=PAD-2;ew=eW;eh=5}else if(e.side==="left"){ex=PAD-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=5;eh=eW}else{ex=PAD+cm(W)-2;ey=PAD+cm(H)*(e.position/100)-eW/2;ew=5;eh=eW}return<><rect x={ex} y={ey} width={ew} height={eh} fill="#edf0f5"/><text x={e.side==="bottom"?ex+ew/2:ex+10} y={e.side==="bottom"?ey+14:ey+eh/2} textAnchor="middle" fill="#2980B9" fontSize={6}>GİRİŞ</text></>})()}
+          {(project.exits||[]).map(ex=>{
+            const eW=cm(ex.widthCm||200);let x=0,y=0,w2=0,h2=0;
+            if(ex.side==="bottom"){x=PAD+cm(W)*(ex.position/100)-eW/2;y=PAD+cm(H)-2;w2=eW;h2=5}
+            else if(ex.side==="top"){x=PAD+cm(W)*(ex.position/100)-eW/2;y=PAD-2;w2=eW;h2=5}
+            else if(ex.side==="left"){x=PAD-2;y=PAD+cm(H)*(ex.position/100)-eW/2;w2=5;h2=eW}
+            else{x=PAD+cm(W)-2;y=PAD+cm(H)*(ex.position/100)-eW/2;w2=5;h2=eW}
+            const isH=(ex.side==="bottom"||ex.side==="top");
+            const tx=isH?x+(w2/2):x+10;const ty=isH?y+14:y+(h2/2);
+            return<g key={ex.id}><rect x={x} y={y} width={w2} height={h2} fill="#edf0f5"/><text x={tx} y={ty} textAnchor="middle" fill="#E74C3C" fontSize={6}>CIKIS</text></g>;
+          })}
           <text x={PAD+cm(W)/2} y={PAD-10} textAnchor="middle" fill="#5a7090" fontSize={6}>{W}cm</text>
           <text x={PAD-12} y={PAD+cm(H)/2} textAnchor="middle" fill="#5a7090" fontSize={6} transform={`rotate(-90,${PAD-12},${PAD+cm(H)/2})`}>{H}cm</text>
           {layers.walls&&walls.map(w=>{const wt=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];return<line key={w.id} x1={PAD+cm(w.x1)} y1={PAD+cm(w.y1)} x2={PAD+cm(w.x2)} y2={PAD+cm(w.y2)} stroke={wt.color} strokeWidth={cm(wt.th)} strokeLinecap="round" strokeDasharray={w.type==="glass"?"4,3":"none"} opacity={0.6}/>})}
