@@ -647,7 +647,7 @@ function Editor({project,user,onSave}){
   const applyMarkup=cat=>{const pct=parseFloat(markupInput[cat]);if(!isNaN(pct))setMarkups(m=>({...m,[cat]:pct}))};
 
   const allEq=zones.flatMap(z=>(z.equip||[]));
-  const totalCostProj=allEq.reduce((s,e)=>s+(e.priceUsed??e.price||0),0);
+  const totalCostProj=allEq.reduce((s,e)=>s+((e.priceUsed??(e.price||0))),0);
   const totalCostKatalog=allEq.reduce((s,e)=>s+(e.price||0),0);
   const totalCost=totalCostProj;
   const totalPower=allEq.reduce((s,e)=>s+(e.power||0),0);
