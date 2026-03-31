@@ -22,7 +22,7 @@ const KDV=0.20;const ELEC_KWH=4.2;
 
 const EQUIPMENT={
   currency:"EUR",
-  sogutma:{label:"Soğutma",icon:"❄️",currency:"EUR",items:[
+  sogutma:{label:"Soğutma",icon:"❄️",currency:"EUR",markup:0,items:[
     // NAVİ — Bombe Cam Kasap & Şarküteri Vitrini (Derinlik 1165mm)
     {id:"navi3750",brand:"Ecocold",name:"Navi Kasap Vitrini 375cm",model:"NAVİ-1165/3750",w:375,h:116,sicaklik:"0/+4°C",power:450,price:2350,curr:"EUR",color:"#E74C3C"},
     {id:"navi2500",brand:"Ecocold",name:"Navi Kasap Vitrini 250cm",model:"NAVİ-1165/2500",w:250,h:116,sicaklik:"0/+4°C",power:320,price:1605,curr:"EUR",color:"#E74C3C"},
@@ -33,7 +33,7 @@ const EQUIPMENT={
     // Merkezi Soğutma
     {id:"merkezi30",brand:"Ecocold",name:"Pozitif Merkezi Soğutma 30.3kW",model:"ZBD45+2xZB45",w:120,h:100,sicaklik:"-10/+45°C",power:4590,price:9820,curr:"EUR",color:"#1A5276"},
   ]},
-  sutluk:{label:"Sütlük",icon:"🥛",currency:"EUR",items:[
+  sutluk:{label:"Sütlük",icon:"🥛",currency:"EUR",markup:0,items:[
     // MERGA — Sütlük (855mm derinlik, 2040mm yükseklik, Zemin+4 raf)
     {id:"merga3750",brand:"Ecocold",name:"Merga Sütlük 375cm",model:"MERGA-855/3750",w:375,h:86,sicaklik:"+2/+8°C",power:320,price:3100,curr:"EUR",color:"#5DADE2"},
     {id:"merga2814",brand:"Ecocold",name:"Merga Sütlük 281cm",model:"MERGA-855/2814",w:281,h:86,sicaklik:"+2/+8°C",power:260,price:2670,curr:"EUR",color:"#5DADE2"},
@@ -41,7 +41,7 @@ const EQUIPMENT={
     {id:"merga1875",brand:"Ecocold",name:"Merga Sütlük 187cm",model:"MERGA-855/1875",w:187,h:86,sicaklik:"+2/+8°C",power:200,price:2000,curr:"EUR",color:"#5DADE2"},
     {id:"merga1250",brand:"Ecocold",name:"Merga Sütlük 125cm",model:"MERGA-855/1250",w:125,h:86,sicaklik:"+2/+8°C",power:160,price:1510,curr:"EUR",color:"#5DADE2"},
   ]},
-  raf:{label:"Raf",icon:"🗄️",currency:"EUR",items:[
+  raf:{label:"Raf",icon:"🗄️",currency:"EUR",markup:0,items:[
     // DUVAR ÜNİTESİ (H2200 D500)
     {id:"duvar1000",brand:"Pasifik Raf",name:"Duvar Ünitesi 100cm",model:"DW-H2200-D500-L1000",w:100,h:50,power:0,price:101,curr:"EUR",color:"#9B59B6"},
     {id:"duvar900",brand:"Pasifik Raf",name:"Duvar Ünitesi 90cm",model:"DW-H2200-D500-L900",w:90,h:50,power:0,price:94,curr:"EUR",color:"#9B59B6"},
@@ -62,16 +62,16 @@ const EQUIPMENT={
     {id:"kuruyemis1000",brand:"Pasifik Raf",name:"Kuruyemiş Standı 100cm",model:"KY-L1000",w:100,h:100,power:0,price:195,curr:"EUR",color:"#B8860B"},
     {id:"yumurta1000",brand:"Pasifik Raf",name:"Yumurta Standı 100cm",model:"YUM-L1000",w:100,h:100,power:0,price:260,curr:"EUR",color:"#F39C12"},
   ]},
-  unlu:{label:"Fırın",icon:"🥐",items:[
+  unlu:{label:"Fırın",icon:"🥐",markup:0,items:[
     {id:"unl-srf-1",brand:"Nokta Dizayn",name:"Self-Servis Ekmek Rafı 120cm",model:"ND-BRD-1200",w:120,h:50,power:0,price:12000,color:"#D4A017"},
     {id:"unl-lat-1",brand:"Nokta Dizayn",name:"Ahşap Lata Ünitesi 250cm",model:"ND-LAT-2500",w:250,h:45,power:0,price:35000,color:"#B8860B"},
     {id:"unl-vtr",brand:"Nokta Dizayn",name:"Isıtmalı Vitrin 120cm",model:"ND-HTV-1200",w:120,h:70,power:1200,price:28000,color:"#E8A317"},
   ]},
-  kahve:{label:"Kahve",icon:"☕",items:[
+  kahve:{label:"Kahve",icon:"☕",markup:0,items:[
     {id:"khv-oto-1",brand:"WMF",name:"Oto. Kahve 1500S",model:"WMF-1500S",w:40,h:60,power:2800,price:185000,color:"#8B4513"},
     {id:"khv-bar-1",brand:"Nokta Dizayn",name:"Kahve Bar Tezgahı 200cm",model:"ND-CBR-2000",w:200,h:65,power:0,price:32000,color:"#A0522D"},
   ]},
-  tezgah:{label:"Tezgah",icon:"🖥️",items:[
+  tezgah:{label:"Tezgah",icon:"🖥️",markup:0,items:[
     {id:"tzg-kas-1",brand:"Nokta Dizayn",name:"Kasa Tezgahı 150cm",model:"ND-CSH-1500",w:150,h:70,power:0,price:18000,color:"#E67E22"},
     {id:"tzg-san-1",brand:"Nokta Dizayn",name:"Sandviç Tezgahı 200cm",model:"ND-SND-2000",w:200,h:80,power:0,price:28000,color:"#27AE60"},
   ]},
@@ -616,6 +616,10 @@ function Editor({project,user,onSave}){
   const[drag,setDrag]=useState(null);const[drawMode,setDrawMode]=useState(null);const[drawType,setDrawType]=useState("solid");const[drawStart,setDrawStart]=useState(null);const[measures,setMeasures]=useState([]);
   const[layers,setLayers]=useState({zones:true,walls:true,equip:true,elec:true,plumb:true,measure:true});
   const[panel,setPanel]=useState(null);
+  const[markups,setMarkups]=useState(()=>{const m={};Object.entries(EQUIPMENT).filter(([,v])=>v.items).forEach(([k])=>{m[k]=0});return m});
+  const[markupInput,setMarkupInput]=useState(()=>{const m={};Object.entries(EQUIPMENT).filter(([,v])=>v.items).forEach(([k])=>{m[k]="0"});return m});
+  const[manualPrices,setManualPrices]=useState({});
+  const[editPriceId,setEditPriceId]=useState(null);const[editPriceVal,setEditPriceVal]=useState("");
   const svgRef=useRef(null);
   const W=project.width,H=project.height,PAD=45;
   const svgW=cm(W)+PAD*2,svgH=cm(H)+PAD*2;
@@ -639,7 +643,14 @@ function Editor({project,user,onSave}){
     else if(drawMode==="plumb"){save(zones,walls,elec,[...plumb,{id:Date.now().toString(),type:drawType,x:cx,y:cy}])}
     else if(drawMode==="measure"){if(!drawStart)setDrawStart({x:cx,y:cy});else{setMeasures(m=>[...m,{x1:drawStart.x,y1:drawStart.y,x2:cx,y2:cy}]);setDrawStart(null)}}};
 
-  const allEq=zones.flatMap(z=>(z.equip||[]));const totalCost=allEq.reduce((s,e)=>s+(e.price||0),0);const totalPower=allEq.reduce((s,e)=>s+(e.power||0),0);
+  const getPrice=(eq,catKey)=>{if(manualPrices[eq.id]!=null)return manualPrices[eq.id];const pct=markups[catKey??eqCat]||0;return pct===0?eq.price:Math.round(eq.price*(1+pct/100)*100)/100};
+  const applyMarkup=cat=>{const pct=parseFloat(markupInput[cat]);if(!isNaN(pct))setMarkups(m=>({...m,[cat]:pct}))};
+
+  const allEq=zones.flatMap(z=>(z.equip||[]));
+  const totalCostProj=allEq.reduce((s,e)=>s+(e.priceUsed??e.price||0),0);
+  const totalCostKatalog=allEq.reduce((s,e)=>s+(e.price||0),0);
+  const totalCost=totalCostProj;
+  const totalPower=allEq.reduce((s,e)=>s+(e.power||0),0);
   const totalArea=(W*H)/10000;const zoneArea=zones.reduce((s,z)=>s+(z.w*z.h)/10000,0);
   const disc=project.discount||0;const netCost=totalCost*(1-disc/100);const kdvAmt=netCost*KDV;const monthlyE=(totalPower/1000)*12*30*ELEC_KWH;
 
@@ -685,17 +696,49 @@ function Editor({project,user,onSave}){
         </div>}
         {tab==="equip"&&<div>
           {!sel&&<div style={{padding:5,background:"#2980B911",borderRadius:4,fontSize:12,color:"#2980B9",marginBottom:4}}>Önce bölge seçin</div>}
-          <div style={{display:"flex",flexWrap:"wrap",gap:2,marginBottom:4}}>{Object.entries(EQUIPMENT).filter(([k,v])=>v.items).map(([k,v])=><MBtn key={k} t={v.icon+v.label} a={eqCat===k} onClick={()=>setEqCat(k)}/>)}</div>
-          {EQUIPMENT[eqCat]?.items.map(eq=>{const sym=eq.curr==="EUR"?"€":"₺";return<div key={eq.id} style={{padding:"4px 5px",marginBottom:2,background:"#ffffff",borderRadius:4,border:"1px solid #dce0e5"}}>
-            <div style={{fontSize:13,fontWeight:600,color:"#1a2a3a"}}>{eq.name}</div>
-            <div style={{fontSize:11,color:"#5a6370"}}><span style={{color:eq.color}}>{eq.brand}</span> • {eq.model}</div>
-            {eq.sicaklik&&<div style={{fontSize:10,color:"#3498DB",marginTop:1}}>🌡️ {eq.sicaklik}</div>}
-            <div style={{fontSize:11,color:"#7a8390",display:"flex",justifyContent:"space-between",marginTop:1}}>
-              <span>{eq.power>0?eq.power+"W":"—"} • <span style={{color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:600}}>{sym}{fmt(eq.price)}</span></span>
-              {sel&&<button onClick={()=>updZone(sel.id,{equip:[...(sel.equip||[]),{...eq,uid:Date.now().toString()}]})} style={{padding:"1px 6px",background:"#2980B922",border:"1px solid #2980B944",borderRadius:2,color:"#2980B9",fontSize:11,cursor:"pointer"}}>+Ekle</button>}
+          {/* Kategori sekmeleri */}
+          <div style={{display:"flex",flexWrap:"wrap",gap:2,marginBottom:4}}>{Object.entries(EQUIPMENT).filter(([,v])=>v.items).map(([k,v])=><MBtn key={k} t={v.icon+v.label} a={eqCat===k} onClick={()=>setEqCat(k)}/>)}</div>
+          {/* Fiyat Düzenleme Paneli */}
+          <div style={{background:"#1a3a5f0d",border:"1px solid #1a3a5f22",borderRadius:6,padding:"5px 7px",marginBottom:6}}>
+            <div style={{fontSize:11,color:"#1a3a5f",fontWeight:700,letterSpacing:1,marginBottom:4}}>📊 FİYAT DÜZENLEMESİ — {EQUIPMENT[eqCat]?.label}</div>
+            <div style={{display:"flex",alignItems:"center",gap:4}}>
+              <span style={{fontSize:11,color:"#5a6878",whiteSpace:"nowrap"}}>% Fark</span>
+              <input type="number" value={markupInput[eqCat]||"0"} onChange={e=>setMarkupInput(m=>({...m,[eqCat]:e.target.value}))}
+                style={{width:56,padding:"2px 4px",background:"#ffffff",border:`1px solid ${(markups[eqCat]||0)!==0?"#E67E22":"#dce0e5"}`,borderRadius:3,color:(markups[eqCat]||0)>0?"#27AE60":(markups[eqCat]||0)<0?"#E74C3C":"#1a2a3a",fontSize:13,fontWeight:700,outline:"none",textAlign:"right"}}/>
+              <span style={{fontSize:11,color:"#7a8390"}}>%</span>
+              <button onClick={()=>applyMarkup(eqCat)} style={{padding:"2px 8px",background:"#2980B9",border:"none",borderRadius:3,color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer"}}>Uygula</button>
+              {(markups[eqCat]||0)!==0&&<button onClick={()=>{setMarkups(m=>({...m,[eqCat]:0}));setMarkupInput(m=>({...m,[eqCat]:"0"}))}} style={{padding:"2px 6px",background:"#E74C3C22",border:"1px solid #E74C3C44",borderRadius:3,color:"#E74C3C",fontSize:10,cursor:"pointer"}}>↩</button>}
             </div>
-          </div>})}
-
+            {(markups[eqCat]||0)!==0&&<div style={{fontSize:10,color:"#E67E22",marginTop:3}}>⚠ Bu kategoride %{markups[eqCat]>0?"+":""}{markups[eqCat]} fiyat farkı aktif</div>}
+          </div>
+          {/* Ürün listesi */}
+          {EQUIPMENT[eqCat]?.items.map(eq=>{
+            const sym=eq.curr==="EUR"?"€":"₺";
+            const basePrice=eq.price;
+            const currPrice=getPrice(eq,eqCat);
+            const changed=currPrice!==basePrice;
+            const isEditOpen=editPriceId===eq.id;
+            return<div key={eq.id} style={{padding:"4px 5px",marginBottom:2,background:"#ffffff",borderRadius:4,border:`1px solid ${changed?"#E67E2244":"#dce0e5"}`}}>
+              <div style={{fontSize:13,fontWeight:600,color:"#1a2a3a"}}>{eq.name}</div>
+              <div style={{fontSize:11,color:"#5a6370"}}><span style={{color:eq.color}}>{eq.brand}</span> • {eq.model}</div>
+              {eq.sicaklik&&<div style={{fontSize:10,color:"#3498DB",marginTop:1}}>🌡️ {eq.sicaklik}</div>}
+              <div style={{fontSize:11,display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:2,gap:3}}>
+                <span style={{display:"flex",alignItems:"center",gap:4}}>
+                  {eq.power>0&&<span style={{color:"#9aa0a8"}}>{eq.power}W</span>}
+                  {changed&&<span style={{color:"#9aa0a8",textDecoration:"line-through",fontSize:10}}>{sym}{fmt(basePrice)}</span>}
+                  <span style={{color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:700}}>{sym}{fmt(currPrice)}</span>
+                  <button onClick={()=>{if(isEditOpen){setEditPriceId(null)}else{setEditPriceId(eq.id);setEditPriceVal(String(manualPrices[eq.id]??currPrice))}}} style={{background:"none",border:"none",color:"#9aa0a8",cursor:"pointer",fontSize:11,padding:"0 2px",lineHeight:1}}>✏️</button>
+                  {manualPrices[eq.id]!=null&&<button onClick={()=>setManualPrices(m=>{const n={...m};delete n[eq.id];return n})} style={{background:"none",border:"none",color:"#E74C3C",cursor:"pointer",fontSize:10,padding:"0 1px",lineHeight:1}} title="Manuel fiyatı sıfırla">✕</button>}
+                </span>
+                {sel&&<button onClick={()=>updZone(sel.id,{equip:[...(sel.equip||[]),{...eq,uid:Date.now().toString(),priceUsed:currPrice}]})} style={{padding:"1px 6px",background:"#2980B922",border:"1px solid #2980B944",borderRadius:2,color:"#2980B9",fontSize:11,cursor:"pointer",whiteSpace:"nowrap"}}>+Ekle</button>}
+              </div>
+              {isEditOpen&&<div style={{display:"flex",gap:3,marginTop:3,alignItems:"center"}}>
+                <span style={{fontSize:10,color:"#5a6878"}}>Manuel fiyat:</span>
+                <input type="number" value={editPriceVal} onChange={e=>setEditPriceVal(e.target.value)} style={{flex:1,padding:"2px 4px",background:"#fff8f0",border:"1px solid #E67E22",borderRadius:3,color:"#E67E22",fontSize:12,fontWeight:700,outline:"none"}}/>
+                <button onClick={()=>{const v=parseFloat(editPriceVal);if(!isNaN(v)){setManualPrices(m=>({...m,[eq.id]:v}))}setEditPriceId(null)}} style={{padding:"2px 7px",background:"#E67E22",border:"none",borderRadius:3,color:"#fff",fontSize:11,cursor:"pointer"}}>✓</button>
+              </div>}
+            </div>;
+          })}
         </div>}
         {tab==="layers"&&<div>
           {[{k:"zones",l:"Bölgeler",c:"#2980B9"},{k:"walls",l:"Duvarlar",c:"#4a5568"},{k:"equip",l:"Ekipmanlar",c:"#27ae60"},{k:"elec",l:"Elektrik",c:"#F1C40F"},{k:"plumb",l:"Tesisat",c:"#3498DB"},{k:"measure",l:"Ölçüler",c:"#E67E22"}].map(ly=>
@@ -706,7 +749,7 @@ function Editor({project,user,onSave}){
       </div>
       <div style={{padding:5,borderTop:"1px solid #dce0e5",flexShrink:0}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#7a8390",marginBottom:3}}>
-          <span>{zoneArea.toFixed(1)}/{totalArea.toFixed(0)}m²</span><span style={{color:"#2980B9"}}>₺{fmt(totalCost)}</span><span style={{color:"#F1C40F"}}>{(totalPower/1000).toFixed(1)}kW</span>
+          <span>{zoneArea.toFixed(1)}/{totalArea.toFixed(0)}m²</span><span style={{color:"#2980B9"}}>₺{fmt(totalCostProj)}</span><span style={{color:"#F1C40F"}}>{(totalPower/1000).toFixed(1)}kW</span>
         </div>
         <div style={{display:"flex",gap:2,flexWrap:"wrap"}}>
           {[{id:"report",t:"📋Rapor"},{id:"pricing",t:"💰Teklif"},{id:"energy",t:"⚡Enerji"},{id:"status",t:"📊Durum"}].map(b=><button key={b.id} onClick={()=>setPanel(panel===b.id?null:b.id)} style={{padding:"3px 6px",background:"#eef1f5",border:"1px solid #ccd2d9",borderRadius:3,color:"#5a6878",fontSize:11,cursor:"pointer"}}>{b.t}</button>)}
@@ -716,7 +759,7 @@ function Editor({project,user,onSave}){
     </div>
 
     <div style={{flex:1,overflow:"auto",background:"#eef1f5",position:"relative"}}>
-      {panel&&<OverlayPanel type={panel} project={project} zones={zones} walls={walls} totalCost={totalCost} netCost={netCost} kdvAmt={kdvAmt} totalPower={totalPower} monthlyE={monthlyE} onClose={()=>setPanel(null)} onStatus={setStatus} onDiscount={d=>onSave({...project,discount:d})}/>}
+      {panel&&<OverlayPanel type={panel} project={project} zones={zones} walls={walls} totalCost={totalCost} totalCostKatalog={totalCostKatalog} netCost={netCost} kdvAmt={kdvAmt} totalPower={totalPower} monthlyE={monthlyE} onClose={()=>setPanel(null)} onStatus={setStatus} onDiscount={d=>onSave({...project,discount:d})}/>}
       <div style={{padding:8,display:"flex",justifyContent:"center"}}>
         <svg ref={svgRef} viewBox={`0 0 ${svgW} ${svgH}`} style={{width:"100%",maxWidth:700,display:"block",touchAction:"none",cursor:drawMode?"crosshair":"default"}} onClick={canvasClick}>
           <defs><pattern id="g1" width={cm(100)} height={cm(100)} patternUnits="userSpaceOnUse"><path d={`M ${cm(100)} 0 L 0 0 0 ${cm(100)}`} fill="none" stroke="#d5d9de" strokeWidth="0.3"/></pattern><filter id="gl"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
@@ -743,25 +786,35 @@ function Editor({project,user,onSave}){
 }
 
 // ─── OVERLAY PANELS ─────────────────────────────────────────────
-function OverlayPanel({type,project,zones,walls,totalCost,netCost,kdvAmt,totalPower,monthlyE,onClose,onStatus,onDiscount}){
+function OverlayPanel({type,project,zones,walls,totalCost,totalCostKatalog,netCost,kdvAmt,totalPower,monthlyE,onClose,onStatus,onDiscount}){
   const w={position:"absolute",inset:0,background:"rgba(240,242,245,0.96)",zIndex:10,overflowY:"auto",padding:14};
   const i={maxWidth:560,margin:"0 auto"};const bx={background:"#ffffff",borderRadius:8,padding:12,border:"1px solid #dce0e5",marginBottom:8};
   const hd=t=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><h2 style={{margin:0,fontSize:18,fontWeight:300,color:"#2980B9",letterSpacing:3}}>{t}</h2><button onClick={onClose} style={{background:"none",border:"none",color:"#5a6370",cursor:"pointer",fontSize:16}}>✕</button></div>;
+  const[useProjPrice,setUseProjPrice]=useState(true);
   const allEq=zones.flatMap(z=>(z.equip||[]).map(e=>({...e,zone:z.label})));const totalArea=(project.width*project.height)/10000;
+  const activeCost=useProjPrice?totalCost:(totalCostKatalog??totalCost);
+  const activeEqPrice=eq=>useProjPrice?(eq.priceUsed??eq.price):eq.price;
+  const activeNetCost=activeCost*(1-(project.discount||0)/100);
+  const activeKdv=activeNetCost*KDV;
 
   if(type==="report")return<div style={w}><div style={i}>{hd("PROJE RAPORU")}
     <div style={bx}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:11,color:"#7a8390",letterSpacing:2}}>NOKTA DİZAYN</div><div style={{fontSize:16,fontWeight:600,color:"#1a2a3a",marginTop:2}}>{project.name}</div>{project.customer&&<div style={{fontSize:13,color:"#2980B9"}}>Müşteri: {project.customer}</div>}</div><Logo sz={36}/></div></div>
-    {totalCost>0&&<div style={{...bx,textAlign:"center",background:"#2980B911",border:"1px solid #2980B922"}}><div style={{fontSize:12,color:"#2980B9",letterSpacing:2}}>TOPLAM (KDV DAHİL)</div><div style={{fontSize:20,fontWeight:700,color:"#2980B9",marginTop:3}}>₺{fmt(Math.round(netCost+kdvAmt))}</div></div>}
-    <div style={bx}>{zones.map(z=><div key={z.id} style={{padding:"5px 0",borderBottom:"1px solid #eef0f3"}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:14,fontWeight:600,color:"#1a2a3a"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><span style={{fontSize:12,color:"#5a6370"}}>{((z.w*z.h)/10000).toFixed(1)}m²</span></div>{(z.equip||[]).map(eq=>{const sym=eq.curr==="EUR"?"€":"₺";return<div key={eq.uid} style={{fontSize:12,color:"#5a6878",paddingLeft:10}}>• {eq.brand} {eq.name} — {sym}{fmt(eq.price)}</div>})}</div>)}</div>
+    {activeCost>0&&<div style={{...bx,textAlign:"center",background:"#2980B911",border:"1px solid #2980B922"}}><div style={{fontSize:12,color:"#2980B9",letterSpacing:2}}>TOPLAM (KDV DAHİL)</div><div style={{fontSize:20,fontWeight:700,color:"#2980B9",marginTop:3}}>₺{fmt(Math.round(activeNetCost+activeKdv))}</div></div>}
+    <div style={bx}>{zones.map(z=><div key={z.id} style={{padding:"5px 0",borderBottom:"1px solid #eef0f3"}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:14,fontWeight:600,color:"#1a2a3a"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><span style={{fontSize:12,color:"#5a6370"}}>{((z.w*z.h)/10000).toFixed(1)}m²</span></div>{(z.equip||[]).map(eq=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<div key={eq.uid} style={{fontSize:12,color:"#5a6878",paddingLeft:10}}>• {eq.brand} {eq.name} — {sym}{fmt(p)}</div>})}</div>)}</div>
   </div></div>;
 
   if(type==="pricing")return<div style={w}><div style={i}>{hd("FİYAT TEKLİFİ")}
-    <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{borderBottom:"1px solid #ccd2d9"}}><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Ürün</th><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Marka</th><th style={{textAlign:"right",padding:3,color:"#5a6878"}}>Fiyat</th></tr></thead>
-      <tbody>{allEq.map((eq,i)=>{const sym=eq.curr==="EUR"?"€":"₺";return<tr key={eq.uid||i} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:3,color:"#1a2a3a"}}>{eq.name}</td><td style={{padding:3,color:eq.color}}>{eq.brand}</td><td style={{padding:3,textAlign:"right",color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:600}}>{sym}{fmt(eq.price)}</td></tr>})}</tbody></table></div>
+    {/* Katalog / Proje toggle */}
+    <div style={{display:"flex",gap:0,marginBottom:10,borderRadius:6,overflow:"hidden",border:"1px solid #dce0e5"}}>
+      {[{v:true,l:"📁 Proje Fiyatı"},{v:false,l:"📋 Katalog Fiyatı"}].map(opt=><button key={String(opt.v)} onClick={()=>setUseProjPrice(opt.v)} style={{flex:1,padding:"7px 4px",background:useProjPrice===opt.v?"#2980B9":"#ffffff",border:"none",color:useProjPrice===opt.v?"#ffffff":"#5a6878",fontSize:12,fontWeight:useProjPrice===opt.v?700:400,cursor:"pointer"}}>{opt.l}</button>)}
+    </div>
+    {!useProjPrice&&<div style={{fontSize:11,color:"#E67E22",padding:"3px 6px",background:"#E67E2211",borderRadius:4,marginBottom:8}}>⚠ Anlık katalog fiyatları gösteriliyor — teklif kayıt edildiğinde farklılık oluşabilir</div>}
+    <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{borderBottom:"1px solid #ccd2d9"}}><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Ürün</th><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Marka</th><th style={{textAlign:"right",padding:3,color:"#5a6878"}}>{useProjPrice?"Proje":"Katalog"} Fiyatı</th></tr></thead>
+      <tbody>{allEq.map((eq,ix)=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<tr key={eq.uid||ix} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:3,color:"#1a2a3a"}}>{eq.name}</td><td style={{padding:3,color:eq.color}}>{eq.brand}</td><td style={{padding:3,textAlign:"right",color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:600}}>{sym}{fmt(p)}</td></tr>})}</tbody></table></div>
     <div style={bx}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}><span style={{fontSize:14,color:"#5a6878"}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:60,padding:"2px 5px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:3,color:"#1a2a3a",fontSize:15,textAlign:"right",outline:"none"}}/></div>
-      {[{l:"Ara Toplam",v:totalCost},{l:`İskonto (%${project.discount||0})`,v:-(totalCost*(project.discount||0)/100)},{l:"Net",v:netCost},{l:`KDV (%${KDV*100})`,v:kdvAmt},{l:"GENEL TOPLAM",v:netCost+kdvAmt,b:true}].map((r,i)=>
-        <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"3px 0",borderTop:r.b?"1px solid #2980B944":"none",fontSize:r.b?12:10,fontWeight:r.b?700:400,color:r.b?"#2980B9":"#888"}}><span>{r.l}</span><span>₺{fmt(Math.round(r.v))}</span></div>)}
+      {[{l:"Ara Toplam",v:activeCost},{l:`İskonto (%${project.discount||0})`,v:-(activeCost*(project.discount||0)/100)},{l:"Net",v:activeNetCost},{l:`KDV (%${KDV*100})`,v:activeKdv},{l:"GENEL TOPLAM",v:activeNetCost+activeKdv,b:true}].map((r,ix)=>
+        <div key={ix} style={{display:"flex",justifyContent:"space-between",padding:"3px 0",borderTop:r.b?"1px solid #2980B944":"none",fontSize:r.b?12:10,fontWeight:r.b?700:400,color:r.b?"#2980B9":"#888"}}><span>{r.l}</span><span>₺{fmt(Math.round(r.v))}</span></div>)}
     </div>
   </div></div>;
 
