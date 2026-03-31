@@ -89,3 +89,26 @@ npm run build    # dist/ klasörü
 - `firebase.js` içinde gerçek API anahtarı mevcut
 - Firestore güvenlik kuralları Firebase Console'dan yönetilmeli
 - Üretim ortamında domain kısıtlaması ekleyin
+
+## Sorun Giderme
+
+### @react-three/fiber kurulum hatası
+Eğer `npm install @react-three/fiber` hata verirse React versiyonunu kontrol et —
+`@react-three/fiber` React 18 gerektirir. `package.json`'da şu olmalı:
+
+```json
+"react": "^18.2.0",
+"react-dom": "^18.2.0"
+```
+
+Uyumlu versiyonları birlikte kur:
+
+```bash
+npm install three @react-three/fiber @react-three/drei
+```
+
+Peer dependency uyarısı çıkarsa `--legacy-peer-deps` ekle:
+
+```bash
+npm install three @react-three/fiber @react-three/drei --legacy-peer-deps
+```
