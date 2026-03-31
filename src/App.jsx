@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React,{ useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { loadData, saveData } from "./firebase";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
@@ -144,10 +144,11 @@ function Logo({sz=40}){return<div style={{width:sz,height:sz,borderRadius:sz*.18
 
 // ─── APP ────────────────────────────────────────────────────────
 export default function App(){
-  const[user,setUser]=useState(null);const[ready,setReady]=useState(false);
-  useEffect(()=>{ld("ndv45-sess").then(s=>{if(s?.email)setUser(s);setReady(true)})},[]);
-  const login=async email=>{const e=email.trim().toLowerCase();if(!e)return"e";const isA=ADMINS.includes(e);const us=await ldS("ndv45-users")||[];const f=us.find(u=>u.email===e);if(!isA&&!f)return"d";const s={email:e,role:isA?"admin":"user",name:f?.name||(isA?"Yönetici":""),at:Date.now()};setUser(s);await sv("ndv45-sess",s);return"ok"};
-  const logout=async()=>{setUser(null);await sv("ndv45-sess",null)};
+  const[user,setUser]=useState(()=>{try{const r=localStorage.getItem("ndv45-sess-local");return r?JSON.parse(r):null}catch{return null}});
+  const[ready,setReady]=useState(()=>{try{return!!localStorage.getItem("ndv45-sess-local")}catch{return false}});
+  useEffect(()=>{ld("ndv45-sess").then(s=>{if(s?.email)setUser(s);else setUser(null);setReady(true)})},[]);
+  const login=async email=>{const e=email.trim().toLowerCase();if(!e)return"e";const isA=ADMINS.includes(e);const us=await ldS("ndv45-users")||[];const f=us.find(u=>u.email===e);if(!isA&&!f)return"d";const s={email:e,role:isA?"admin":"user",name:f?.name||(isA?"Yönetici":""),at:Date.now()};setUser(s);try{localStorage.setItem("ndv45-sess-local",JSON.stringify(s))}catch{}await sv("ndv45-sess",s);return"ok"};
+  const logout=async()=>{setUser(null);try{localStorage.removeItem("ndv45-sess-local")}catch{}await sv("ndv45-sess",null)};
   if(!ready)return<div style={{minHeight:"100vh",background:"#f4f6f9",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><Logo sz={56}/><div style={{fontSize:22,fontWeight:200,color:"#2980B9",letterSpacing:8,marginTop:14}}>NOKTA DİZAYN</div><div style={{color:"#9aa0a8",fontSize:15,marginTop:8}}>v4.5 Yükleniyor...</div></div>;
   if(!user)return<LoginPage onLogin={login}/>;
   return<Portal user={user} onLogout={logout}/>;
@@ -172,7 +173,7 @@ function LoginPage({onLogin}){
 
 // ─── PORTAL ─────────────────────────────────────────────────────
 function Portal({user,onLogout}){
-  const[page,setPage]=useState("dash");const[projects,setProjects]=useState([]);const[users,setUsers]=useState([]);const[active,setActive]=useState(null);const[viewMode,setViewMode]=useState("editor");const[ready,setReady]=useState(false);
+  const[page,setPage]=useState("dash");const[projects,setProjects]=useState([]);const[users,setUsers]=useState([]);const[active,setActive]=useState(null);const[viewMode,setViewMode]=useState("editor");const[ready,setReady]=useState(false);const[autoSaveAt,setAutoSaveAt]=useState(null);
   const isA=user.role==="admin";
   useEffect(()=>{(async()=>{setProjects(await ldS("ndv45-proj")||[]);setUsers(await ldS("ndv45-users")||[]);setReady(true)})()},[]);
   const saveP=async ps=>{setProjects(ps);await svS("ndv45-proj",ps)};
@@ -195,6 +196,7 @@ function Portal({user,onLogout}){
           <NBtn onClick={()=>setViewMode("3d")} t="🏗️ 3D" a={viewMode==="3d"}/>
           <NBtn onClick={()=>setViewMode("field")} t="🔧 Saha" a={viewMode==="field"}/>
         </>}
+        {page==="edit"&&autoSaveAt&&<span style={{fontSize:12,color:"#27ae60",padding:"4px 8px",background:"#27ae6011",borderRadius:4,border:"1px solid #27ae6022"}}>💾 {new Date(autoSaveAt).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})}</span>}
         {page!=="dash"&&<NBtn onClick={goHome} t="← Ana Sayfa"/>}
         <span style={{fontSize:13,color:"#5a6370"}}>{user.email.split("@")[0]}</span>
         <span style={{fontSize:11,padding:"1px 5px",background:isA?"#2980B918":"#27ae6018",borderRadius:3,color:isA?"#2980B9":"#27ae60"}}>{isA?"Admin":"User"}</span>
@@ -209,7 +211,7 @@ function Portal({user,onLogout}){
       viewMode==="sunum"?<PresentationMode project={active} onSave={async up=>{const ps=projects.map(p=>p.id===up.id?up:p);setActive(up);await saveP(ps)}}/>:
       viewMode==="3d"?<View3D project={active}/>:
       viewMode==="field"?<FieldView project={active}/>:
-      <Editor project={active} user={user} onSave={async up=>{const ps=projects.map(p=>p.id===up.id?up:p);setActive(up);await saveP(ps)}}/>
+      <Editor project={active} user={user} onSave={async up=>{const ps=projects.map(p=>p.id===up.id?up:p);setActive(up);await saveP(ps)}} onAutoSave={ts=>setAutoSaveAt(ts)}/>
     )}
     {page==="users"&&isA&&<UserMgmt users={users} projects={projects} onSave={saveU}/>}
   </div>;
@@ -338,7 +340,7 @@ function PresentationMode({project,onSave}){
           <div style={{fontSize:14,color:"#2980B9",letterSpacing:3}}>3D KUŞ BAKIŞI</div>
           <div style={{fontSize:18,fontWeight:300,color:"#1a2a3a",marginTop:4}}>{project.name}</div>
         </div>
-        <div style={{...box,padding:8}}><ThreeD3D project={project}/></div>
+        <div style={{...box,padding:8}}><ThreeErrorBoundary><ThreeD3D project={project}/></ThreeErrorBoundary></div>
       </div>}
 
       {/* ─── MOOD BOARD / KONSEPT ─── */}
@@ -721,10 +723,16 @@ function UserMgmt({users,projects,onSave}){
 // ═══════════════════════════════════════════════════════════════
 // EDITOR (full featured)
 // ═══════════════════════════════════════════════════════════════
-function Editor({project,user,onSave}){
+function Editor({project,user,onSave,onAutoSave}){
   const[zones,setZones]=useState(project.zones||[]);const[walls,setWalls]=useState(project.walls||[]);const[elec,setElec]=useState(project.elec||[]);const[plumb,setPlumb]=useState(project.plumb||[]);
   const[selId,setSelId]=useState(null);const[tab,setTab]=useState(()=>localStorage.getItem("ndv5-tab")||"zones");const[eqCat,setEqCat]=useState("sogutma");
   useEffect(()=>{localStorage.setItem("ndv5-tab",tab)},[tab]);
+  const _saveRef=useRef(onSave);useEffect(()=>{_saveRef.current=onSave},[onSave]);
+  const _autoRef=useRef(onAutoSave);useEffect(()=>{_autoRef.current=onAutoSave},[onAutoSave]);
+  const _stRef=useRef({zones,walls,elec,plumb,project});useEffect(()=>{_stRef.current={zones,walls,elec,plumb,project}},[zones,walls,elec,plumb,project]);
+  const _firstRef=useRef(true);const _debRef=useRef(null);
+  useEffect(()=>{if(_firstRef.current){_firstRef.current=false;return;}clearTimeout(_debRef.current);_debRef.current=setTimeout(()=>{const{zones:z,walls:w,elec:e,plumb:p,project:pr}=_stRef.current;_saveRef.current({...pr,zones:z,walls:w,elec:e,plumb:p,updatedAt:Date.now()});if(_autoRef.current)_autoRef.current(Date.now())},2000);return()=>clearTimeout(_debRef.current)},[zones,walls,elec,plumb]);
+  useEffect(()=>{const iv=setInterval(()=>{const{zones:z,walls:w,elec:e,plumb:p,project:pr}=_stRef.current;_saveRef.current({...pr,zones:z,walls:w,elec:e,plumb:p,updatedAt:Date.now()});if(_autoRef.current)_autoRef.current(Date.now())},10000);return()=>clearInterval(iv)},[]);
   const[drag,setDrag]=useState(null);const[drawMode,setDrawMode]=useState(null);const[drawType,setDrawType]=useState("solid");const[drawStart,setDrawStart]=useState(null);const[measures,setMeasures]=useState([]);
   const[layers,setLayers]=useState({zones:true,walls:true,equip:true,elec:true,plumb:true,measure:true});
   const[panel,setPanel]=useState(null);
@@ -981,7 +989,15 @@ function OverlayPanel({type,project,zones,walls,totalCost,totalCostKatalog,netCo
 }
 
 // ─── 3D & FIELD VIEWS ───────────────────────────────────────────
-function View3D({project}){return<div style={{minHeight:"calc(100vh - 57px)",overflow:"auto",background:"#f4f6f9",padding:16,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><div style={{width:"100%",maxWidth:820,textAlign:"center"}}><div style={{fontSize:16,fontWeight:800,color:"#1a3a5f",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#ffffff",borderRadius:10,border:"1px solid #dce0e5",padding:12,boxShadow:"0 2px 12px rgba(0,0,0,0.07)"}}><ThreeD3D project={project}/></div></div></div>}
+class ThreeErrorBoundary extends React.Component{
+  state={hasError:false}
+  static getDerivedStateFromError(){return{hasError:true}}
+  render(){
+    if(this.state.hasError)return<div style={{padding:40,textAlign:"center",color:"#e74c3c"}}>⚠️ 3D görünüm yüklenemedi. <button onClick={()=>this.setState({hasError:false})} style={{marginLeft:8,padding:"4px 10px",background:"#e74c3c11",border:"1px solid #e74c3c44",borderRadius:4,color:"#e74c3c",cursor:"pointer"}}>Tekrar Dene</button></div>
+    return this.props.children
+  }
+}
+function View3D({project}){return<div style={{minHeight:"calc(100vh - 57px)",overflow:"auto",background:"#f4f6f9",padding:16,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><div style={{width:"100%",maxWidth:820,textAlign:"center"}}><div style={{fontSize:16,fontWeight:800,color:"#1a3a5f",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#ffffff",borderRadius:10,border:"1px solid #dce0e5",padding:12,boxShadow:"0 2px 12px rgba(0,0,0,0.07)"}}><ThreeErrorBoundary><ThreeD3D project={project}/></ThreeErrorBoundary></div></div></div>}
 
 function FieldView({project}){
   const zones=project.zones||[];
