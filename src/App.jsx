@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { loadData, saveData } from "./firebase";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 // ═══════════════════════════════════════════════════════════════
 // NOKTA DİZAYN v4.5 — MÜŞTERİ SUNUM + MİMARİ PROJE PORTALI
@@ -171,9 +173,9 @@ function Portal({user,onLogout}){
   if(!ready)return<div style={{minHeight:"100vh",background:"#f4f6f9"}}></div>;
 
   return<div style={{minHeight:"100vh",background:"#f4f6f9",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1a2a3a"}}>
-    <nav style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid #e8eaee",background:"#f8f9fb",flexWrap:"wrap",gap:4}}>
-      <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}} onClick={goHome}>
-        <Logo sz={26}/><div><div style={{fontSize:15,fontWeight:600,color:"#1a2a3a",letterSpacing:3}}>NOKTA DİZAYN</div><div style={{fontSize:10,color:"#7a8390",letterSpacing:2}}>v4.5 PRO — SUNUM + MİMARİ</div></div>
+    <nav style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 18px",borderBottom:"1px solid #e8eaee",background:"#ffffff",flexWrap:"wrap",gap:6,boxShadow:"0 2px 8px rgba(26,58,95,0.07)"}}>
+      <div style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}} onClick={goHome}>
+        <Logo sz={36}/><div><div style={{fontSize:17,fontWeight:800,color:"#1a2a3a",letterSpacing:3}}>NOKTA DİZAYN</div><div style={{fontSize:10,color:"#7a8390",letterSpacing:2}}>v4.5 PRO — SUNUM + MİMARİ</div></div>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
         {isA&&page==="dash"&&<NBtn onClick={()=>setPage("users")} t="👥 Kullanıcılar"/>}
@@ -203,8 +205,8 @@ function Portal({user,onLogout}){
   </div>;
 }
 
-function NBtn({onClick,t,a}){return<button onClick={onClick} style={{padding:"8px 14px",background:a?"#2980B922":"#dce0e5",border:a?"1px solid #2980B955":"1px solid #ccd2d9",borderRadius:4,color:a?"#2980B9":"#777",fontSize:13,cursor:"pointer"}}>{t}</button>}
-function MBtn({t,a,onClick}){return<button onClick={onClick} style={{padding:"6px 12px",background:a?"#2980B918":"#f4f6f9",border:a?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:3,color:a?"#2980B9":"#555",fontSize:12,cursor:"pointer"}}>{t}</button>}
+function NBtn({onClick,t,a}){return<button onClick={onClick} style={{padding:"9px 16px",background:a?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#ffffff",border:a?"1px solid #2980B955":"1px solid #ccd2d9",borderRadius:6,color:a?"#ffffff":"#5a6370",fontSize:13,cursor:"pointer",fontWeight:a?700:400,boxShadow:"0 1px 4px rgba(0,0,0,0.09)",whiteSpace:"nowrap"}}>{t}</button>}
+function MBtn({t,a,onClick}){return<button onClick={onClick} style={{padding:"5px 12px",background:a?"#2980B918":"#f4f6f9",border:a?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:4,color:a?"#2980B9":"#555",fontSize:12,cursor:"pointer",fontWeight:a?600:400}}>{t}</button>}
 
 // ═══════════════════════════════════════════════════════════════
 // MÜŞTERİ SUNUM MODU — Fiyat bilgisi YOK, sadece görsel/konsept
@@ -326,7 +328,7 @@ function PresentationMode({project,onSave}){
           <div style={{fontSize:14,color:"#2980B9",letterSpacing:3}}>3D KUŞ BAKIŞI</div>
           <div style={{fontSize:18,fontWeight:300,color:"#1a2a3a",marginTop:4}}>{project.name}</div>
         </div>
-        <div style={box}><Iso3D project={project}/></div>
+        <div style={{...box,padding:8}}><ThreeD3D project={project}/></div>
       </div>}
 
       {/* ─── MOOD BOARD / KONSEPT ─── */}
@@ -473,24 +475,148 @@ function PlanSVG({project,zones,walls,highlightId,showLabels=true,showDims,small
   </svg>;
 }
 
-// ─── ISO 3D (shared) ────────────────────────────────────────────
-function Iso3D({project}){
-  const zones=project.zones||[];const walls=project.walls||[];
+// ─── THREE.JS 3D (shared) ───────────────────────────────────────
+const ZONE_3D_HEIGHTS={sutluk:2.04,sarku:1.3,et:1.3,soguk:2.0,grab:2.0,raf:1.6,unlu:1.8,kasa:0.9,tezgah:0.9,sandvic:0.9,kahve:0.9,dondurma:0.9,serbest:1.2};
+function ThreeD3D({project}){
+  const mountRef=useRef(null);
+  const camRef=useRef(null);
+  const ctrlRef=useRef(null);
+  const animRef=useRef(null);
   const W=project.width,H=project.height;
-  const iX=(x,y)=>((x-y)*0.7)+300;const iY=(x,y,z=0)=>((x+y)*0.35)-z+250;
-  return<svg width="100%" viewBox="0 0 600 400" style={{display:"block",maxWidth:600,margin:"0 auto",background:"#f8f9fb",borderRadius:8}}>
-    <rect x={0} y={0} width={600} height={400} fill="#f8f9fb"/>
-    <polygon points={`${iX(0,0)},${iY(0,0)} ${iX(W/20,0)},${iY(W/20,0)} ${iX(W/20,H/20)},${iY(W/20,H/20)} ${iX(0,H/20)},${iY(0,H/20)}`} fill="#e8edf5" stroke="#5a7090" strokeWidth={1}/>
-    {Array.from({length:Math.floor(W/200)+1}).map((_,i)=><line key={`gv${i}`} x1={iX(i*10,0)} y1={iY(i*10,0)} x2={iX(i*10,H/20)} y2={iY(i*10,H/20)} stroke="#c8cdd2" strokeWidth={0.3}/>)}
-    {Array.from({length:Math.floor(H/200)+1}).map((_,i)=><line key={`gh${i}`} x1={iX(0,i*10)} y1={iY(0,i*10)} x2={iX(W/20,i*10)} y2={iY(W/20,i*10)} stroke="#c8cdd2" strokeWidth={0.3}/>)}
-    {walls.map((w,i)=>{const x1=w.x1/20,y1=w.y1/20,x2=w.x2/20,y2=w.y2/20;const wt=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];return<polygon key={i} points={`${iX(x1,y1)},${iY(x1,y1)} ${iX(x2,y2)},${iY(x2,y2)} ${iX(x2,y2)},${iY(x2,y2,15)} ${iX(x1,y1)},${iY(x1,y1,15)}`} fill={wt.color+"44"} stroke={wt.color} strokeWidth={0.5}/>})}
-    {zones.map(z=>{const x=z.x/20,y=z.y/20,w=z.w/20,h=z.h/20,zh=6;return<g key={z.id}>
-      <polygon points={`${iX(x,y)},${iY(x,y,zh)} ${iX(x+w,y)},${iY(x+w,y,zh)} ${iX(x+w,y+h)},${iY(x+w,y+h,zh)} ${iX(x,y+h)},${iY(x,y+h,zh)}`} fill={z.color+"33"} stroke={z.color+"88"} strokeWidth={0.7}/>
-      <polygon points={`${iX(x,y+h)},${iY(x,y+h,zh)} ${iX(x+w,y+h)},${iY(x+w,y+h,zh)} ${iX(x+w,y+h)},${iY(x+w,y+h)} ${iX(x,y+h)},${iY(x,y+h)}`} fill={z.color+"22"} stroke={z.color+"55"} strokeWidth={0.5}/>
-      <polygon points={`${iX(x+w,y)},${iY(x+w,y,zh)} ${iX(x+w,y+h)},${iY(x+w,y+h,zh)} ${iX(x+w,y+h)},${iY(x+w,y+h)} ${iX(x+w,y)},${iY(x+w,y)}`} fill={z.color+"18"} stroke={z.color+"44"} strokeWidth={0.5}/>
-      <text x={iX(x+w/2,y+h/2)} y={iY(x+w/2,y+h/2,zh+2)} textAnchor="middle" fill={z.color} fontSize={6} fontWeight="bold">{z.icon}{z.label}</text>
-    </g>})}
-  </svg>;
+  const zones=project.zones||[];
+  const walls=project.walls||[];
+  const u=v=>v/100;
+
+  useEffect(()=>{
+    const mount=mountRef.current;
+    if(!mount)return;
+    const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+    renderer.setSize(mount.clientWidth||700,mount.clientHeight||480);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    renderer.shadowMap.enabled=true;
+    mount.appendChild(renderer.domElement);
+
+    const scene=new THREE.Scene();
+    scene.background=new THREE.Color(0xf4f6f9);
+
+    const aspect=(mount.clientWidth||700)/(mount.clientHeight||480);
+    const camera=new THREE.PerspectiveCamera(45,aspect,0.1,500);
+    const cx=u(W)/2,cz=u(H)/2;
+    camera.position.set(cx+u(W)*0.85,Math.max(u(W),u(H))*0.65,cz+u(H)*0.85);
+    camera.lookAt(cx,0,cz);
+    camRef.current=camera;
+
+    const controls=new OrbitControls(camera,renderer.domElement);
+    controls.enableDamping=true;
+    controls.dampingFactor=0.06;
+    controls.target.set(cx,0,cz);
+    controls.update();
+    ctrlRef.current=controls;
+
+    scene.add(new THREE.AmbientLight(0xffffff,0.65));
+    const sun=new THREE.DirectionalLight(0xffffff,0.9);
+    sun.position.set(cx+8,12,cz+6);
+    sun.castShadow=true;
+    scene.add(sun);
+
+    // Checkerboard floor
+    const c2d=document.createElement("canvas");
+    c2d.width=256;c2d.height=256;
+    const ctx2d=c2d.getContext("2d");
+    const ts=32;
+    for(let i=0;i<8;i++)for(let j=0;j<8;j++){ctx2d.fillStyle=(i+j)%2===0?"#e4e9f0":"#d8dfe9";ctx2d.fillRect(i*ts,j*ts,ts,ts);}
+    const floorTex=new THREE.CanvasTexture(c2d);
+    floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping;
+    floorTex.repeat.set(Math.max(1,Math.round(u(W))),Math.max(1,Math.round(u(H))));
+    const floor=new THREE.Mesh(new THREE.PlaneGeometry(u(W),u(H)),new THREE.MeshLambertMaterial({map:floorTex}));
+    floor.rotation.x=-Math.PI/2;floor.position.set(cx,0,cz);floor.receiveShadow=true;
+    scene.add(floor);
+
+    // Room boundary walls (transparent)
+    const wallMat=new THREE.MeshLambertMaterial({color:0x8aaac0,transparent:true,opacity:0.12,side:THREE.DoubleSide});
+    const wh=3.0,wt=0.08;
+    [[cx,wh/2,0,u(W),wh,wt],[cx,wh/2,u(H),u(W),wh,wt],[0,wh/2,cz,wt,wh,u(H)],[u(W),wh/2,cz,wt,wh,u(H)]].forEach(([x,y,z,bw,bh,bd])=>{
+      scene.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(bw,bh,bd),wallMat),{position:new THREE.Vector3(x,y,z)}));
+    });
+
+    // User-drawn walls
+    walls.forEach(w=>{
+      const wt2=WALL_TYPES.find(t=>t.id===w.type)||WALL_TYPES[0];
+      const x1=u(w.x1),z1=u(w.y1),x2=u(w.x2),z2=u(w.y2);
+      const len=Math.sqrt((x2-x1)**2+(z2-z1)**2);
+      if(len<0.01)return;
+      const ang=Math.atan2(z2-z1,x2-x1);
+      const wHeight=w.type==="half"?1.5:3.0;
+      const wThick=u(wt2.th);
+      const isGlass=w.type==="glass";
+      const col=parseInt(wt2.color.replace("#",""),16);
+      const mat=new THREE.MeshLambertMaterial({color:col,transparent:isGlass,opacity:isGlass?0.25:0.85,side:THREE.DoubleSide});
+      const mesh=new THREE.Mesh(new THREE.BoxGeometry(len,wHeight,wThick),mat);
+      mesh.position.set((x1+x2)/2,wHeight/2,(z1+z2)/2);
+      mesh.rotation.y=-ang;
+      scene.add(mesh);
+    });
+
+    // Zone boxes
+    zones.forEach(z=>{
+      const zh=ZONE_3D_HEIGHTS[z.tid]||1.5;
+      const bx2=u(z.x),bz=u(z.y),bw=u(z.w),bd=u(z.h);
+      const col=parseInt(z.color.replace("#",""),16);
+      const geo=new THREE.BoxGeometry(bw,zh,bd);
+      const mat=new THREE.MeshLambertMaterial({color:col,transparent:true,opacity:0.55});
+      const mesh=new THREE.Mesh(geo,mat);
+      mesh.position.set(bx2+bw/2,zh/2,bz+bd/2);
+      mesh.castShadow=true;
+      scene.add(mesh);
+      const edges=new THREE.EdgesGeometry(geo);
+      const line=new THREE.LineSegments(edges,new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0.85}));
+      line.position.copy(mesh.position);
+      scene.add(line);
+    });
+
+    // Grid
+    const gridSize=Math.ceil(Math.max(u(W),u(H))*1.1);
+    const grid=new THREE.GridHelper(gridSize,gridSize,0x9aa0a8,0xc8cdd4);
+    grid.position.set(cx,0.005,cz);
+    scene.add(grid);
+
+    const animate=()=>{animRef.current=requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);};
+    animate();
+
+    const obs=new ResizeObserver(()=>{
+      if(!mount||!renderer.domElement.parentNode)return;
+      const w=mount.clientWidth||700,h=mount.clientHeight||480;
+      camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);
+    });
+    obs.observe(mount);
+
+    return()=>{
+      obs.disconnect();
+      cancelAnimationFrame(animRef.current);
+      controls.dispose();
+      renderer.dispose();
+      if(mount.contains(renderer.domElement))mount.removeChild(renderer.domElement);
+    };
+  },[]);
+
+  const setView=type=>{
+    const cam=camRef.current,ctrl=ctrlRef.current;
+    if(!cam||!ctrl)return;
+    const cx=u(W)/2,cz=u(H)/2;
+    if(type==="iso"){cam.position.set(cx+u(W)*0.85,Math.max(u(W),u(H))*0.65,cz+u(H)*0.85);}
+    else if(type==="top"){cam.position.set(cx,Math.max(u(W),u(H))*1.3,cz);}
+    else if(type==="front"){cam.position.set(cx,2.5,cz-Math.max(u(W),u(H))*1.0);}
+    cam.lookAt(cx,0,cz);ctrl.target.set(cx,0,cz);ctrl.update();
+  };
+
+  return<div style={{width:"100%",position:"relative"}}>
+    <div ref={mountRef} style={{width:"100%",height:480,borderRadius:8,overflow:"hidden",background:"#f4f6f9"}}/>
+    <div style={{position:"absolute",top:10,right:10,display:"flex",gap:4}}>
+      {[{id:"iso",l:"İzometrik"},{id:"top",l:"Üstten"},{id:"front",l:"Önden"}].map(v=>
+        <button key={v.id} onClick={()=>setView(v.id)} style={{padding:"5px 11px",background:"rgba(255,255,255,0.92)",border:"1px solid #ccd2d9",borderRadius:5,color:"#1a3a5f",fontSize:12,cursor:"pointer",fontWeight:600,boxShadow:"0 1px 4px rgba(0,0,0,0.1)"}}>{v.l}</button>
+      )}
+    </div>
+  </div>;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -527,22 +653,31 @@ function Dash({projects,all,isA,user,onOpen,onNew,onTpl,onDel}){
     </div>}
 
     {shown.length===0?<div style={{textAlign:"center",padding:"40px",border:"2px dashed #ccd2d9",borderRadius:14}}><div style={{fontSize:36,marginBottom:8}}>📐</div><div style={{fontSize:17,color:"#7a8390"}}>Proje bulunamadı</div></div>
-    :<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}}>
-      {shown.map(p=>{const st=STATUS_FLOW.find(s=>s.id===p.status)||STATUS_FLOW[0];return<div key={p.id} style={{background:"#ffffff",border:"1px solid #dce0e5",borderRadius:9,padding:12,cursor:"pointer",position:"relative"}} onClick={()=>onOpen(p)}>
-        <div style={{position:"absolute",top:7,right:7,display:"flex",gap:3}}>
-          <span style={{fontSize:11,padding:"2px 5px",background:st.color+"18",borderRadius:3,color:st.color}}>{st.icon}{st.label}</span>
-          {p.approvedAt&&<span style={{fontSize:11,padding:"2px 5px",background:"#27AE6018",borderRadius:3,color:"#27AE60"}}>✅</span>}
-          <button onClick={e=>{e.stopPropagation();setCfm(p.id)}} style={{background:"none",border:"none",color:"#9aa0a8",cursor:"pointer",fontSize:14}}>✕</button>
-        </div>
-        {cfm===p.id&&<div onClick={e=>e.stopPropagation()} style={{position:"absolute",inset:0,background:"rgba(255,255,255,0.95)",borderRadius:9,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,zIndex:5}}>
-          <div style={{fontSize:13,color:"#e74c3c"}}>Silmek istediğinize emin misiniz?</div>
-          <div style={{display:"flex",gap:4}}><button onClick={()=>{onDel(p.id);setCfm(null)}} style={{padding:"4px 12px",background:"#e74c3c",border:"none",borderRadius:4,color:"#fff",fontSize:13,cursor:"pointer"}}>Sil</button><button onClick={()=>setCfm(null)} style={{padding:"4px 12px",background:"#eef1f5",border:"none",borderRadius:4,color:"#5a6878",fontSize:13,cursor:"pointer"}}>İptal</button></div>
-        </div>}
-        <div style={{fontSize:15,fontWeight:600,color:"#1a2a3a",marginBottom:3,paddingRight:80}}>{p.name}</div>
-        {p.customer&&<div style={{fontSize:12,color:"#2980B9",marginBottom:3}}>👤 {p.customer}</div>}
-        <div style={{display:"flex",gap:6,fontSize:12,color:"#7a8390",flexWrap:"wrap"}}>
-          <span>{PROJ_TYPES.find(t=>t.id===p.type)?.i} {p.width/100}×{p.height/100}m</span>
-          <span>{(p.zones||[]).length} bölge</span>
+    :<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:10}}>
+      {shown.map(p=>{const st=STATUS_FLOW.find(s=>s.id===p.status)||STATUS_FLOW[0];const pt=PROJ_TYPES.find(t=>t.id===p.type);return<div key={p.id} style={{background:"#ffffff",border:"1px solid #dce0e5",borderRadius:10,overflow:"hidden",cursor:"pointer",position:"relative",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",transition:"box-shadow 0.2s"}} onClick={()=>onOpen(p)}>
+        {/* Status color band */}
+        <div style={{height:5,background:`linear-gradient(90deg,${st.color},${st.color}88)`}}/>
+        <div style={{padding:"12px 14px"}}>
+          <div style={{position:"absolute",top:14,right:10,display:"flex",gap:3,alignItems:"center"}}>
+            {p.approvedAt&&<span style={{fontSize:11,padding:"2px 5px",background:"#27AE6018",borderRadius:3,color:"#27AE60"}}>✅</span>}
+            <button onClick={e=>{e.stopPropagation();setCfm(p.id)}} style={{background:"none",border:"none",color:"#c0c5cc",cursor:"pointer",fontSize:15,lineHeight:1}}>✕</button>
+          </div>
+          {cfm===p.id&&<div onClick={e=>e.stopPropagation()} style={{position:"absolute",inset:0,background:"rgba(255,255,255,0.97)",borderRadius:10,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,zIndex:5}}>
+            <div style={{fontSize:13,color:"#e74c3c"}}>Silmek istediğinize emin misiniz?</div>
+            <div style={{display:"flex",gap:4}}><button onClick={()=>{onDel(p.id);setCfm(null)}} style={{padding:"5px 14px",background:"#e74c3c",border:"none",borderRadius:5,color:"#fff",fontSize:13,cursor:"pointer",fontWeight:700}}>Sil</button><button onClick={()=>setCfm(null)} style={{padding:"5px 14px",background:"#eef1f5",border:"none",borderRadius:5,color:"#5a6878",fontSize:13,cursor:"pointer"}}>İptal</button></div>
+          </div>}
+          <div style={{display:"flex",alignItems:"flex-start",gap:8,marginBottom:6,paddingRight:30}}>
+            <span style={{fontSize:26,lineHeight:1,marginTop:1}}>{pt?.i}</span>
+            <div>
+              <div style={{fontSize:16,fontWeight:800,color:"#1a2a3a",lineHeight:1.2}}>{p.name}</div>
+              {p.customer&&<div style={{fontSize:12,color:"#2980B9",marginTop:2}}>👤 {p.customer}</div>}
+            </div>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+            <span style={{fontSize:11,padding:"2px 7px",background:st.color+"15",borderRadius:10,color:st.color,fontWeight:600}}>{st.icon} {st.label}</span>
+            <span style={{fontSize:12,color:"#7a8390"}}>{p.width/100}×{p.height/100}m</span>
+            <span style={{fontSize:12,color:"#7a8390"}}>{(p.zones||[]).length} bölge</span>
+          </div>
         </div>
       </div>})}
     </div>}
@@ -657,8 +792,8 @@ function Editor({project,user,onSave}){
   const setStatus=st=>onSave({...project,status:st,updatedAt:Date.now()});
   const saveVer=()=>onSave({...project,versions:[...(project.versions||[]),{id:Date.now(),date:Date.now(),zones:JSON.parse(JSON.stringify(zones)),walls:JSON.parse(JSON.stringify(walls))}],updatedAt:Date.now()});
 
-  return<div style={{display:"flex",height:"calc(100vh - 49px)",overflow:"hidden"}}>
-    <div style={{width:340,minWidth:280,background:"#f5f7fa",borderRight:"1px solid #dce0e5",display:"flex",flexDirection:"column"}}>
+  return<div style={{display:"flex",height:"calc(100vh - 57px)",overflow:"hidden"}}>
+    <div style={{width:320,minWidth:320,background:"#f5f7fa",borderRight:"1px solid #dce0e5",display:"flex",flexDirection:"column"}}>
       <div style={{display:"flex",borderBottom:"1px solid #e8eaee",flexShrink:0,flexWrap:"wrap"}}>
         {[{id:"zones",l:"Bölge"},{id:"add",l:"+Ekle"},{id:"draw",l:"Çizim"},{id:"equip",l:"Ekipman"},{id:"layers",l:"Katman"}].map(t2=>
           <button key={t2.id} onClick={()=>setTab(t2.id)} style={{flex:1,padding:"10px 4px",background:"none",border:"none",borderBottom:tab===t2.id?"2px solid #2980B9":"2px solid transparent",color:tab===t2.id?"#2980B9":"#555",fontSize:12,cursor:"pointer",minWidth:36}}>{t2.l}</button>)}
@@ -809,12 +944,15 @@ function OverlayPanel({type,project,zones,walls,totalCost,totalCostKatalog,netCo
       {[{v:true,l:"📁 Proje Fiyatı"},{v:false,l:"📋 Katalog Fiyatı"}].map(opt=><button key={String(opt.v)} onClick={()=>setUseProjPrice(opt.v)} style={{flex:1,padding:"7px 4px",background:useProjPrice===opt.v?"#2980B9":"#ffffff",border:"none",color:useProjPrice===opt.v?"#ffffff":"#5a6878",fontSize:12,fontWeight:useProjPrice===opt.v?700:400,cursor:"pointer"}}>{opt.l}</button>)}
     </div>
     {!useProjPrice&&<div style={{fontSize:11,color:"#E67E22",padding:"3px 6px",background:"#E67E2211",borderRadius:4,marginBottom:8}}>⚠ Anlık katalog fiyatları gösteriliyor — teklif kayıt edildiğinde farklılık oluşabilir</div>}
-    <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{borderBottom:"1px solid #ccd2d9"}}><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Ürün</th><th style={{textAlign:"left",padding:3,color:"#5a6878"}}>Marka</th><th style={{textAlign:"right",padding:3,color:"#5a6878"}}>{useProjPrice?"Proje":"Katalog"} Fiyatı</th></tr></thead>
-      <tbody>{allEq.map((eq,ix)=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<tr key={eq.uid||ix} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:3,color:"#1a2a3a"}}>{eq.name}</td><td style={{padding:3,color:eq.color}}>{eq.brand}</td><td style={{padding:3,textAlign:"right",color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:600}}>{sym}{fmt(p)}</td></tr>})}</tbody></table></div>
+    <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{background:"#f4f6f9",borderBottom:"2px solid #dce0e5"}}><th style={{textAlign:"left",padding:"6px 8px",color:"#5a6878",fontWeight:600}}>Ürün</th><th style={{textAlign:"left",padding:"6px 8px",color:"#5a6878",fontWeight:600}}>Bölge</th><th style={{textAlign:"right",padding:"6px 8px",color:"#5a6878",fontWeight:600}}>{useProjPrice?"Proje":"Katalog"} Fiyatı</th></tr></thead>
+      <tbody>{allEq.map((eq,ix)=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<tr key={eq.uid||ix} style={{borderBottom:"1px solid #eef0f3",background:ix%2===0?"#ffffff":"#fafbfc"}}><td style={{padding:"5px 8px",color:"#1a2a3a",fontSize:13}}>{eq.name}</td><td style={{padding:"5px 8px",color:"#7a8390",fontSize:12}}>{eq.zone}</td><td style={{padding:"5px 8px",textAlign:"right",color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:700,fontSize:13}}>{sym}{fmt(p)}</td></tr>})}</tbody></table></div>
     <div style={bx}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}><span style={{fontSize:14,color:"#5a6878"}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:60,padding:"2px 5px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:3,color:"#1a2a3a",fontSize:15,textAlign:"right",outline:"none"}}/></div>
-      {[{l:"Ara Toplam",v:activeCost},{l:`İskonto (%${project.discount||0})`,v:-(activeCost*(project.discount||0)/100)},{l:"Net",v:activeNetCost},{l:`KDV (%${KDV*100})`,v:activeKdv},{l:"GENEL TOPLAM",v:activeNetCost+activeKdv,b:true}].map((r,ix)=>
-        <div key={ix} style={{display:"flex",justifyContent:"space-between",padding:"3px 0",borderTop:r.b?"1px solid #2980B944":"none",fontSize:r.b?12:10,fontWeight:r.b?700:400,color:r.b?"#2980B9":"#888"}}><span>{r.l}</span><span>₺{fmt(Math.round(r.v))}</span></div>)}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8,paddingBottom:8,borderBottom:"1px solid #eef0f3"}}><span style={{fontSize:14,color:"#5a6878",fontWeight:600}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:70,padding:"4px 8px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:5,color:"#1a2a3a",fontSize:15,textAlign:"right",outline:"none"}}/></div>
+      {[{l:"Ara Toplam",v:activeCost,b:false},{l:`İskonto (%${project.discount||0})`,v:-(activeCost*(project.discount||0)/100),neg:true},{l:"Net Tutar",v:activeNetCost},{l:`KDV (%${KDV*100})`,v:activeKdv},{l:"GENEL TOPLAM",v:activeNetCost+activeKdv,b:true}].map((r,ix)=>
+        <div key={ix} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:r.b?"10px 12px":"5px 4px",marginBottom:r.b?0:0,background:r.b?"linear-gradient(135deg,#2980B9,#1a3a5f)":ix%2===0?"transparent":"#f8f9fb",borderRadius:r.b?8:0,borderTop:r.b?"none":"none",marginTop:r.b?6:0}}>
+          <span style={{fontSize:r.b?14:13,fontWeight:r.b?700:400,color:r.b?"#ffffff":r.neg?"#E74C3C":"#5a6878"}}>{r.l}</span>
+          <span style={{fontSize:r.b?16:13,fontWeight:r.b?800:600,color:r.b?"#ffffff":r.neg?"#E74C3C":"#1a2a3a"}}>₺{fmt(Math.round(r.v))}</span>
+        </div>)}
     </div>
   </div></div>;
 
@@ -842,7 +980,7 @@ function OverlayPanel({type,project,zones,walls,totalCost,totalCostKatalog,netCo
 }
 
 // ─── 3D & FIELD VIEWS ───────────────────────────────────────────
-function View3D({project}){return<div style={{minHeight:"calc(100vh - 49px)",overflow:"auto",background:"#f4f6f9",padding:16,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><div style={{width:"100%",maxWidth:700,textAlign:"center"}}><div style={{fontSize:16,color:"#2980B9",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#ffffff",borderRadius:10,border:"1px solid #dce0e5",padding:12}}><Iso3D project={project}/></div></div></div>}
+function View3D({project}){return<div style={{minHeight:"calc(100vh - 57px)",overflow:"auto",background:"#f4f6f9",padding:16,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><div style={{width:"100%",maxWidth:820,textAlign:"center"}}><div style={{fontSize:16,fontWeight:800,color:"#1a3a5f",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#ffffff",borderRadius:10,border:"1px solid #dce0e5",padding:12,boxShadow:"0 2px 12px rgba(0,0,0,0.07)"}}><ThreeD3D project={project}/></div></div></div>}
 
 function FieldView({project}){
   const zones=project.zones||[];
