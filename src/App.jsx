@@ -1,5 +1,7 @@
 import React,{ useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { loadData, saveData } from "./firebase";
+import { onAuthStateChange, signOut as supabaseSignOut, supabase } from "./lib/auth";
+import Login from "./components/Login";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
@@ -144,13 +146,49 @@ function Logo({sz=40}){return<div style={{width:sz,height:sz,borderRadius:sz*.18
 
 // ─── APP ────────────────────────────────────────────────────────
 export default function App(){
-  const[user,setUser]=useState(()=>{try{const r=localStorage.getItem("ndv45-sess-local");return r?JSON.parse(r):null}catch{return null}});
-  const[ready,setReady]=useState(()=>{try{return!!localStorage.getItem("ndv45-sess-local")}catch{return false}});
-  useEffect(()=>{ld("ndv45-sess").then(s=>{if(s?.email)setUser(s);else setUser(null);setReady(true)})},[]);
-  const login=async email=>{const e=email.trim().toLowerCase();if(!e)return"e";const isA=ADMINS.includes(e);const us=await ldS("ndv45-users")||[];const f=us.find(u=>u.email===e);if(!isA&&!f)return"d";const s={email:e,role:isA?"admin":"user",name:f?.name||(isA?"Yönetici":""),at:Date.now()};setUser(s);try{localStorage.setItem("ndv45-sess-local",JSON.stringify(s))}catch{}await sv("ndv45-sess",s);return"ok"};
-  const logout=async()=>{setUser(null);try{localStorage.removeItem("ndv45-sess-local")}catch{}await sv("ndv45-sess",null)};
+  const[user,setUser]=useState(null);
+  const[ready,setReady]=useState(false);
+
+  // Supabase auth state listener
+  useEffect(()=>{
+    // İlk kontrol
+    if(supabase){
+      supabase.auth.getSession().then(({data:{session}})=>{
+        if(session?.user){
+          const e=session.user.email?.toLowerCase()||"";
+          const isA=ADMINS.includes(e);
+          setUser({email:e,role:isA?"admin":"user",name:e.split("@")[0],at:Date.now()});
+        }
+        setReady(true);
+      });
+      // Dinle
+      const unsub=onAuthStateChange((authUser)=>{
+        if(authUser){
+          const e=authUser.email?.toLowerCase()||"";
+          const isA=ADMINS.includes(e);
+          setUser({email:e,role:isA?"admin":"user",name:e.split("@")[0],at:Date.now()});
+        } else {
+          setUser(null);
+        }
+      });
+      return unsub;
+    } else {
+      // Supabase yoksa eski localStorage fallback
+      try{const r=localStorage.getItem("ndv45-sess-local");if(r)setUser(JSON.parse(r))}catch{}
+      setReady(true);
+    }
+  },[]);
+
+  const handleLogin=(session)=>{
+    const e=session.user.email?.toLowerCase()||"";
+    const isA=ADMINS.includes(e);
+    setUser({email:e,role:isA?"admin":"user",name:e.split("@")[0],at:Date.now()});
+  };
+
+  const logout=async()=>{setUser(null);try{localStorage.removeItem("ndv45-sess-local")}catch{};if(supabase)await supabaseSignOut()};
+
   if(!ready)return<div style={{minHeight:"100vh",background:"#f4f6f9",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><Logo sz={56}/><div style={{fontSize:22,fontWeight:200,color:"#2980B9",letterSpacing:8,marginTop:14}}>NOKTA DİZAYN</div><div style={{color:"#9aa0a8",fontSize:15,marginTop:8}}>v4.5 Yükleniyor...</div></div>;
-  if(!user)return<LoginPage onLogin={login}/>;
+  if(!user)return<Login onLogin={handleLogin}/>;
   return<Portal user={user} onLogout={logout}/>;
 }
 
