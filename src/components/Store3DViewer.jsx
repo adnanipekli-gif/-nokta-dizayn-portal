@@ -55,7 +55,7 @@ const Store3DViewer = ({ brand = 'ecocold', width = '100%', height = '500px' }) 
       renderer.setPixelRatio(window.devicePixelRatio || 1);
       renderer.setClearColor(0xf5f5f5, 1);
       renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFShadowShadowMap;
+      renderer.shadowMap.type = THREE.PCFShadowMap;
 
       rendererRef.current = renderer;
       containerRef.current.appendChild(renderer.domElement);
