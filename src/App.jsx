@@ -6,7 +6,11 @@ import QuoteReader from './components/QuoteReader';
 import Store3DViewer from './components/Store3DViewer';
 import MagnificUpscaler from './components/MagnificUpscaler';
 import PDFBuilder from './components/PDFBuilder';
+import MaterialPanel from './components/MaterialPanel';
+import AssetLibrary from './components/AssetLibrary';
 import './styles/pdfBuilder.css';
+import './styles/materialPanel.css';
+import './styles/assetLibrary.css';
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useThemeStore();
@@ -50,7 +54,7 @@ const Dashboard = () => {
   const viewerRef = useRef(null);
   const [renderSnapshot, setRenderSnapshot] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState('ecocold');
-  const [activeTab, setActiveTab] = useState('render'); // 'render' or 'pdf'
+  const [activeTab, setActiveTab] = useState('render'); // 'render', 'scene', or 'pdf'
 
   const handleExportRender = async () => {
     try {
@@ -91,6 +95,22 @@ const Dashboard = () => {
           }}
         >
           📐 3D & Upscale
+        </button>
+        <button
+          onClick={() => setActiveTab('scene')}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: activeTab === 'scene' ? theme.primary : 'transparent',
+            color: activeTab === 'scene' ? 'white' : theme.text,
+            border: 'none',
+            borderBottom: activeTab === 'scene' ? `3px solid ${theme.primary}` : 'none',
+            cursor: 'pointer',
+            fontSize: '15px',
+            fontWeight: '600',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          🎨 Scene Setup
         </button>
         <button
           onClick={() => setActiveTab('pdf')}
@@ -216,7 +236,73 @@ const Dashboard = () => {
         </>
       )}
 
-      {/* TAB 2: PDF Builder */}
+      {/* TAB 2: Scene Setup */}
+      {activeTab === 'scene' && (
+        <>
+          <h2 style={{ color: theme.text, marginTop: 0 }}>
+            Scene Configuration
+          </h2>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '30px',
+              marginBottom: '30px',
+            }}
+          >
+            {/* Material Panel */}
+            <div>
+              <MaterialPanel 
+                onMaterialChange={(config) => {
+                  console.log('Material changed:', config);
+                }}
+                onLightingChange={(config) => {
+                  console.log('Lighting changed:', config);
+                }}
+                theme={theme}
+              />
+            </div>
+
+            {/* Asset Library */}
+            <div>
+              <AssetLibrary
+                onAssetSelect={(asset) => {
+                  console.log('Asset selected:', asset);
+                }}
+                onAssetDownload={(asset) => {
+                  console.log('Asset download:', asset);
+                }}
+                theme={theme}
+              />
+            </div>
+          </div>
+
+          {/* Info Section */}
+          <div
+            style={{
+              padding: '20px',
+              backgroundColor: theme.bg === '#0a0a0a' ? '#1a1a1a' : '#f9f9f9',
+              borderRadius: '8px',
+              border: `1px solid ${theme.border}`,
+              marginTop: '30px',
+            }}
+          >
+            <h4 style={{ color: theme.text, marginTop: 0 }}>
+              🎨 Scene Customization Guide
+            </h4>
+            <ul style={{ color: theme.text, fontSize: '13px', lineHeight: '1.8', margin: 0 }}>
+              <li><strong>Materials:</strong> Choose flooring, walls, and shelving materials</li>
+              <li><strong>Lighting:</strong> Select lighting profiles or adjust intensity</li>
+              <li><strong>Scene Presets:</strong> Quick templates (Supermarket, Freezer Aisle, etc.)</li>
+              <li><strong>Assets:</strong> Browse textures, furniture, and decoration elements</li>
+              <li><strong>Download:</strong> Export scenes as PDF with proper attribution</li>
+            </ul>
+          </div>
+        </>
+      )}
+
+      {/* TAB 3: PDF Builder */}
       {activeTab === 'pdf' && (
         <div style={{ marginTop: '20px' }}>
           <PDFBuilder 
