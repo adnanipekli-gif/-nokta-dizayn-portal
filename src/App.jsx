@@ -12,6 +12,11 @@ import './styles/pdfBuilder.css';
 import './styles/materialPanel.css';
 import './styles/assetLibrary.css';
 
+// Load test utilities for production testing
+if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_ENABLE_TESTING === 'true') {
+  import('./utils/productionTests.js').catch(() => {});
+}
+
 const Header = () => {
   const { isDarkMode, toggleTheme } = useThemeStore();
   const theme = useTheme();
