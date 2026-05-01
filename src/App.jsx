@@ -5,6 +5,8 @@ import useThemeStore from './stores/themeStore';
 import QuoteReader from './components/QuoteReader';
 import Store3DViewer from './components/Store3DViewer';
 import MagnificUpscaler from './components/MagnificUpscaler';
+import PDFBuilder from './components/PDFBuilder';
+import './styles/pdfBuilder.css';
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useThemeStore();
@@ -48,6 +50,7 @@ const Dashboard = () => {
   const viewerRef = useRef(null);
   const [renderSnapshot, setRenderSnapshot] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState('ecocold');
+  const [activeTab, setActiveTab] = useState('render'); // 'render' or 'pdf'
 
   const handleExportRender = async () => {
     try {
@@ -70,107 +73,158 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ padding: '40px', backgroundColor: theme.bg }}>
-      <h2 style={{ color: theme.text, marginTop: 0 }}>
-        Market Render & Upscale
-      </h2>
+    <div style={{ padding: '40px', backgroundColor: theme.bg, minHeight: '100vh' }}>
+      {/* Tab Navigation */}
+      <div style={{ marginBottom: '30px', display: 'flex', gap: '10px', borderBottom: `2px solid ${theme.border}` }}>
+        <button
+          onClick={() => setActiveTab('render')}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: activeTab === 'render' ? theme.primary : 'transparent',
+            color: activeTab === 'render' ? 'white' : theme.text,
+            border: 'none',
+            borderBottom: activeTab === 'render' ? `3px solid ${theme.primary}` : 'none',
+            cursor: 'pointer',
+            fontSize: '15px',
+            fontWeight: '600',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          📐 3D & Upscale
+        </button>
+        <button
+          onClick={() => setActiveTab('pdf')}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: activeTab === 'pdf' ? theme.primary : 'transparent',
+            color: activeTab === 'pdf' ? 'white' : theme.text,
+            border: 'none',
+            borderBottom: activeTab === 'pdf' ? `3px solid ${theme.primary}` : 'none',
+            cursor: 'pointer',
+            fontSize: '15px',
+            fontWeight: '600',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          📄 PDF Builder
+        </button>
+      </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '30px',
-          marginBottom: '30px',
-        }}
-      >
-        {/* 3D Viewer Section */}
-        <div>
-          <h3 style={{ color: theme.text, fontSize: '16px', marginBottom: '10px' }}>
-            📐 3D Render
-          </h3>
+      {/* TAB 1: 3D & Upscale */}
+      {activeTab === 'render' && (
+        <>
+          <h2 style={{ color: theme.text, marginTop: 0 }}>
+            Market Render & Upscale
+          </h2>
 
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ color: theme.text, fontSize: '13px', marginRight: '10px' }}>
-              Brand:
-            </label>
-            <select
-              value={selectedBrand}
-              onChange={(e) => setSelectedBrand(e.target.value)}
-              style={{
-                padding: '8px 12px',
-                borderRadius: '4px',
-                border: `1px solid ${theme.border}`,
-                backgroundColor: theme.bg,
-                color: theme.text,
-                cursor: 'pointer',
-              }}
-            >
-              <option value="ecocold">🧊 Ecocold</option>
-              <option value="pasifik">📦 Pasifik Raf</option>
-            </select>
-          </div>
-
-          <Store3DViewer
-            ref={viewerRef}
-            brand={selectedBrand}
-            width="100%"
-            height="500px"
-          />
-
-          <button
-            onClick={handleExportRender}
+          <div
             style={{
-              width: '100%',
-              padding: '12px',
-              marginTop: '15px',
-              backgroundColor: theme.primary,
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: 'bold',
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '30px',
+              marginBottom: '30px',
             }}
           >
-            📸 Export Render
-          </button>
-        </div>
+            {/* 3D Viewer Section */}
+            <div>
+              <h3 style={{ color: theme.text, fontSize: '16px', marginBottom: '10px' }}>
+                📐 3D Render
+              </h3>
 
-        {/* Magnific Upscaler Section */}
-        <div>
-          <h3 style={{ color: theme.text, fontSize: '16px', marginBottom: '10px' }}>
-            ✨ Magnific AI
-          </h3>
-          <MagnificUpscaler
-            renderImageUrl={renderSnapshot}
-            onUpscaleComplete={(result) => {
-              console.log('Upscale completed:', result);
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ color: theme.text, fontSize: '13px', marginRight: '10px' }}>
+                  Brand:
+                </label>
+                <select
+                  value={selectedBrand}
+                  onChange={(e) => setSelectedBrand(e.target.value)}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '4px',
+                    border: `1px solid ${theme.border}`,
+                    backgroundColor: theme.bg,
+                    color: theme.text,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <option value="ecocold">🧊 Ecocold</option>
+                  <option value="pasifik">📦 Pasifik Raf</option>
+                </select>
+              </div>
+
+              <Store3DViewer
+                ref={viewerRef}
+                brand={selectedBrand}
+                width="100%"
+                height="500px"
+              />
+
+              <button
+                onClick={handleExportRender}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  marginTop: '15px',
+                  backgroundColor: theme.primary,
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                }}
+              >
+                📸 Export Render
+              </button>
+            </div>
+
+            {/* Magnific Upscaler Section */}
+            <div>
+              <h3 style={{ color: theme.text, fontSize: '16px', marginBottom: '10px' }}>
+                ✨ Magnific AI
+              </h3>
+              <MagnificUpscaler
+                renderImageUrl={renderSnapshot}
+                onUpscaleComplete={(result) => {
+                  console.log('Upscale completed:', result);
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Info Section */}
+          <div
+            style={{
+              padding: '20px',
+              backgroundColor: theme.bg === '#0a0a0a' ? '#1a1a1a' : '#f9f9f9',
+              borderRadius: '8px',
+              border: `1px solid ${theme.border}`,
+              marginTop: '30px',
             }}
+          >
+            <h4 style={{ color: theme.text, marginTop: 0 }}>
+              📋 Workflow
+            </h4>
+            <ol style={{ color: theme.text, fontSize: '13px', lineHeight: '1.8' }}>
+              <li>Select brand (Ecocold or Pasifik)</li>
+              <li>View 3D render in viewport</li>
+              <li>Click "Export Render" to capture canvas</li>
+              <li>Click "Upscale 4K" to enhance with Magnific AI</li>
+              <li>Download 4K output for presentations</li>
+            </ol>
+          </div>
+        </>
+      )}
+
+      {/* TAB 2: PDF Builder */}
+      {activeTab === 'pdf' && (
+        <div style={{ marginTop: '20px' }}>
+          <PDFBuilder 
+            render3DImage={renderSnapshot}
+            selectedBrand={selectedBrand}
           />
         </div>
-      </div>
-
-      {/* Info Section */}
-      <div
-        style={{
-          padding: '20px',
-          backgroundColor: isDarkMode => theme.bg === '#0a0a0a' ? '#1a1a1a' : '#f9f9f9',
-          borderRadius: '8px',
-          border: `1px solid ${theme.border}`,
-          marginTop: '30px',
-        }}
-      >
-        <h4 style={{ color: theme.text, marginTop: 0 }}>
-          📋 Workflow
-        </h4>
-        <ol style={{ color: theme.text, fontSize: '13px', lineHeight: '1.8' }}>
-          <li>Select brand (Ecocold or Pasifik)</li>
-          <li>View 3D render in viewport</li>
-          <li>Click "Export Render" to capture canvas</li>
-          <li>Click "Upscale 4K" to enhance with Magnific AI</li>
-          <li>Download 4K output for presentations</li>
-        </ol>
-      </div>
+      )}
     </div>
   );
 };
