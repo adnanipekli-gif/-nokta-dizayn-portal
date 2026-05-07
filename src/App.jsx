@@ -13,7 +13,7 @@ const ADMINS=["ndgroupcompnies@gmail.com","adnan.ipekli@gmail.com","gozdeipekli@
 const STATUS_FLOW=[
   {id:"konsept",label:"Konsept Sunum",color:"#9B59B6",icon:"🎨",phase:"sunum"},
   {id:"konsept-onay",label:"Konsept Onay",color:"#8E44AD",icon:"👁️",phase:"sunum"},
-  {id:"detay",label:"Detay Çalışma",color:"#2980B9",icon:"📐",phase:"detay"},
+  {id:"detay",label:"Detay Çalışma",color:"#00C4CC",icon:"📐",phase:"detay"},
   {id:"teklif",label:"Fiyat Teklifi",color:"#F39C12",icon:"💰",phase:"detay"},
   {id:"onay",label:"Müşteri Onay",color:"#E67E22",icon:"✅",phase:"uygulama"},
   {id:"uretim",label:"Üretim",color:"#3498DB",icon:"🏭",phase:"uygulama"},
@@ -32,14 +32,14 @@ const EQUIPMENT={
     {id:"navi1875",brand:"Ecocold",name:"Navi Kasap Vitrini 187cm",model:"NAVİ-1165/1875",w:187,h:116,sicaklik:"0/+4°C",power:260,price:1420,curr:"EUR",color:"#E74C3C"},
     {id:"navi625",brand:"Ecocold",name:"Navi Kasap Vitrini 62cm",model:"NAVİ-1165/625",w:62,h:116,sicaklik:"0/+4°C",power:120,price:890,curr:"EUR",color:"#E74C3C"},
     // APPLE — Plug-in Dondurucu (Negatif)
-    {id:"apple212",brand:"Ecocold",name:"Apple 212 Dondurucu",model:"APPLE-212-NT",w:212,h:90,sicaklik:"-18/-22°C",power:600,price:980,curr:"EUR",color:"#2980B9"},
+    {id:"apple212",brand:"Ecocold",name:"Apple 212 Dondurucu",model:"APPLE-212-NT",w:212,h:90,sicaklik:"-18/-22°C",power:600,price:980,curr:"EUR",color:"#00C4CC"},
     // Merkezi Soğutma
     {id:"merkezi30",brand:"Ecocold",name:"Pozitif Merkezi Soğutma 30.3kW",model:"ZBD45+2xZB45",w:120,h:100,sicaklik:"-10/+45°C",power:4590,price:9820,curr:"EUR",color:"#1A5276"},
     // CITRUS — Duvar Dolap
     {id:"citrus188",brand:"Ecocold",name:"Citrus 188 Duvar Dolap",model:"CITRUS-188",w:188,h:60,sicaklik:"+2/+8°C",power:380,price:1850,curr:"EUR",color:"#E67E22"},
     {id:"citrus250",brand:"Ecocold",name:"Citrus 250 Duvar Dolap",model:"CITRUS-250",w:250,h:60,sicaklik:"+2/+8°C",power:480,price:2200,curr:"EUR",color:"#E67E22"},
     // DONUK HAVUZ
-    {id:"donukhavuz200",brand:"Ecocold",name:"Donuk Ada Havuzu 200cm",model:"HAVUZ-200-NT",w:200,h:110,sicaklik:"-18/-22°C",power:520,price:2800,curr:"EUR",color:"#2980B9"},
+    {id:"donukhavuz200",brand:"Ecocold",name:"Donuk Ada Havuzu 200cm",model:"HAVUZ-200-NT",w:200,h:110,sicaklik:"-18/-22°C",power:520,price:2800,curr:"EUR",color:"#00C4CC"},
   ]},
   sutluk:{label:"Sütlük",icon:"🥛",currency:"EUR",markup:0,items:[
     // MERGA — Sütlük (855mm derinlik, 2040mm yükseklik, Zemin+4 raf)
@@ -90,7 +90,7 @@ const ZONE_PRESETS=[
   {id:"sandvic",label:"Sandviç Bar",color:"#27AE60",icon:"🥖",dW:350,dH:180,material:"Paslanmaz çelik tezgah, granit üst yüzey, soğutmalı ingredient vitrini",mood:"Açık mutfak konsepti. Müşteri malzemeleri görüp seçiyor, taze hazırlık."},
   {id:"unlu",label:"Unlu Mamüller",color:"#D4A017",icon:"🥐",dW:250,dH:250,material:"Ahşap lata duvar paneli, doğal meşe raf sistemi, cam vitrinli alt dolap",mood:"Artisan fırın havası. Self-servis simit/poğaça, vitrin pastane ürünleri."},
   {id:"kahve",label:"Kahve Köşesi",color:"#8B4513",icon:"☕",dW:200,dH:200,material:"Kompakt laminat tezgah, ahşap bar, tabure, LED ışıklı tabela",mood:"Coffee-to-go konsepti. Otomatik makine, hızlı servis, sıcak ambiyans."},
-  {id:"soguk",label:"Soğuk İçecek",color:"#2980B9",icon:"🧊",dW:200,dH:150,material:"Dikey cam kapaklı soğutucu kabinler, LED iç aydınlatma",mood:"Ferah ve düzenli içecek duvarı. Kolay erişim, marka bazlı sıralama."},
+  {id:"soguk",label:"Soğuk İçecek",color:"#00C4CC",icon:"🧊",dW:200,dH:150,material:"Dikey cam kapaklı soğutucu kabinler, LED iç aydınlatma",mood:"Ferah ve düzenli içecek duvarı. Kolay erişim, marka bazlı sıralama."},
   {id:"sutluk",label:"Sütlük",color:"#5DADE2",icon:"🥛",dW:250,dH:120,material:"Açık tip soğutmalı raf sistemi, beyaz LED aydınlatma",mood:"Temiz ve hijyenik görünüm. Süt, yoğurt, peynir çeşitleri."},
   {id:"raf",label:"Gondol Raf",color:"#9B59B6",icon:"🫙",dW:300,dH:100,material:"Metal raf sistemi, ahşap detay, fiyat etiketlik, LED raf aydınlatma",mood:"Düzenli ve kolay gezilebilir market alanı. Ürün gruplarına göre bölümlü."},
   {id:"kasa",label:"Kasa",color:"#E67E22",icon:"🖥️",dW:200,dH:120,material:"Laminat tezgah, POS sistemi, poşet alanı, impulse raf",mood:"Hızlı ödeme noktası. Kasa önü cazip ürünler, müşteri ekranı."},
@@ -99,7 +99,7 @@ const ZONE_PRESETS=[
   {id:"et",label:"Et Reyonu",color:"#E74C3C",icon:"🥩",dW:350,dH:150,material:"Soğutmalı et vitrini, kasap tezgahı, paslanmaz çelik",mood:"Profesyonel kasap reyonu. Taze et teşhiri, hijyenik sunum."},
   {id:"serbest",label:"Serbest",color:"#7F8C8D",icon:"📐",dW:200,dH:200,material:"Proje ihtiyacına göre belirlenecek",mood:"Özel kullanım alanı."},
   {id:"manavduvar",label:"Manav Duvar Reyonu",color:"#27AE60",icon:"🥦",dW:400,dH:60,material:"Paslanmaz çelik raf, LED aydınlatma, fiyat etiketlik",mood:"Taze meyve sebze duvarı. Renk ile dekor, ferah ve canlı sunum."},
-  {id:"donukhavuz",label:"Donuk Havuz Dolap",color:"#2980B9",icon:"🧊",dW:250,dH:120,material:"Yatay cam kapaklı ada tipi dondurucu, LED iç aydınlatma",mood:"Derin donmuş ürünler. Ada konumu ile kolay erişim ve görünürlük."},
+  {id:"donukhavuz",label:"Donuk Havuz Dolap",color:"#00C4CC",icon:"🧊",dW:250,dH:120,material:"Yatay cam kapaklı ada tipi dondurucu, LED iç aydınlatma",mood:"Derin donmuş ürünler. Ada konumu ile kolay erişim ve görünürlük."},
   {id:"citrus",label:"Citrus Duvar Dolap",color:"#E67E22",icon:"🍊",dW:300,dH:60,material:"Duvar montajlı soğutmalı açık raf, beyaz LED",mood:"Taze meyve suları ve soğutulmuş ürünler. Duvar boyunca uzanan ferah sunum."},
   {id:"grabngo",label:"Grab & Go Dolabı",color:"#8E44AD",icon:"🥤",dW:60,dH:60,material:"Soğutmalı self-servis dolap, dijital etiketlik",mood:"Tek kapılı hızlı erişim dolabı. Öğle paketleri, soğuk içecek, snack."},
 ];
@@ -107,7 +107,7 @@ const ZONE_PRESETS=[
 const TEMPLATES=[
   {id:"market-50",name:"Mini Market 50m²",type:"market",width:1000,height:500,zones:[
     {tid:"kasa",label:"Kasa",color:"#E67E22",icon:"🖥️",x:50,y:380,w:180,h:100,equip:[],notes:"",material:"",mood:""},
-    {tid:"soguk",label:"Soğuk İçecek",color:"#2980B9",icon:"🧊",x:780,y:50,w:170,h:400,equip:[],notes:"",material:"",mood:""},
+    {tid:"soguk",label:"Soğuk İçecek",color:"#00C4CC",icon:"🧊",x:780,y:50,w:170,h:400,equip:[],notes:"",material:"",mood:""},
     {tid:"raf",label:"Raf 1",color:"#9B59B6",icon:"🫙",x:280,y:60,w:200,h:80,equip:[],notes:"Atıştırmalık",material:"",mood:""},
     {tid:"raf",label:"Raf 2",color:"#8E44AD",icon:"🫙",x:280,y:180,w:200,h:80,equip:[],notes:"Temel gıda",material:"",mood:""},
     {tid:"unlu",label:"Unlu Mamül",color:"#D4A017",icon:"🥐",x:280,y:320,w:200,h:130,equip:[],notes:"",material:"",mood:""},
@@ -117,7 +117,7 @@ const TEMPLATES=[
     {tid:"sandvic",label:"Sandviç Bar",color:"#27AE60",icon:"🥖",x:850,y:60,w:550,h:200,equip:[],notes:"",material:"Paslanmaz çelik tezgah",mood:"Açık mutfak"},
     {tid:"unlu",label:"Unlu Mamül",color:"#D4A017",icon:"🥐",x:1470,y:60,w:260,h:480,equip:[],notes:"Ahşap lata",material:"Meşe lata duvar",mood:"Artisan fırın havası"},
     {tid:"kahve",label:"Kahve",color:"#8B4513",icon:"☕",x:1470,y:580,w:260,h:230,equip:[],notes:"",material:"",mood:"Coffee-to-go"},
-    {tid:"soguk",label:"Soğuk İçecek",color:"#2980B9",icon:"🧊",x:1470,y:850,w:260,h:190,equip:[],notes:"",material:"",mood:""},
+    {tid:"soguk",label:"Soğuk İçecek",color:"#00C4CC",icon:"🧊",x:1470,y:850,w:260,h:190,equip:[],notes:"",material:"",mood:""},
     {tid:"raf",label:"Gurme Raf 1",color:"#9B59B6",icon:"🫙",x:350,y:660,w:480,h:110,equip:[],notes:"",material:"",mood:""},
     {tid:"raf",label:"Gurme Raf 2",color:"#8E44AD",icon:"🫙",x:350,y:810,w:480,h:110,equip:[],notes:"",material:"",mood:""},
     {tid:"kasa",label:"Kasa",color:"#E67E22",icon:"🖥️",x:880,y:880,w:300,h:150,equip:[],notes:"",material:"",mood:""},
@@ -140,7 +140,7 @@ async function sv(k,v){try{await saveData(k,JSON.stringify(v))}catch(e){console.
 async function ldS(k){try{const v=await loadData(k);return v?JSON.parse(v):null}catch{return null}}
 async function svS(k,v){try{await saveData(k,JSON.stringify(v))}catch(e){console.error(e)}}
 
-function Logo({sz=40}){return<div style={{width:sz,height:sz,borderRadius:sz*.18,background:"linear-gradient(135deg,#2980B9,#1a3a5f)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:sz*.38,fontWeight:900,color:"#ffffff",flexShrink:0}}>ND</div>}
+function Logo({sz=40}){return<div style={{width:sz,height:sz,borderRadius:sz*.18,background:"#00C4CC",display:"flex",alignItems:"center",justifyContent:"center",fontSize:sz*.38,fontWeight:900,color:"#ffffff",flexShrink:0}}>ND</div>}
 
 // ─── APP ────────────────────────────────────────────────────────
 export default function App(){
@@ -149,7 +149,7 @@ export default function App(){
   useEffect(()=>{ld("ndv45-sess").then(s=>{if(s?.email)setUser(s);else setUser(null);setReady(true)})},[]);
   const login=async email=>{const e=email.trim().toLowerCase();if(!e)return"e";const isA=ADMINS.includes(e);const us=await ldS("ndv45-users")||[];const f=us.find(u=>u.email===e);if(!isA&&!f)return"d";const s={email:e,role:isA?"admin":"user",name:f?.name||(isA?"Yönetici":""),at:Date.now()};setUser(s);try{localStorage.setItem("ndv45-sess-local",JSON.stringify(s))}catch{}await sv("ndv45-sess",s);return"ok"};
   const logout=async()=>{setUser(null);try{localStorage.removeItem("ndv45-sess-local")}catch{}await sv("ndv45-sess",null)};
-  if(!ready)return<div style={{minHeight:"100vh",background:"#f4f6f9",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><Logo sz={56}/><div style={{fontSize:22,fontWeight:200,color:"#2980B9",letterSpacing:8,marginTop:14}}>NOKTA DİZAYN</div><div style={{color:"#9aa0a8",fontSize:15,marginTop:8}}>v4.5 Yükleniyor...</div></div>;
+  if(!ready)return<div style={{minHeight:"100vh",background:"#F8FAFC",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><Logo sz={56}/><div style={{fontSize:22,fontWeight:200,color:"#00C4CC",letterSpacing:8,marginTop:14}}>NOKTA DİZAYN</div><div style={{color:"#94A3B8",fontSize:15,marginTop:8}}>v4.5 Yükleniyor...</div></div>;
   if(!user)return<LoginPage onLogin={login}/>;
   return<Portal user={user} onLogout={logout}/>;
 }
@@ -157,15 +157,15 @@ export default function App(){
 function LoginPage({onLogin}){
   const[email,setEmail]=useState("");const[err,setErr]=useState("");const[busy,setBusy]=useState(false);
   const go=async()=>{if(!email.trim())return;setBusy(true);setErr("");const r=await onLogin(email);setBusy(false);if(r==="d")setErr("Bu e-posta kayıtlı değil. Yöneticinizden davet isteyin.")};
-  return<div style={{minHeight:"100vh",background:"#f4f6f9",display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+  return<div style={{minHeight:"100vh",background:"#F8FAFC",display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
     <div style={{width:"100%",maxWidth:380,textAlign:"center"}}>
-      <Logo sz={56}/><h1 style={{fontSize:22,fontWeight:200,color:"#2980B9",letterSpacing:8,margin:"12px 0 2px"}}>NOKTA DİZAYN</h1>
-      <p style={{fontSize:14,color:"#7a8390",letterSpacing:2,margin:"0 0 24px"}}>MİMARİ PROJE PORTALI v4.5</p>
-      <div style={{background:"#ffffff",borderRadius:12,padding:24,border:"1px solid #dce0e5",textAlign:"left"}}>
-        <label style={{fontSize:14,color:"#5a6878",letterSpacing:1,display:"block",marginBottom:5}}>E-POSTA</label>
-        <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="ornek@email.com" onKeyDown={e=>e.key==="Enter"&&go()} style={{width:"100%",padding:"11px 13px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:7,color:"#1a2a3a",fontSize:18,outline:"none",boxSizing:"border-box",marginBottom:4}}/>
+      <Logo sz={56}/><h1 style={{fontSize:22,fontWeight:200,color:"#00C4CC",letterSpacing:8,margin:"12px 0 2px"}}>NOKTA DİZAYN</h1>
+      <p style={{fontSize:14,color:"#64748B",letterSpacing:2,margin:"0 0 24px"}}>MİMARİ PROJE PORTALI v4.5</p>
+      <div style={{background:"#ffffff",borderRadius:12,padding:24,border:"1px solid #E2E8F0",textAlign:"left"}}>
+        <label style={{fontSize:14,color:"#64748B",letterSpacing:1,display:"block",marginBottom:5}}>E-POSTA</label>
+        <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="ornek@email.com" onKeyDown={e=>e.key==="Enter"&&go()} style={{width:"100%",padding:"11px 13px",background:"#F8FAFC",border:"1px solid #E2E8F0",borderRadius:7,color:"#0F172A",fontSize:18,outline:"none",boxSizing:"border-box",marginBottom:4}}/>
         {err&&<div style={{fontSize:14,color:"#e74c3c",padding:"4px 0"}}>{err}</div>}
-        <button onClick={go} disabled={busy} style={{width:"100%",padding:"11px",marginTop:8,background:email.trim()?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#dce0e5",border:"none",borderRadius:7,color:email.trim()?"#ffffff":"#333",fontSize:17,fontWeight:700,cursor:email.trim()?"pointer":"default"}}>{busy?"Giriş...":"GİRİŞ YAP"}</button>
+        <button onClick={go} disabled={busy} style={{width:"100%",padding:"11px",marginTop:8,background:email.trim()?"#00C4CC":"#dce0e5",border:"none",borderRadius:7,color:email.trim()?"#ffffff":"#333",fontSize:17,fontWeight:700,cursor:email.trim()?"pointer":"default"}}>{busy?"Giriş...":"GİRİŞ YAP"}</button>
       </div>
     </div>
   </div>;
@@ -181,12 +181,12 @@ function Portal({user,onLogout}){
   const myP=isA?projects:projects.filter(p=>p.owner===user.email);
   const goHome=()=>{setPage("dash");setActive(null);setViewMode("editor")};
 
-  if(!ready)return<div style={{minHeight:"100vh",background:"#f4f6f9"}}></div>;
+  if(!ready)return<div style={{minHeight:"100vh",background:"#F8FAFC"}}></div>;
 
-  return<div style={{minHeight:"100vh",background:"#f4f6f9",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1a2a3a"}}>
-    <nav style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 18px",borderBottom:"1px solid #e8eaee",background:"#ffffff",flexWrap:"wrap",gap:6,boxShadow:"0 2px 8px rgba(26,58,95,0.07)"}}>
+  return<div style={{minHeight:"100vh",background:"#F8FAFC",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#0F172A"}}>
+    <nav style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 18px",borderBottom:"1px solid #E2E8F0",background:"#ffffff",flexWrap:"wrap",gap:6,boxShadow:"0 2px 8px rgba(26,58,95,0.07)"}}>
       <div style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}} onClick={goHome}>
-        <Logo sz={36}/><div><div style={{fontSize:17,fontWeight:800,color:"#1a2a3a",letterSpacing:3}}>NOKTA DİZAYN</div><div style={{fontSize:10,color:"#7a8390",letterSpacing:2}}>v4.5 PRO — SUNUM + MİMARİ</div></div>
+        <Logo sz={36}/><div><div style={{fontSize:17,fontWeight:800,color:"#0F172A",letterSpacing:3}}>NOKTA DİZAYN</div><div style={{fontSize:10,color:"#64748B",letterSpacing:2}}>v4.5 PRO — SUNUM + MİMARİ</div></div>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
         {isA&&page==="dash"&&<NBtn onClick={()=>setPage("users")} t="👥 Kullanıcılar"/>}
@@ -198,7 +198,7 @@ function Portal({user,onLogout}){
         </>}
         {page==="edit"&&autoSaveAt&&<span style={{fontSize:12,color:"#27ae60",padding:"4px 8px",background:"#27ae6011",borderRadius:4,border:"1px solid #27ae6022"}}>💾 {new Date(autoSaveAt).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})}</span>}
         {page!=="dash"&&<NBtn onClick={goHome} t="← Ana Sayfa"/>}
-        <span style={{fontSize:13,color:"#5a6370"}}>{user.email.split("@")[0]}</span>
+        <span style={{fontSize:13,color:"#64748B"}}>{user.email.split("@")[0]}</span>
         <span style={{fontSize:11,padding:"1px 5px",background:isA?"#2980B918":"#27ae6018",borderRadius:3,color:isA?"#2980B9":"#27ae60"}}>{isA?"Admin":"User"}</span>
         <NBtn onClick={onLogout} t="Çıkış"/>
       </div>
@@ -217,8 +217,8 @@ function Portal({user,onLogout}){
   </div>;
 }
 
-function NBtn({onClick,t,a}){return<button onClick={onClick} style={{padding:"9px 16px",background:a?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#ffffff",border:a?"1px solid #2980B955":"1px solid #ccd2d9",borderRadius:6,color:a?"#ffffff":"#5a6370",fontSize:13,cursor:"pointer",fontWeight:a?700:400,boxShadow:"0 1px 4px rgba(0,0,0,0.09)",whiteSpace:"nowrap"}}>{t}</button>}
-function MBtn({t,a,onClick}){return<button onClick={onClick} style={{padding:"5px 12px",background:a?"#2980B918":"#f4f6f9",border:a?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:4,color:a?"#2980B9":"#555",fontSize:12,cursor:"pointer",fontWeight:a?600:400}}>{t}</button>}
+function NBtn({onClick,t,a}){return<button onClick={onClick} style={{padding:"9px 16px",background:a?"#00C4CC":"#ffffff",border:a?"1px solid #2980B955":"1px solid #E2E8F0",borderRadius:6,color:a?"#0F172A":"#64748B",fontSize:13,cursor:"pointer",fontWeight:a?700:400,boxShadow:"0 1px 4px rgba(0,0,0,0.09)",whiteSpace:"nowrap"}}>{t}</button>}
+function MBtn({t,a,onClick}){return<button onClick={onClick} style={{padding:"5px 12px",background:a?"#2980B918":"#f4f6f9",border:a?"1px solid #2980B944":"1px solid #E2E8F0",borderRadius:4,color:a?"#2980B9":"#555",fontSize:12,cursor:"pointer",fontWeight:a?600:400}}>{t}</button>}
 
 // ═══════════════════════════════════════════════════════════════
 // MÜŞTERİ SUNUM MODU — Fiyat bilgisi YOK, sadece görsel/konsept
@@ -236,7 +236,7 @@ function generateDesignTips(project){
   const hasKasa=zones.some(z=>z.tid==="kasa");const hasSoguk=zones.some(z=>z.tid==="soguk"||z.tid==="sutluk");
   const hasUnlu=zones.some(z=>z.tid==="unlu");const hasKahve=zones.some(z=>z.tid==="kahve");
   if(!hasKasa)tips.push({cat:"Kasa Noktası",icon:"🖥️",color:"#E67E22",tip:"Kasa bölgesi tanımlanmamış. Girişe yakın, müşteri akışını yönlendiren bir kasa noktası önerilir."});
-  if(!hasSoguk)tips.push({cat:"Soğuk Bölge",icon:"❄️",color:"#2980B9",tip:"Soğuk içecek veya sütlük bölgesi yok. Bu bölgeler yüksek impulse satış potansiyeli taşır."});
+  if(!hasSoguk)tips.push({cat:"Soğuk Bölge",icon:"❄️",color:"#00C4CC",tip:"Soğuk içecek veya sütlük bölgesi yok. Bu bölgeler yüksek impulse satış potansiyeli taşır."});
   if(hasUnlu&&!hasKahve)tips.push({cat:"Çapraz Satış",icon:"☕",color:"#8B4513",tip:"Unlu mamül bölgesi var ama kahve köşesi yok. Ekmek+kahve kombinasyonu sepet ortalamasını artırır."});
   // Aydınlatma ve renk
   tips.push({cat:"Aydınlatma",icon:"💡",color:"#F39C12",tip:"Ürün raflarında LED strip aydınlatma, vitrinlerde spotlight kullanımı ürün görünürlüğünü %30 artırabilir."});
@@ -254,14 +254,14 @@ function DesignTipsModal({project,onClose}){
   return<div style={{position:"fixed",inset:0,background:"rgba(26,58,95,0.55)",zIndex:50,display:"flex",alignItems:"center",justifyContent:"center",padding:16}} onClick={onClose}>
     <div style={{background:"#ffffff",borderRadius:16,padding:24,maxWidth:560,width:"100%",maxHeight:"80vh",overflowY:"auto",boxShadow:"0 20px 60px rgba(0,0,0,0.2)"}} onClick={e=>e.stopPropagation()}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <div><div style={{fontSize:18,fontWeight:700,color:"#1a3a5f",letterSpacing:1}}>✨ Görsel İyileştirme Önerileri</div><div style={{fontSize:13,color:"#7a8390",marginTop:2}}>{project.name}</div></div>
-        <button onClick={onClose} style={{background:"none",border:"none",fontSize:18,cursor:"pointer",color:"#9aa0a8"}}>✕</button>
+        <div><div style={{fontSize:18,fontWeight:700,color:"#0F172A",letterSpacing:1}}>✨ Görsel İyileştirme Önerileri</div><div style={{fontSize:13,color:"#64748B",marginTop:2}}>{project.name}</div></div>
+        <button onClick={onClose} style={{background:"none",border:"none",fontSize:18,cursor:"pointer",color:"#94A3B8"}}>✕</button>
       </div>
       {tips.map((t,i)=><div key={i} style={{background:t.color+"0d",border:`1px solid ${t.color}33`,borderRadius:10,padding:"12px 14px",marginBottom:8,borderLeft:`4px solid ${t.color}`}}>
         <div style={{fontSize:14,fontWeight:700,color:t.color,marginBottom:4}}>{t.icon} {t.cat}</div>
-        <div style={{fontSize:14,color:"#3a4a5a",lineHeight:1.7}}>{t.tip}</div>
+        <div style={{fontSize:14,color:"#334155",lineHeight:1.7}}>{t.tip}</div>
       </div>)}
-      <button onClick={onClose} style={{width:"100%",marginTop:8,padding:"10px",background:"linear-gradient(135deg,#2980B9,#1a3a5f)",border:"none",borderRadius:8,color:"#fff",fontSize:15,fontWeight:700,cursor:"pointer"}}>Kapat</button>
+      <button onClick={onClose} style={{width:"100%",marginTop:8,padding:"10px",background:"#00C4CC",border:"none",borderRadius:8,color:"#fff",fontSize:15,fontWeight:700,cursor:"pointer"}}>Kapat</button>
     </div>
   </div>;
 }
@@ -284,15 +284,15 @@ function PresentationMode({project,onSave}){
     {id:"approve",label:"Onay"},
   ];
 
-  const box={background:"#ffffff",borderRadius:12,padding:20,border:"1px solid #dce0e5",marginBottom:12};
+  const box={background:"#ffffff",borderRadius:12,padding:20,border:"1px solid #E2E8F0",marginBottom:12};
 
-  return<div style={{flex:1,overflow:"auto",background:"#f4f6f9"}}>
+  return<div style={{flex:1,overflow:"auto",background:"#F8FAFC"}}>
     {showTips&&<DesignTipsModal project={project} onClose={()=>setShowTips(false)}/>}
     {/* Slide navigation */}
-    <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:4,padding:"12px 8px",borderBottom:"1px solid #e8eaee",flexWrap:"wrap"}}>
+    <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:4,padding:"12px 8px",borderBottom:"1px solid #E2E8F0",flexWrap:"wrap"}}>
       {slides.map((s,i)=><button key={s.id} onClick={()=>setSlide(s.id)} style={{
         padding:"6px 16px",background:slide===s.id?"#2980B922":"transparent",
-        border:slide===s.id?"1px solid #2980B955":"1px solid #ccd2d9",
+        border:slide===s.id?"1px solid #2980B955":"1px solid #E2E8F0",
         borderRadius:20,color:slide===s.id?"#2980B9":"#555",fontSize:14,cursor:"pointer",
         fontWeight:slide===s.id?600:400,
       }}>{i+1}. {s.label}</button>)}
@@ -303,25 +303,25 @@ function PresentationMode({project,onSave}){
       {/* ─── COVER ─── */}
       {slide==="cover"&&<div style={{textAlign:"center",padding:"40px 20px"}}>
         <Logo sz={70}/>
-        <h1 style={{fontSize:28,fontWeight:200,color:"#2980B9",letterSpacing:10,margin:"16px 0 6px"}}>NOKTA DİZAYN</h1>
+        <h1 style={{fontSize:28,fontWeight:200,color:"#00C4CC",letterSpacing:10,margin:"16px 0 6px"}}>NOKTA DİZAYN</h1>
         <div style={{fontSize:15,color:"#5a5550",letterSpacing:4,marginBottom:30}}>MİMARİ İÇ TASARIM KONSEPT SUNUMU</div>
         <div style={{width:60,height:1,background:"#2980B933",margin:"0 auto 30px"}}/>
-        <div style={{fontSize:22,fontWeight:300,color:"#1a2a3a",letterSpacing:2}}>{project.name}</div>
-        {project.customer&&<div style={{fontSize:18,color:"#2980B9",marginTop:8}}>Hazırlayan: Nokta Dizayn</div>}
+        <div style={{fontSize:22,fontWeight:300,color:"#0F172A",letterSpacing:2}}>{project.name}</div>
+        {project.customer&&<div style={{fontSize:18,color:"#00C4CC",marginTop:8}}>Hazırlayan: Nokta Dizayn</div>}
         {project.customer&&<div style={{fontSize:18,color:"#8a8578",marginTop:4}}>Müşteri: {project.customer}</div>}
-        <div style={{fontSize:15,color:"#9aa0a8",marginTop:20}}>{new Date().toLocaleDateString("tr-TR",{year:"numeric",month:"long",day:"numeric"})}</div>
+        <div style={{fontSize:15,color:"#94A3B8",marginTop:20}}>{new Date().toLocaleDateString("tr-TR",{year:"numeric",month:"long",day:"numeric"})}</div>
         <div style={{display:"flex",justifyContent:"center",gap:20,marginTop:30}}>
           {[{l:"Alan",v:`${totalArea.toFixed(0)} m²`},{l:"Bölge",v:`${zones.length}`},{l:"Tip",v:PROJ_TYPES.find(t=>t.id===project.type)?.l}].map((s,i)=>
-            <div key={i}><div style={{fontSize:20,fontWeight:600,color:"#2980B9"}}>{s.v}</div><div style={{fontSize:13,color:"#5a6370"}}>{s.l}</div></div>)}
+            <div key={i}><div style={{fontSize:20,fontWeight:600,color:"#00C4CC"}}>{s.v}</div><div style={{fontSize:13,color:"#64748B"}}>{s.l}</div></div>)}
         </div>
-        <button onClick={()=>setSlide("plan")} style={{marginTop:36,padding:"12px 36px",background:"linear-gradient(135deg,#2980B9,#1a3a5f)",border:"none",borderRadius:10,color:"#ffffff",fontSize:18,fontWeight:700,cursor:"pointer",letterSpacing:2}}>SUNUMA BAŞLA →</button>
+        <button onClick={()=>setSlide("plan")} style={{marginTop:36,padding:"12px 36px",background:"#00C4CC",border:"none",borderRadius:10,color:"#ffffff",fontSize:18,fontWeight:700,cursor:"pointer",letterSpacing:2}}>SUNUMA BAŞLA →</button>
       </div>}
 
       {/* ─── PLAN ─── */}
       {slide==="plan"&&<div>
         <div style={{textAlign:"center",marginBottom:16}}>
-          <div style={{fontSize:14,color:"#2980B9",letterSpacing:3}}>YERLEŞİM PLANI</div>
-          <div style={{fontSize:18,fontWeight:300,color:"#1a2a3a",marginTop:4}}>{project.name}</div>
+          <div style={{fontSize:14,color:"#00C4CC",letterSpacing:3}}>YERLEŞİM PLANI</div>
+          <div style={{fontSize:18,fontWeight:300,color:"#0F172A",marginTop:4}}>{project.name}</div>
         </div>
         <div style={{...box,padding:12}}>
           <PlanSVG project={project} zones={zones} walls={walls} showLabels showDims/>
@@ -329,7 +329,7 @@ function PresentationMode({project,onSave}){
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:6}}>
           {zones.map(z=><div key={z.id} style={{padding:"8px 10px",background:z.color+"0a",border:`1px solid ${z.color}33`,borderRadius:8}}>
             <div style={{fontSize:14,fontWeight:600,color:z.color}}>{z.icon} {z.label}</div>
-            <div style={{fontSize:12,color:"#5a6370",marginTop:2}}>{((z.w*z.h)/10000).toFixed(1)} m² • {z.w/100}×{z.h/100}m</div>
+            <div style={{fontSize:12,color:"#64748B",marginTop:2}}>{((z.w*z.h)/10000).toFixed(1)} m² • {z.w/100}×{z.h/100}m</div>
           </div>)}
         </div>
       </div>}
@@ -337,8 +337,8 @@ function PresentationMode({project,onSave}){
       {/* ─── 3D ─── */}
       {slide==="3d"&&<div>
         <div style={{textAlign:"center",marginBottom:16}}>
-          <div style={{fontSize:14,color:"#2980B9",letterSpacing:3}}>3D KUŞ BAKIŞI</div>
-          <div style={{fontSize:18,fontWeight:300,color:"#1a2a3a",marginTop:4}}>{project.name}</div>
+          <div style={{fontSize:14,color:"#00C4CC",letterSpacing:3}}>3D KUŞ BAKIŞI</div>
+          <div style={{fontSize:18,fontWeight:300,color:"#0F172A",marginTop:4}}>{project.name}</div>
         </div>
         <div style={{...box,padding:8}}><ThreeErrorBoundary><ThreeD3D project={project}/></ThreeErrorBoundary></div>
       </div>}
@@ -346,8 +346,8 @@ function PresentationMode({project,onSave}){
       {/* ─── MOOD BOARD / KONSEPT ─── */}
       {slide==="mood"&&<div>
         <div style={{textAlign:"center",marginBottom:16}}>
-          <div style={{fontSize:14,color:"#2980B9",letterSpacing:3}}>KONSEPT BOARD</div>
-          <div style={{fontSize:18,fontWeight:300,color:"#1a2a3a",marginTop:4}}>Bölge Açıklamaları & Malzeme Notları</div>
+          <div style={{fontSize:14,color:"#00C4CC",letterSpacing:3}}>KONSEPT BOARD</div>
+          <div style={{fontSize:18,fontWeight:300,color:"#0F172A",marginTop:4}}>Bölge Açıklamaları & Malzeme Notları</div>
         </div>
         {zones.map((z,i)=>{
           const preset=ZONE_PRESETS.find(p=>p.id===z.tid);
@@ -359,12 +359,12 @@ function PresentationMode({project,onSave}){
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                 <div>
                   <div style={{fontSize:18,fontWeight:600,color:z.color}}>{z.icon} {z.label}</div>
-                  <div style={{fontSize:13,color:"#5a6370",marginTop:2}}>{z.w/100}m × {z.h/100}m — {((z.w*z.h)/10000).toFixed(1)} m²</div>
+                  <div style={{fontSize:13,color:"#64748B",marginTop:2}}>{z.w/100}m × {z.h/100}m — {((z.w*z.h)/10000).toFixed(1)} m²</div>
                 </div>
                 <div style={{fontSize:24,opacity:0.15}}>{z.icon}</div>
               </div>
               <div style={{marginTop:10}}>
-                <div style={{fontSize:13,color:"#2980B9",letterSpacing:1,marginBottom:3}}>KONSEPT</div>
+                <div style={{fontSize:13,color:"#00C4CC",letterSpacing:1,marginBottom:3}}>KONSEPT</div>
                 <div style={{fontSize:15,color:"#a09a88",lineHeight:1.6}}>{mood}</div>
               </div>
               <div style={{marginTop:10}}>
@@ -383,8 +383,8 @@ function PresentationMode({project,onSave}){
       {/* ─── WALKTHROUGH ─── */}
       {slide==="walk"&&<div>
         <div style={{textAlign:"center",marginBottom:16}}>
-          <div style={{fontSize:14,color:"#2980B9",letterSpacing:3}}>MEKAN TURU</div>
-          <div style={{fontSize:18,fontWeight:300,color:"#1a2a3a",marginTop:4}}>Adım Adım Bölge Gezisi</div>
+          <div style={{fontSize:14,color:"#00C4CC",letterSpacing:3}}>MEKAN TURU</div>
+          <div style={{fontSize:18,fontWeight:300,color:"#0F172A",marginTop:4}}>Adım Adım Bölge Gezisi</div>
         </div>
         {zones.length>0&&<>
           {/* Progress bar */}
@@ -396,16 +396,16 @@ function PresentationMode({project,onSave}){
             const preset=ZONE_PRESETS.find(p=>p.id===z.tid);
             return<div style={{...box,borderColor:z.color+"44",textAlign:"center",padding:30}}>
               <div style={{fontSize:48,marginBottom:10}}>{z.icon}</div>
-              <div style={{fontSize:14,color:"#5a6370",letterSpacing:3}}>DURAK {walkIdx+1} / {zones.length}</div>
+              <div style={{fontSize:14,color:"#64748B",letterSpacing:3}}>DURAK {walkIdx+1} / {zones.length}</div>
               <div style={{fontSize:22,fontWeight:300,color:z.color,marginTop:6,letterSpacing:2}}>{z.label}</div>
               <div style={{width:40,height:1,background:z.color+"44",margin:"14px auto"}}/>
               <div style={{fontSize:16,color:"#a09a88",lineHeight:1.8,maxWidth:480,margin:"0 auto"}}>
                 {z.mood||preset?.mood||"Bu bölge projenin önemli bir parçası."}
               </div>
-              <div style={{marginTop:14,fontSize:15,color:"#5a6878",lineHeight:1.6}}>
+              <div style={{marginTop:14,fontSize:15,color:"#64748B",lineHeight:1.6}}>
                 <span style={{color:"#8B4513"}}>Malzeme:</span> {z.material||preset?.material||"Belirlenecek"}
               </div>
-              <div style={{marginTop:8,display:"flex",justifyContent:"center",gap:16,fontSize:14,color:"#7a8390"}}>
+              <div style={{marginTop:8,display:"flex",justifyContent:"center",gap:16,fontSize:14,color:"#64748B"}}>
                 <span>📐 {z.w/100}m × {z.h/100}m</span>
                 <span>📏 {((z.w*z.h)/10000).toFixed(1)} m²</span>
               </div>
@@ -416,35 +416,35 @@ function PresentationMode({project,onSave}){
             </div>
           })()}
           <div style={{display:"flex",justifyContent:"center",gap:10,marginTop:12}}>
-            <button onClick={()=>setWalkIdx(Math.max(0,walkIdx-1))} disabled={walkIdx===0} style={{padding:"10px 24px",background:walkIdx>0?"#dce0e5":"#f4f6f9",border:"1px solid #ccd2d9",borderRadius:8,color:walkIdx>0?"#2980B9":"#333",fontSize:16,cursor:walkIdx>0?"pointer":"default"}}>← Önceki</button>
-            <button onClick={()=>setWalkIdx(Math.min(zones.length-1,walkIdx+1))} disabled={walkIdx>=zones.length-1} style={{padding:"10px 24px",background:walkIdx<zones.length-1?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#eef1f5",border:"none",borderRadius:8,color:walkIdx<zones.length-1?"#ffffff":"#333",fontSize:16,fontWeight:700,cursor:walkIdx<zones.length-1?"pointer":"default"}}>Sonraki →</button>
+            <button onClick={()=>setWalkIdx(Math.max(0,walkIdx-1))} disabled={walkIdx===0} style={{padding:"10px 24px",background:walkIdx>0?"#dce0e5":"#f4f6f9",border:"1px solid #E2E8F0",borderRadius:8,color:walkIdx>0?"#2980B9":"#333",fontSize:16,cursor:walkIdx>0?"pointer":"default"}}>← Önceki</button>
+            <button onClick={()=>setWalkIdx(Math.min(zones.length-1,walkIdx+1))} disabled={walkIdx>=zones.length-1} style={{padding:"10px 24px",background:walkIdx<zones.length-1?"#00C4CC":"#eef1f5",border:"none",borderRadius:8,color:walkIdx<zones.length-1?"#ffffff":"#333",fontSize:16,fontWeight:700,cursor:walkIdx<zones.length-1?"pointer":"default"}}>Sonraki →</button>
           </div>
         </>}
       </div>}
 
       {/* ─── APPROVAL ─── */}
       {slide==="approve"&&<div style={{textAlign:"center",padding:"30px 20px"}}>
-        <div style={{fontSize:14,color:"#2980B9",letterSpacing:3,marginBottom:16}}>KONSEPT ONAY</div>
+        <div style={{fontSize:14,color:"#00C4CC",letterSpacing:3,marginBottom:16}}>KONSEPT ONAY</div>
         <div style={{...box,maxWidth:480,margin:"0 auto"}}>
-          <div style={{fontSize:16,fontWeight:300,color:"#1a2a3a",marginBottom:8}}>{project.name}</div>
+          <div style={{fontSize:16,fontWeight:300,color:"#0F172A",marginBottom:8}}>{project.name}</div>
           {project.customer&&<div style={{fontSize:16,color:"#8a8578",marginBottom:16}}>Müşteri: {project.customer}</div>}
           <div style={{display:"flex",justifyContent:"center",gap:16,marginBottom:20}}>
-            <div><div style={{fontSize:18,fontWeight:600,color:"#2980B9"}}>{totalArea.toFixed(0)}m²</div><div style={{fontSize:12,color:"#5a6370"}}>Alan</div></div>
-            <div><div style={{fontSize:18,fontWeight:600,color:"#2980B9"}}>{zones.length}</div><div style={{fontSize:12,color:"#5a6370"}}>Bölge</div></div>
+            <div><div style={{fontSize:18,fontWeight:600,color:"#00C4CC"}}>{totalArea.toFixed(0)}m²</div><div style={{fontSize:12,color:"#64748B"}}>Alan</div></div>
+            <div><div style={{fontSize:18,fontWeight:600,color:"#00C4CC"}}>{zones.length}</div><div style={{fontSize:12,color:"#64748B"}}>Bölge</div></div>
           </div>
           <div style={{width:"100%",height:1,background:"#ccd2d9",marginBottom:20}}/>
 
           {project.approvedAt?<div>
             <div style={{fontSize:40,marginBottom:8}}>✅</div>
             <div style={{fontSize:18,fontWeight:600,color:"#27AE60"}}>KONSEPT ONAYLANDI</div>
-            <div style={{fontSize:14,color:"#5a6878",marginTop:6}}>{new Date(project.approvedAt).toLocaleString("tr-TR")}</div>
-            {project.approvedBy&&<div style={{fontSize:14,color:"#5a6878",marginTop:2}}>Onaylayan: {project.approvedBy}</div>}
+            <div style={{fontSize:14,color:"#64748B",marginTop:6}}>{new Date(project.approvedAt).toLocaleString("tr-TR")}</div>
+            {project.approvedBy&&<div style={{fontSize:14,color:"#64748B",marginTop:2}}>Onaylayan: {project.approvedBy}</div>}
           </div>:<div>
             <div style={{fontSize:16,color:"#8a8578",lineHeight:1.8,marginBottom:20}}>
               Yukarıdaki yerleşim planı, 3D görünüm ve konsept board'u inceledikten sonra, bu konsepti onaylayarak detay çalışma sürecini başlatabilirsiniz.
             </div>
             <div style={{marginBottom:12}}>
-              <input id="approverName" placeholder="Onaylayan adı (opsiyonel)" style={{width:"100%",maxWidth:300,padding:"8px 12px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:6,color:"#1a2a3a",fontSize:16,outline:"none",boxSizing:"border-box",textAlign:"center"}}/>
+              <input id="approverName" placeholder="Onaylayan adı (opsiyonel)" style={{width:"100%",maxWidth:300,padding:"8px 12px",background:"#F8FAFC",border:"1px solid #E2E8F0",borderRadius:6,color:"#0F172A",fontSize:16,outline:"none",boxSizing:"border-box",textAlign:"center"}}/>
             </div>
             <button onClick={()=>{
               const name=document.getElementById("approverName")?.value||"";
@@ -452,11 +452,11 @@ function PresentationMode({project,onSave}){
             }} style={{padding:"14px 40px",background:"linear-gradient(135deg,#27AE60,#1E8449)",border:"none",borderRadius:10,color:"#fff",fontSize:18,fontWeight:700,cursor:"pointer",letterSpacing:1}}>
               ✅ KONSEPTİ ONAYLIYORUM
             </button>
-            <div style={{fontSize:12,color:"#9aa0a8",marginTop:10}}>Bu işlem tarih damgası ile kaydedilecektir</div>
+            <div style={{fontSize:12,color:"#94A3B8",marginTop:10}}>Bu işlem tarih damgası ile kaydedilecektir</div>
           </div>}
         </div>
         {project.approvedAt&&<div style={{marginTop:20}}>
-          <div style={{fontSize:14,color:"#5a6878",marginBottom:8}}>Onay sonrası süreç:</div>
+          <div style={{fontSize:14,color:"#64748B",marginBottom:8}}>Onay sonrası süreç:</div>
           <div style={{display:"flex",justifyContent:"center",gap:6}}>
             {STATUS_FLOW.filter(s=>s.phase!=="sunum").map(s=><div key={s.id} style={{padding:"6px 12px",background:s.color+"15",border:`1px solid ${s.color}33`,borderRadius:6,fontSize:13,color:s.color}}>{s.icon} {s.label}</div>)}
           </div>
@@ -528,8 +528,8 @@ function Scene3D({project}){
   const wh=3.0;
   const gs=Math.ceil(Math.max(u(W),u(H))*1.15);
   return<>
-    <ambientLight intensity={0.6}/>
-    <directionalLight position={[cx+8,12,cz+6]} intensity={0.9} castShadow/>
+    <ambientLight intensity={0.7}/>
+    <directionalLight position={[cx+8,12,cz+6]} intensity={1.1} castShadow/>
     {/* Floor */}
     <mesh rotation={[-Math.PI/2,0,0]} position={[cx,0,cz]} receiveShadow>
       <planeGeometry args={[u(W),u(H)]}/>
@@ -590,7 +590,7 @@ function ThreeD3D({project}){
       </Canvas>
       <div style={{position:"absolute",top:10,right:10,display:"flex",gap:4}}>
         {[{id:"iso",l:"🏠 İzometrik"},{id:"top",l:"⬆️ Üstten"},{id:"front",l:"👁️ Önden"}].map(v=>
-          <button key={v.id} onClick={()=>setView(v.id)} style={{padding:"5px 11px",background:"rgba(255,255,255,0.92)",border:"1px solid #ccd2d9",borderRadius:5,color:"#1a3a5f",fontSize:12,cursor:"pointer",fontWeight:600,boxShadow:"0 1px 4px rgba(0,0,0,0.1)"}}>{v.l}</button>
+          <button key={v.id} onClick={()=>setView(v.id)} style={{padding:"5px 11px",background:"rgba(255,255,255,0.92)",border:"1px solid #E2E8F0",borderRadius:5,color:"#0F172A",fontSize:12,cursor:"pointer",fontWeight:600,boxShadow:"0 1px 4px rgba(0,0,0,0.1)"}}>{v.l}</button>
         )}
       </div>
     </div>
@@ -610,18 +610,18 @@ function Dash({projects,all,isA,user,onOpen,onNew,onTpl,onDel}){
     {/* Status bar */}
     <div style={{display:"flex",gap:4,marginBottom:10,overflowX:"auto",paddingBottom:4}}>
       <div onClick={()=>setSFilt("all")} style={{padding:"6px 12px",background:sFilt==="all"?"#2980B915":"#f4f6f9",border:`1px solid ${sFilt==="all"?"#2980B944":"#dce0e5"}`,borderRadius:7,cursor:"pointer",minWidth:60,textAlign:"center",flexShrink:0}}>
-        <div style={{fontSize:16,fontWeight:700,color:"#2980B9"}}>{projects.length}</div><div style={{fontSize:11,color:"#5a6370"}}>Tümü</div>
+        <div style={{fontSize:16,fontWeight:700,color:"#00C4CC"}}>{projects.length}</div><div style={{fontSize:11,color:"#64748B"}}>Tümü</div>
       </div>
       {STATUS_FLOW.map(s=>{const c=projects.filter(p=>p.status===s.id).length;return<div key={s.id} onClick={()=>setSFilt(sFilt===s.id?"all":s.id)} style={{padding:"6px 10px",background:sFilt===s.id?s.color+"22":"#f4f6f9",border:`1px solid ${sFilt===s.id?s.color+"55":"#dce0e5"}`,borderRadius:7,cursor:"pointer",minWidth:55,textAlign:"center",flexShrink:0}}>
-        <div style={{fontSize:18,fontWeight:700,color:s.color}}>{c}</div><div style={{fontSize:11,color:"#5a6370"}}>{s.icon}{s.label}</div>
+        <div style={{fontSize:18,fontWeight:700,color:s.color}}>{c}</div><div style={{fontSize:11,color:"#64748B"}}>{s.icon}{s.label}</div>
       </div>})}
     </div>
 
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12,flexWrap:"wrap",gap:6}}>
-      <h2 style={{margin:0,fontSize:16,fontWeight:300,color:"#1a2a3a",letterSpacing:2}}>{isA?"Tüm Projeler":"Projelerim"}</h2>
+      <h2 style={{margin:0,fontSize:16,fontWeight:300,color:"#0F172A",letterSpacing:2}}>{isA?"Tüm Projeler":"Projelerim"}</h2>
       <div style={{display:"flex",gap:4}}>
-        <button onClick={onTpl} style={{padding:"7px 14px",background:"#eef1f5",border:"1px solid #ccd2d9",borderRadius:6,color:"#2980B9",fontSize:14,cursor:"pointer"}}>📂 Şablon</button>
-        <button onClick={onNew} style={{padding:"7px 16px",background:"linear-gradient(135deg,#2980B9,#1a3a5f)",border:"none",borderRadius:6,color:"#ffffff",fontSize:14,fontWeight:700,cursor:"pointer"}}>+ Yeni</button>
+        <button onClick={onTpl} style={{padding:"7px 14px",background:"#eef1f5",border:"1px solid #E2E8F0",borderRadius:6,color:"#00C4CC",fontSize:14,cursor:"pointer"}}>📂 Şablon</button>
+        <button onClick={onNew} style={{padding:"7px 16px",background:"#00C4CC",border:"none",borderRadius:6,color:"#ffffff",fontSize:14,fontWeight:700,cursor:"pointer"}}>+ Yeni</button>
       </div>
     </div>
 
@@ -630,9 +630,9 @@ function Dash({projects,all,isA,user,onOpen,onNew,onTpl,onDel}){
       {owners.map(o=><MBtn key={o} t={o.split("@")[0]} a={filt===o} onClick={()=>setFilt(o)}/>)}
     </div>}
 
-    {shown.length===0?<div style={{textAlign:"center",padding:"40px",border:"2px dashed #ccd2d9",borderRadius:14}}><div style={{fontSize:36,marginBottom:8}}>📐</div><div style={{fontSize:17,color:"#7a8390"}}>Proje bulunamadı</div></div>
+    {shown.length===0?<div style={{textAlign:"center",padding:"40px",border:"2px dashed #ccd2d9",borderRadius:14}}><div style={{fontSize:36,marginBottom:8}}>📐</div><div style={{fontSize:17,color:"#64748B"}}>Proje bulunamadı</div></div>
     :<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:10}}>
-      {shown.map(p=>{const st=STATUS_FLOW.find(s=>s.id===p.status)||STATUS_FLOW[0];const pt=PROJ_TYPES.find(t=>t.id===p.type);return<div key={p.id} style={{background:"#ffffff",border:"1px solid #dce0e5",borderRadius:10,overflow:"hidden",cursor:"pointer",position:"relative",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",transition:"box-shadow 0.2s"}} onClick={()=>onOpen(p)}>
+      {shown.map(p=>{const st=STATUS_FLOW.find(s=>s.id===p.status)||STATUS_FLOW[0];const pt=PROJ_TYPES.find(t=>t.id===p.type);return<div key={p.id} style={{background:"#ffffff",border:"1px solid #E2E8F0",borderRadius:10,overflow:"hidden",cursor:"pointer",position:"relative",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",transition:"box-shadow 0.2s"}} onClick={()=>onOpen(p)}>
         {/* Status color band */}
         <div style={{height:5,background:`linear-gradient(90deg,${st.color},${st.color}88)`}}/>
         <div style={{padding:"12px 14px"}}>
@@ -642,19 +642,19 @@ function Dash({projects,all,isA,user,onOpen,onNew,onTpl,onDel}){
           </div>
           {cfm===p.id&&<div onClick={e=>e.stopPropagation()} style={{position:"absolute",inset:0,background:"rgba(255,255,255,0.97)",borderRadius:10,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,zIndex:5}}>
             <div style={{fontSize:13,color:"#e74c3c"}}>Silmek istediğinize emin misiniz?</div>
-            <div style={{display:"flex",gap:4}}><button onClick={()=>{onDel(p.id);setCfm(null)}} style={{padding:"5px 14px",background:"#e74c3c",border:"none",borderRadius:5,color:"#fff",fontSize:13,cursor:"pointer",fontWeight:700}}>Sil</button><button onClick={()=>setCfm(null)} style={{padding:"5px 14px",background:"#eef1f5",border:"none",borderRadius:5,color:"#5a6878",fontSize:13,cursor:"pointer"}}>İptal</button></div>
+            <div style={{display:"flex",gap:4}}><button onClick={()=>{onDel(p.id);setCfm(null)}} style={{padding:"5px 14px",background:"#e74c3c",border:"none",borderRadius:5,color:"#fff",fontSize:13,cursor:"pointer",fontWeight:700}}>Sil</button><button onClick={()=>setCfm(null)} style={{padding:"5px 14px",background:"#eef1f5",border:"none",borderRadius:5,color:"#64748B",fontSize:13,cursor:"pointer"}}>İptal</button></div>
           </div>}
           <div style={{display:"flex",alignItems:"flex-start",gap:8,marginBottom:6,paddingRight:30}}>
             <span style={{fontSize:26,lineHeight:1,marginTop:1}}>{pt?.i}</span>
             <div>
-              <div style={{fontSize:16,fontWeight:800,color:"#1a2a3a",lineHeight:1.2}}>{p.name}</div>
-              {p.customer&&<div style={{fontSize:12,color:"#2980B9",marginTop:2}}>👤 {p.customer}</div>}
+              <div style={{fontSize:16,fontWeight:800,color:"#0F172A",lineHeight:1.2}}>{p.name}</div>
+              {p.customer&&<div style={{fontSize:12,color:"#00C4CC",marginTop:2}}>👤 {p.customer}</div>}
             </div>
           </div>
           <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
             <span style={{fontSize:11,padding:"2px 7px",background:st.color+"15",borderRadius:10,color:st.color,fontWeight:600}}>{st.icon} {st.label}</span>
-            <span style={{fontSize:12,color:"#7a8390"}}>{p.width/100}×{p.height/100}m</span>
-            <span style={{fontSize:12,color:"#7a8390"}}>{(p.zones||[]).length} bölge</span>
+            <span style={{fontSize:12,color:"#64748B"}}>{p.width/100}×{p.height/100}m</span>
+            <span style={{fontSize:12,color:"#64748B"}}>{(p.zones||[]).length} bölge</span>
           </div>
         </div>
       </div>})}
@@ -669,10 +669,10 @@ function TplPick({user,onCancel,onCreate}){
   const[nm,setNm]=useState("");const[cu,setCu]=useState("");
   const use=t=>{onCreate({id:Date.now().toString(),name:nm.trim()||t.name,customer:cu.trim(),type:t.type,width:t.width,height:t.height,entrance:{side:"bottom",position:50,widthCm:200},zones:t.zones.map(z=>({...z,id:Date.now().toString()+Math.random()})),walls:[],elec:[],plumb:[],status:"konsept",owner:user.email,versions:[],discount:0,createdAt:Date.now(),updatedAt:Date.now()})};
   return<div style={{maxWidth:560,margin:"0 auto",padding:"20px 14px"}}>
-    <h2 style={{fontSize:16,fontWeight:300,color:"#1a2a3a",letterSpacing:2,marginBottom:12}}>Şablondan Proje</h2>
+    <h2 style={{fontSize:16,fontWeight:300,color:"#0F172A",letterSpacing:2,marginBottom:12}}>Şablondan Proje</h2>
     <div style={{display:"flex",gap:6,marginBottom:12}}><input value={nm} onChange={e=>setNm(e.target.value)} placeholder="Proje adı" style={inp}/><input value={cu} onChange={e=>setCu(e.target.value)} placeholder="Müşteri" style={inp}/></div>
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{TEMPLATES.map(t=><div key={t.id} onClick={()=>use(t)} style={{background:"#ffffff",border:"1px solid #dce0e5",borderRadius:10,padding:14,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:24}}>{PROJ_TYPES.find(p=>p.id===t.type)?.i}</div><div style={{fontSize:15,fontWeight:600,color:"#1a2a3a",marginTop:4}}>{t.name}</div><div style={{fontSize:13,color:"#5a6370",marginTop:2}}>{t.zones.length} bölge</div></div>)}</div>
-    <button onClick={onCancel} style={{marginTop:12,padding:"7px 18px",background:"none",border:"1px solid #dce0e5",borderRadius:6,color:"#5a6370",fontSize:14,cursor:"pointer"}}>İptal</button>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{TEMPLATES.map(t=><div key={t.id} onClick={()=>use(t)} style={{background:"#ffffff",border:"1px solid #E2E8F0",borderRadius:10,padding:14,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:24}}>{PROJ_TYPES.find(p=>p.id===t.type)?.i}</div><div style={{fontSize:15,fontWeight:600,color:"#0F172A",marginTop:4}}>{t.name}</div><div style={{fontSize:13,color:"#64748B",marginTop:2}}>{t.zones.length} bölge</div></div>)}</div>
+    <button onClick={onCancel} style={{marginTop:12,padding:"7px 18px",background:"none",border:"1px solid #E2E8F0",borderRadius:6,color:"#64748B",fontSize:14,cursor:"pointer"}}>İptal</button>
   </div>;
 }
 
@@ -680,40 +680,40 @@ function NewProj({user,isA,users,onCancel,onCreate}){
   const[n,setN]=useState("");const[c,setC]=useState("");const[t,setT]=useState("market");const[w,setW]=useState(1800);const[h,setH]=useState(1100);const[es,setEs]=useState("bottom");const[ow,setOw]=useState(user.email);
   const go=()=>{if(!n.trim())return;onCreate({id:Date.now().toString(),name:n.trim(),customer:c.trim(),type:t,width:w,height:h,entrance:{side:es,position:50,widthCm:200},zones:[],walls:[],elec:[],plumb:[],status:"konsept",owner:ow,versions:[],discount:0,createdAt:Date.now(),updatedAt:Date.now()})};
   return<div style={{maxWidth:480,margin:"0 auto",padding:"18px 14px"}}>
-    <h2 style={{fontSize:16,fontWeight:300,color:"#1a2a3a",letterSpacing:2,marginBottom:12}}>Yeni Proje</h2>
+    <h2 style={{fontSize:16,fontWeight:300,color:"#0F172A",letterSpacing:2,marginBottom:12}}>Yeni Proje</h2>
     <Fld l="AD"><input value={n} onChange={e=>setN(e.target.value)} placeholder="Proje adı" style={inp}/></Fld>
     <Fld l="MÜŞTERİ"><input value={c} onChange={e=>setC(e.target.value)} placeholder="Müşteri adı" style={inp}/></Fld>
     {isA&&<Fld l="SAHİP"><select value={ow} onChange={e=>setOw(e.target.value)} style={{...inp,appearance:"auto"}}>{ADMINS.map(a=><option key={a} value={a}>{a.split("@")[0]}</option>)}{users.map(u=><option key={u.email} value={u.email}>{u.name}</option>)}</select></Fld>}
-    <Fld l="TİP"><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:4}}>{PROJ_TYPES.map(tp=><button key={tp.id} onClick={()=>setT(tp.id)} style={{padding:"7px 3px",background:t===tp.id?"#2980B915":"#f4f6f9",border:t===tp.id?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:6,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:15}}>{tp.i}</div><div style={{fontSize:11,color:t===tp.id?"#2980B9":"#444",marginTop:2}}>{tp.l}</div></button>)}</div></Fld>
-    <Fld l="ÖLÇÜ"><div style={{display:"flex",gap:6}}><input type="number" value={w} onChange={e=>setW(+e.target.value)} style={{...inp,flex:1}}/><input type="number" value={h} onChange={e=>setH(+e.target.value)} style={{...inp,flex:1}}/><div style={{padding:"7px 10px",background:"#eef0f3",borderRadius:5,fontSize:15,color:"#2980B9",fontWeight:600,alignSelf:"center"}}>{((w*h)/10000).toFixed(0)}m²</div></div></Fld>
-    <Fld l="GİRİŞ"><div style={{display:"flex",gap:4}}>{[{id:"bottom",l:"Alt"},{id:"top",l:"Üst"},{id:"left",l:"Sol"},{id:"right",l:"Sağ"}].map(s=><button key={s.id} onClick={()=>setEs(s.id)} style={{flex:1,padding:"6px",background:es===s.id?"#2980B915":"#f4f6f9",border:es===s.id?"1px solid #2980B944":"1px solid #dce0e5",borderRadius:4,cursor:"pointer",fontSize:13,color:es===s.id?"#2980B9":"#444"}}>{s.l}</button>)}</div></Fld>
+    <Fld l="TİP"><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:4}}>{PROJ_TYPES.map(tp=><button key={tp.id} onClick={()=>setT(tp.id)} style={{padding:"7px 3px",background:t===tp.id?"#2980B915":"#f4f6f9",border:t===tp.id?"1px solid #2980B944":"1px solid #E2E8F0",borderRadius:6,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:15}}>{tp.i}</div><div style={{fontSize:11,color:t===tp.id?"#2980B9":"#444",marginTop:2}}>{tp.l}</div></button>)}</div></Fld>
+    <Fld l="ÖLÇÜ"><div style={{display:"flex",gap:6}}><input type="number" value={w} onChange={e=>setW(+e.target.value)} style={{...inp,flex:1}}/><input type="number" value={h} onChange={e=>setH(+e.target.value)} style={{...inp,flex:1}}/><div style={{padding:"7px 10px",background:"#eef0f3",borderRadius:5,fontSize:15,color:"#00C4CC",fontWeight:600,alignSelf:"center"}}>{((w*h)/10000).toFixed(0)}m²</div></div></Fld>
+    <Fld l="GİRİŞ"><div style={{display:"flex",gap:4}}>{[{id:"bottom",l:"Alt"},{id:"top",l:"Üst"},{id:"left",l:"Sol"},{id:"right",l:"Sağ"}].map(s=><button key={s.id} onClick={()=>setEs(s.id)} style={{flex:1,padding:"6px",background:es===s.id?"#2980B915":"#f4f6f9",border:es===s.id?"1px solid #2980B944":"1px solid #E2E8F0",borderRadius:4,cursor:"pointer",fontSize:13,color:es===s.id?"#2980B9":"#444"}}>{s.l}</button>)}</div></Fld>
     <div style={{display:"flex",gap:6,justifyContent:"flex-end",marginTop:4}}>
-      <button onClick={onCancel} style={{padding:"8px 18px",background:"none",border:"1px solid #dce0e5",borderRadius:6,color:"#5a6370",fontSize:14,cursor:"pointer"}}>İptal</button>
-      <button onClick={go} disabled={!n.trim()} style={{padding:"8px 24px",background:n.trim()?"linear-gradient(135deg,#2980B9,#1a3a5f)":"#dce0e5",border:"none",borderRadius:6,color:n.trim()?"#ffffff":"#333",fontSize:15,fontWeight:700,cursor:n.trim()?"pointer":"default"}}>OLUŞTUR</button>
+      <button onClick={onCancel} style={{padding:"8px 18px",background:"none",border:"1px solid #E2E8F0",borderRadius:6,color:"#64748B",fontSize:14,cursor:"pointer"}}>İptal</button>
+      <button onClick={go} disabled={!n.trim()} style={{padding:"8px 24px",background:n.trim()?"#00C4CC":"#dce0e5",border:"none",borderRadius:6,color:n.trim()?"#ffffff":"#333",fontSize:15,fontWeight:700,cursor:n.trim()?"pointer":"default"}}>OLUŞTUR</button>
     </div>
   </div>;
 }
 
-function Fld({l,children}){return<div style={{marginBottom:10}}><label style={{fontSize:13,color:"#5a6878",letterSpacing:1,display:"block",marginBottom:3}}>{l}</label>{children}</div>}
-const inp={width:"100%",padding:"8px 10px",background:"#ffffff",border:"1px solid #dce0e5",borderRadius:6,color:"#1a2a3a",fontSize:16,outline:"none",boxSizing:"border-box"};
+function Fld({l,children}){return<div style={{marginBottom:10}}><label style={{fontSize:13,color:"#64748B",letterSpacing:1,display:"block",marginBottom:3}}>{l}</label>{children}</div>}
+const inp={width:"100%",padding:"8px 10px",background:"#ffffff",border:"1px solid #E2E8F0",borderRadius:6,color:"#0F172A",fontSize:16,outline:"none",boxSizing:"border-box"};
 
 function UserMgmt({users,projects,onSave}){
   const[em,setEm]=useState("");const[nm,setNm]=useState("");
   const inv=async()=>{const e=em.trim().toLowerCase();if(!e||!e.includes("@")||ADMINS.includes(e)||users.find(u=>u.email===e))return;await onSave([...users,{email:e,name:nm.trim()||e.split("@")[0],role:"user",at:Date.now()}]);setEm("");setNm("")};
   return<div style={{maxWidth:600,margin:"0 auto",padding:"18px 14px"}}>
-    <h2 style={{fontSize:16,fontWeight:300,color:"#1a2a3a",letterSpacing:2,marginBottom:14}}>Kullanıcı Yönetimi</h2>
-    <div style={{background:"#ffffff",borderRadius:9,padding:12,border:"1px solid #dce0e5",marginBottom:10}}>
-      <div style={{fontSize:13,color:"#2980B9",letterSpacing:2,marginBottom:6}}>YÖNETİCİLER</div>
-      {ADMINS.map(a=><div key={a} style={{padding:"4px 0",fontSize:14,color:"#1a2a3a",borderBottom:"1px solid #eef0f3"}}>🔑 {a}</div>)}
+    <h2 style={{fontSize:16,fontWeight:300,color:"#0F172A",letterSpacing:2,marginBottom:14}}>Kullanıcı Yönetimi</h2>
+    <div style={{background:"#ffffff",borderRadius:9,padding:12,border:"1px solid #E2E8F0",marginBottom:10}}>
+      <div style={{fontSize:13,color:"#00C4CC",letterSpacing:2,marginBottom:6}}>YÖNETİCİLER</div>
+      {ADMINS.map(a=><div key={a} style={{padding:"4px 0",fontSize:14,color:"#0F172A",borderBottom:"1px solid #eef0f3"}}>🔑 {a}</div>)}
     </div>
-    <div style={{background:"#ffffff",borderRadius:9,padding:12,border:"1px solid #dce0e5",marginBottom:10}}>
+    <div style={{background:"#ffffff",borderRadius:9,padding:12,border:"1px solid #E2E8F0",marginBottom:10}}>
       <div style={{fontSize:13,color:"#27ae60",letterSpacing:2,marginBottom:6}}>DAVET ET</div>
       <div style={{display:"flex",gap:4}}><input value={nm} onChange={e=>setNm(e.target.value)} placeholder="Ad" style={{...inp,flex:1}}/><input value={em} onChange={e=>setEm(e.target.value)} placeholder="E-posta" onKeyDown={e=>e.key==="Enter"&&inv()} style={{...inp,flex:2}}/><button onClick={inv} style={{padding:"7px 14px",background:"#27ae60",border:"none",borderRadius:5,color:"#fff",fontSize:14,cursor:"pointer",whiteSpace:"nowrap"}}>+Davet</button></div>
     </div>
-    <div style={{background:"#ffffff",borderRadius:9,padding:12,border:"1px solid #dce0e5"}}>
+    <div style={{background:"#ffffff",borderRadius:9,padding:12,border:"1px solid #E2E8F0"}}>
       <div style={{fontSize:13,color:"#5DADE2",letterSpacing:2,marginBottom:6}}>KULLANICILAR ({users.length})</div>
       {users.map(u=><div key={u.email} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:"1px solid #eef0f3"}}>
-        <div><div style={{fontSize:14,color:"#1a2a3a"}}>{u.name}</div><div style={{fontSize:12,color:"#7a8390"}}>{u.email}</div></div>
+        <div><div style={{fontSize:14,color:"#0F172A"}}>{u.name}</div><div style={{fontSize:12,color:"#64748B"}}>{u.email}</div></div>
         <button onClick={()=>onSave(users.filter(x=>x.email!==u.email))} style={{background:"none",border:"none",color:"#e74c3c44",cursor:"pointer",fontSize:14}}>✕</button>
       </div>)}
     </div>
@@ -790,56 +790,56 @@ function Editor({project,user,onSave,onAutoSave}){
   const saveVer=()=>onSave({...project,versions:[...(project.versions||[]),{id:Date.now(),date:Date.now(),zones:JSON.parse(JSON.stringify(zones)),walls:JSON.parse(JSON.stringify(walls))}],updatedAt:Date.now()});
 
   return<div style={{display:"flex",height:"calc(100vh - 57px)",overflow:"hidden"}}>
-    <div style={{width:320,minWidth:320,background:"#f5f7fa",borderRight:"1px solid #dce0e5",display:"flex",flexDirection:"column"}}>
-      <div style={{display:"flex",borderBottom:"1px solid #e8eaee",flexShrink:0,flexWrap:"wrap"}}>
+    <div style={{width:320,minWidth:320,background:"#f5f7fa",borderRight:"1px solid #E2E8F0",display:"flex",flexDirection:"column"}}>
+      <div style={{display:"flex",borderBottom:"1px solid #E2E8F0",flexShrink:0,flexWrap:"wrap"}}>
         {[{id:"zones",l:"Bölge"},{id:"add",l:"+Ekle"},{id:"draw",l:"Çizim"},{id:"equip",l:"Ekipman"},{id:"layers",l:"Katman"}].map(t2=>
           <button key={t2.id} onClick={()=>setTab(t2.id)} style={{flex:1,padding:"10px 4px",background:"none",border:"none",borderBottom:tab===t2.id?"2px solid #2980B9":"2px solid transparent",color:tab===t2.id?"#2980B9":"#555",fontSize:12,cursor:"pointer",minWidth:36}}>{t2.l}</button>)}
       </div>
       <div style={{flex:1,padding:6,overflowY:"auto",fontSize:14}}>
         {tab==="zones"&&<>{zones.map(z=><div key={z.id} onClick={()=>setSelId(selId===z.id?null:z.id)} style={{padding:"4px 6px",borderRadius:5,marginBottom:2,background:selId===z.id?z.color+"15":"transparent",border:selId===z.id?`1px solid ${z.color}33`:"1px solid transparent",cursor:"pointer"}}>
-          <div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontWeight:600,color:"#1a2a3a"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><button onClick={e=>{e.stopPropagation();delZone(z.id)}} style={{background:"none",border:"none",color:"#9aa0a8",cursor:"pointer",fontSize:12}}>✕</button></div>
-          <div style={{fontSize:11,color:"#7a8390"}}>{z.w}×{z.h} • {(z.equip||[]).length}eq</div>
+          <div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontWeight:600,color:"#0F172A"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><button onClick={e=>{e.stopPropagation();delZone(z.id)}} style={{background:"none",border:"none",color:"#94A3B8",cursor:"pointer",fontSize:12}}>✕</button></div>
+          <div style={{fontSize:11,color:"#64748B"}}>{z.w}×{z.h} • {(z.equip||[]).length}eq</div>
         </div>)}
-        {sel&&<div style={{borderTop:"1px solid #dce0e5",paddingTop:5,marginTop:4}}>
+        {sel&&<div style={{borderTop:"1px solid #E2E8F0",paddingTop:5,marginTop:4}}>
           <div style={{fontSize:13,color:sel.color,fontWeight:600,marginBottom:3}}>{sel.icon}{sel.label}</div>
           <div style={{display:"flex",flexWrap:"wrap",gap:2,marginBottom:4}}>{ZONE_COLORS.map(c=><div key={c} onClick={()=>updZone(sel.id,{color:c})} style={{width:13,height:13,borderRadius:2,background:c,cursor:"pointer",border:sel.color===c?"2px solid #fff":"2px solid transparent",boxSizing:"border-box"}}/>)}</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:3,marginBottom:3}}>
-            {[{l:"X",k:"x"},{l:"Y",k:"y"},{l:"W",k:"w"},{l:"H",k:"h"}].map(f=><div key={f.k}><div style={{fontSize:10,color:"#9aa0a8"}}>{f.l}</div><input type="number" value={sel[f.k]} onChange={e=>updZone(sel.id,{[f.k]:+e.target.value})} style={{width:"100%",padding:"2px 3px",background:"#ffffff",border:"1px solid #dce0e5",borderRadius:2,color:"#1a2a3a",fontSize:13,outline:"none",boxSizing:"border-box"}}/></div>)}
+            {[{l:"X",k:"x"},{l:"Y",k:"y"},{l:"W",k:"w"},{l:"H",k:"h"}].map(f=><div key={f.k}><div style={{fontSize:10,color:"#94A3B8"}}>{f.l}</div><input type="number" value={sel[f.k]} onChange={e=>updZone(sel.id,{[f.k]:+e.target.value})} style={{width:"100%",padding:"2px 3px",background:"#ffffff",border:"1px solid #E2E8F0",borderRadius:2,color:"#0F172A",fontSize:13,outline:"none",boxSizing:"border-box"}}/></div>)}
           </div>
-          <div style={{fontSize:11,color:"#7a8390",marginBottom:1}}>Konsept notu</div>
-          <textarea value={sel.mood||""} onChange={e=>updZone(sel.id,{mood:e.target.value})} placeholder="Konsept açıklama..." style={{width:"100%",padding:"3px",background:"#ffffff",border:"1px solid #dce0e5",borderRadius:2,color:"#1a2a3a",fontSize:12,outline:"none",minHeight:24,resize:"vertical",boxSizing:"border-box",fontFamily:"inherit"}}/>
-          <div style={{fontSize:11,color:"#7a8390",marginTop:3,marginBottom:1}}>Malzeme</div>
-          <textarea value={sel.material||""} onChange={e=>updZone(sel.id,{material:e.target.value})} placeholder="Malzeme detayları..." style={{width:"100%",padding:"3px",background:"#ffffff",border:"1px solid #dce0e5",borderRadius:2,color:"#1a2a3a",fontSize:12,outline:"none",minHeight:24,resize:"vertical",boxSizing:"border-box",fontFamily:"inherit"}}/>
-          <div style={{fontSize:11,color:"#2980B9",marginTop:3}}>Ekipman: {(sel.equip||[]).length}</div>
+          <div style={{fontSize:11,color:"#64748B",marginBottom:1}}>Konsept notu</div>
+          <textarea value={sel.mood||""} onChange={e=>updZone(sel.id,{mood:e.target.value})} placeholder="Konsept açıklama..." style={{width:"100%",padding:"3px",background:"#ffffff",border:"1px solid #E2E8F0",borderRadius:2,color:"#0F172A",fontSize:12,outline:"none",minHeight:24,resize:"vertical",boxSizing:"border-box",fontFamily:"inherit"}}/>
+          <div style={{fontSize:11,color:"#64748B",marginTop:3,marginBottom:1}}>Malzeme</div>
+          <textarea value={sel.material||""} onChange={e=>updZone(sel.id,{material:e.target.value})} placeholder="Malzeme detayları..." style={{width:"100%",padding:"3px",background:"#ffffff",border:"1px solid #E2E8F0",borderRadius:2,color:"#0F172A",fontSize:12,outline:"none",minHeight:24,resize:"vertical",boxSizing:"border-box",fontFamily:"inherit"}}/>
+          <div style={{fontSize:11,color:"#00C4CC",marginTop:3}}>Ekipman: {(sel.equip||[]).length}</div>
           {(sel.equip||[]).map(eq=><div key={eq.uid} style={{display:"flex",justifyContent:"space-between",padding:"2px 0",fontSize:12,borderBottom:"1px solid #eef0f3"}}>
-            <span style={{color:"#5a6878"}}>{eq.brand} {eq.name}</span>
-            <button onClick={()=>updZone(sel.id,{equip:(sel.equip||[]).filter(e=>e.uid!==eq.uid)})} style={{background:"none",border:"none",color:"#9aa0a8",cursor:"pointer",fontSize:11}}>✕</button>
+            <span style={{color:"#64748B"}}>{eq.brand} {eq.name}</span>
+            <button onClick={()=>updZone(sel.id,{equip:(sel.equip||[]).filter(e=>e.uid!==eq.uid)})} style={{background:"none",border:"none",color:"#94A3B8",cursor:"pointer",fontSize:11}}>✕</button>
           </div>)}
         </div>}
         </>}
-        {tab==="add"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:3}}>{ZONE_PRESETS.map(t2=><button key={t2.id+Math.random()} onClick={()=>addZone(t2)} style={{padding:"6px 2px",background:"#ffffff",border:"1px solid #dce0e5",borderRadius:5,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:18}}>{t2.icon}</div><div style={{fontSize:11,color:"#5a6878",marginTop:1}}>{t2.label}</div></button>)}</div>}
+        {tab==="add"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:3}}>{ZONE_PRESETS.map(t2=><button key={t2.id+Math.random()} onClick={()=>addZone(t2)} style={{padding:"6px 2px",background:"#ffffff",border:"1px solid #E2E8F0",borderRadius:5,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:18}}>{t2.icon}</div><div style={{fontSize:11,color:"#64748B",marginTop:1}}>{t2.label}</div></button>)}</div>}
         {tab==="draw"&&<div>
           {[{id:"wall",l:"🧱 Duvar",c:"#4a5568"},{id:"elec",l:"⚡ Elektrik",c:"#F1C40F"},{id:"plumb",l:"💧 Tesisat",c:"#3498DB"},{id:"measure",l:"📏 Ölçü",c:"#E67E22"},{id:"entrance",l:"🚪 Giriş",c:"#2980B9"},{id:"exit",l:"🚪 Çıkış",c:"#E74C3C"}].map(d=>
-            <button key={d.id} onClick={()=>{setDrawMode(drawMode===d.id?null:d.id);setDrawStart(null)}} style={{display:"block",width:"100%",padding:"5px 7px",marginBottom:2,background:drawMode===d.id?d.c+"22":"#f4f6f9",border:drawMode===d.id?`1px solid ${d.c}55`:"1px solid #dce0e5",borderRadius:4,color:drawMode===d.id?d.c:"#666",fontSize:13,cursor:"pointer",textAlign:"left"}}>{d.l}{drawMode===d.id?" ✓":""}</button>)}
+            <button key={d.id} onClick={()=>{setDrawMode(drawMode===d.id?null:d.id);setDrawStart(null)}} style={{display:"block",width:"100%",padding:"5px 7px",marginBottom:2,background:drawMode===d.id?d.c+"22":"#f4f6f9",border:drawMode===d.id?`1px solid ${d.c}55`:"1px solid #E2E8F0",borderRadius:4,color:drawMode===d.id?d.c:"#666",fontSize:13,cursor:"pointer",textAlign:"left"}}>{d.l}{drawMode===d.id?" ✓":""}</button>)}
           {drawMode==="wall"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{WALL_TYPES.map(wt=><MBtn key={wt.id} t={wt.label} a={drawType===wt.id} onClick={()=>setDrawType(wt.id)}/>)}</div>}
           {drawMode==="elec"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{ELEC_TYPES.map(et=><MBtn key={et.id} t={et.icon+et.label} a={drawType===et.id} onClick={()=>setDrawType(et.id)}/>)}</div>}
           {drawMode==="plumb"&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:4}}>{PLUMB_TYPES.map(pt=><MBtn key={pt.id} t={pt.icon+pt.label} a={drawType===pt.id} onClick={()=>setDrawType(pt.id)}/>)}</div>}
           {(drawMode==="entrance"||drawMode==="exit")&&<div style={{marginTop:4,fontSize:12,color:drawMode==="entrance"?"#2980B9":"#E74C3C",padding:"4px 6px",background:drawMode==="entrance"?"#2980B911":"#E74C3C11",borderRadius:3}}>Plan sınırına tıklayarak kapı yerleştirin</div>}
           {drawMode==="exit"&&(project.exits||[]).length>0&&<button onClick={()=>onSave({...project,exits:[],updatedAt:Date.now()})} style={{marginTop:3,display:"block",width:"100%",padding:"3px 6px",background:"#E74C3C11",border:"1px solid #E74C3C33",borderRadius:3,color:"#E74C3C",fontSize:11,cursor:"pointer"}}>✕ Tüm çıkışları sil ({(project.exits||[]).length})</button>}
-          {drawStart&&<div style={{marginTop:4,fontSize:12,color:"#2980B9",padding:3,background:"#2980B911",borderRadius:3}}>Nokta 1: ({drawStart.x},{drawStart.y})</div>}
+          {drawStart&&<div style={{marginTop:4,fontSize:12,color:"#00C4CC",padding:3,background:"#2980B911",borderRadius:3}}>Nokta 1: ({drawStart.x},{drawStart.y})</div>}
         </div>}
         {tab==="equip"&&<div>
-          {!sel&&<div style={{padding:5,background:"#2980B911",borderRadius:4,fontSize:12,color:"#2980B9",marginBottom:4}}>Önce bölge seçin</div>}
+          {!sel&&<div style={{padding:5,background:"#2980B911",borderRadius:4,fontSize:12,color:"#00C4CC",marginBottom:4}}>Önce bölge seçin</div>}
           {/* Kategori sekmeleri */}
           <div style={{display:"flex",flexWrap:"wrap",gap:2,marginBottom:4}}>{Object.entries(EQUIPMENT).filter(([,v])=>v.items).map(([k,v])=><MBtn key={k} t={v.icon+v.label} a={eqCat===k} onClick={()=>setEqCat(k)}/>)}</div>
           {/* Fiyat Düzenleme Paneli */}
           <div style={{background:"#1a3a5f0d",border:"1px solid #1a3a5f22",borderRadius:6,padding:"5px 7px",marginBottom:6}}>
-            <div style={{fontSize:11,color:"#1a3a5f",fontWeight:700,letterSpacing:1,marginBottom:4}}>📊 FİYAT DÜZENLEMESİ — {EQUIPMENT[eqCat]?.label}</div>
+            <div style={{fontSize:11,color:"#0F172A",fontWeight:700,letterSpacing:1,marginBottom:4}}>📊 FİYAT DÜZENLEMESİ — {EQUIPMENT[eqCat]?.label}</div>
             <div style={{display:"flex",alignItems:"center",gap:4}}>
-              <span style={{fontSize:11,color:"#5a6878",whiteSpace:"nowrap"}}>% Fark</span>
+              <span style={{fontSize:11,color:"#64748B",whiteSpace:"nowrap"}}>% Fark</span>
               <input type="number" value={markupInput[eqCat]||"0"} onChange={e=>setMarkupInput(m=>({...m,[eqCat]:e.target.value}))}
                 style={{width:56,padding:"2px 4px",background:"#ffffff",border:`1px solid ${(markups[eqCat]||0)!==0?"#E67E22":"#dce0e5"}`,borderRadius:3,color:(markups[eqCat]||0)>0?"#27AE60":(markups[eqCat]||0)<0?"#E74C3C":"#1a2a3a",fontSize:13,fontWeight:700,outline:"none",textAlign:"right"}}/>
-              <span style={{fontSize:11,color:"#7a8390"}}>%</span>
+              <span style={{fontSize:11,color:"#64748B"}}>%</span>
               <button onClick={()=>applyMarkup(eqCat)} style={{padding:"2px 8px",background:"#2980B9",border:"none",borderRadius:3,color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer"}}>Uygula</button>
               {(markups[eqCat]||0)!==0&&<button onClick={()=>{setMarkups(m=>({...m,[eqCat]:0}));setMarkupInput(m=>({...m,[eqCat]:"0"}))}} style={{padding:"2px 6px",background:"#E74C3C22",border:"1px solid #E74C3C44",borderRadius:3,color:"#E74C3C",fontSize:10,cursor:"pointer"}}>↩</button>}
             </div>
@@ -853,21 +853,21 @@ function Editor({project,user,onSave,onAutoSave}){
             const changed=currPrice!==basePrice;
             const isEditOpen=editPriceId===eq.id;
             return<div key={eq.id} style={{padding:"4px 5px",marginBottom:2,background:"#ffffff",borderRadius:4,border:`1px solid ${changed?"#E67E2244":"#dce0e5"}`}}>
-              <div style={{fontSize:13,fontWeight:600,color:"#1a2a3a"}}>{eq.name}</div>
-              <div style={{fontSize:11,color:"#5a6370"}}><span style={{color:eq.color}}>{eq.brand}</span> • {eq.model}</div>
+              <div style={{fontSize:13,fontWeight:600,color:"#0F172A"}}>{eq.name}</div>
+              <div style={{fontSize:11,color:"#64748B"}}><span style={{color:eq.color}}>{eq.brand}</span> • {eq.model}</div>
               {eq.sicaklik&&<div style={{fontSize:10,color:"#3498DB",marginTop:1}}>🌡️ {eq.sicaklik}</div>}
               <div style={{fontSize:11,display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:2,gap:3}}>
                 <span style={{display:"flex",alignItems:"center",gap:4}}>
-                  {eq.power>0&&<span style={{color:"#9aa0a8"}}>{eq.power}W</span>}
-                  {changed&&<span style={{color:"#9aa0a8",textDecoration:"line-through",fontSize:10}}>{sym}{fmt(basePrice)}</span>}
+                  {eq.power>0&&<span style={{color:"#94A3B8"}}>{eq.power}W</span>}
+                  {changed&&<span style={{color:"#94A3B8",textDecoration:"line-through",fontSize:10}}>{sym}{fmt(basePrice)}</span>}
                   <span style={{color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:700}}>{sym}{fmt(currPrice)}</span>
-                  <button onClick={()=>{if(isEditOpen){setEditPriceId(null)}else{setEditPriceId(eq.id);setEditPriceVal(String(manualPrices[eq.id]??currPrice))}}} style={{background:"none",border:"none",color:"#9aa0a8",cursor:"pointer",fontSize:11,padding:"0 2px",lineHeight:1}}>✏️</button>
+                  <button onClick={()=>{if(isEditOpen){setEditPriceId(null)}else{setEditPriceId(eq.id);setEditPriceVal(String(manualPrices[eq.id]??currPrice))}}} style={{background:"none",border:"none",color:"#94A3B8",cursor:"pointer",fontSize:11,padding:"0 2px",lineHeight:1}}>✏️</button>
                   {manualPrices[eq.id]!=null&&<button onClick={()=>setManualPrices(m=>{const n={...m};delete n[eq.id];return n})} style={{background:"none",border:"none",color:"#E74C3C",cursor:"pointer",fontSize:10,padding:"0 1px",lineHeight:1}} title="Manuel fiyatı sıfırla">✕</button>}
                 </span>
-                {sel&&<button onClick={()=>updZone(sel.id,{equip:[...(sel.equip||[]),{...eq,uid:Date.now().toString(),priceUsed:currPrice}]})} style={{padding:"1px 6px",background:"#2980B922",border:"1px solid #2980B944",borderRadius:2,color:"#2980B9",fontSize:11,cursor:"pointer",whiteSpace:"nowrap"}}>+Ekle</button>}
+                {sel&&<button onClick={()=>updZone(sel.id,{equip:[...(sel.equip||[]),{...eq,uid:Date.now().toString(),priceUsed:currPrice}]})} style={{padding:"1px 6px",background:"#2980B922",border:"1px solid #2980B944",borderRadius:2,color:"#00C4CC",fontSize:11,cursor:"pointer",whiteSpace:"nowrap"}}>+Ekle</button>}
               </div>
               {isEditOpen&&<div style={{display:"flex",gap:3,marginTop:3,alignItems:"center"}}>
-                <span style={{fontSize:10,color:"#5a6878"}}>Manuel fiyat:</span>
+                <span style={{fontSize:10,color:"#64748B"}}>Manuel fiyat:</span>
                 <input type="number" value={editPriceVal} onChange={e=>setEditPriceVal(e.target.value)} style={{flex:1,padding:"2px 4px",background:"#fff8f0",border:"1px solid #E67E22",borderRadius:3,color:"#E67E22",fontSize:12,fontWeight:700,outline:"none"}}/>
                 <button onClick={()=>{const v=parseFloat(editPriceVal);if(!isNaN(v)){setManualPrices(m=>({...m,[eq.id]:v}))}setEditPriceId(null)}} style={{padding:"2px 7px",background:"#E67E22",border:"none",borderRadius:3,color:"#fff",fontSize:11,cursor:"pointer"}}>✓</button>
               </div>}
@@ -881,13 +881,13 @@ function Editor({project,user,onSave,onAutoSave}){
             </label>)}
         </div>}
       </div>
-      <div style={{padding:5,borderTop:"1px solid #dce0e5",flexShrink:0}}>
-        <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#7a8390",marginBottom:3}}>
-          <span>{zoneArea.toFixed(1)}/{totalArea.toFixed(0)}m²</span><span style={{color:"#2980B9"}}>₺{fmt(totalCostProj)}</span><span style={{color:"#F1C40F"}}>{(totalPower/1000).toFixed(1)}kW</span>
+      <div style={{padding:5,borderTop:"1px solid #E2E8F0",flexShrink:0}}>
+        <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#64748B",marginBottom:3}}>
+          <span>{zoneArea.toFixed(1)}/{totalArea.toFixed(0)}m²</span><span style={{color:"#00C4CC"}}>₺{fmt(totalCostProj)}</span><span style={{color:"#F1C40F"}}>{(totalPower/1000).toFixed(1)}kW</span>
         </div>
         <div style={{display:"flex",gap:2,flexWrap:"wrap"}}>
-          {[{id:"report",t:"📋Rapor"},{id:"pricing",t:"💰Teklif"},{id:"energy",t:"⚡Enerji"},{id:"status",t:"📊Durum"}].map(b=><button key={b.id} onClick={()=>setPanel(panel===b.id?null:b.id)} style={{padding:"3px 6px",background:"#eef1f5",border:"1px solid #ccd2d9",borderRadius:3,color:"#5a6878",fontSize:11,cursor:"pointer"}}>{b.t}</button>)}
-          <button onClick={saveVer} style={{padding:"3px 6px",background:"#eef1f5",border:"1px solid #ccd2d9",borderRadius:3,color:"#5a6878",fontSize:11,cursor:"pointer"}}>💾Rev</button>
+          {[{id:"report",t:"📋Rapor"},{id:"pricing",t:"💰Teklif"},{id:"energy",t:"⚡Enerji"},{id:"status",t:"📊Durum"}].map(b=><button key={b.id} onClick={()=>setPanel(panel===b.id?null:b.id)} style={{padding:"3px 6px",background:"#eef1f5",border:"1px solid #E2E8F0",borderRadius:3,color:"#64748B",fontSize:11,cursor:"pointer"}}>{b.t}</button>)}
+          <button onClick={saveVer} style={{padding:"3px 6px",background:"#eef1f5",border:"1px solid #E2E8F0",borderRadius:3,color:"#64748B",fontSize:11,cursor:"pointer"}}>💾Rev</button>
         </div>
       </div>
     </div>
@@ -932,8 +932,8 @@ function Editor({project,user,onSave,onAutoSave}){
 // ─── OVERLAY PANELS ─────────────────────────────────────────────
 function OverlayPanel({type,project,zones,walls,totalCost,totalCostKatalog,netCost,kdvAmt,totalPower,monthlyE,onClose,onStatus,onDiscount}){
   const w={position:"absolute",inset:0,background:"rgba(240,242,245,0.96)",zIndex:10,overflowY:"auto",padding:14};
-  const i={maxWidth:560,margin:"0 auto"};const bx={background:"#ffffff",borderRadius:8,padding:12,border:"1px solid #dce0e5",marginBottom:8};
-  const hd=t=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><h2 style={{margin:0,fontSize:18,fontWeight:300,color:"#2980B9",letterSpacing:3}}>{t}</h2><button onClick={onClose} style={{background:"none",border:"none",color:"#5a6370",cursor:"pointer",fontSize:16}}>✕</button></div>;
+  const i={maxWidth:560,margin:"0 auto"};const bx={background:"#ffffff",borderRadius:8,padding:12,border:"1px solid #E2E8F0",marginBottom:8};
+  const hd=t=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><h2 style={{margin:0,fontSize:18,fontWeight:300,color:"#00C4CC",letterSpacing:3}}>{t}</h2><button onClick={onClose} style={{background:"none",border:"none",color:"#64748B",cursor:"pointer",fontSize:16}}>✕</button></div>;
   const[useProjPrice,setUseProjPrice]=useState(true);
   const allEq=zones.flatMap(z=>(z.equip||[]).map(e=>({...e,zone:z.label})));const totalArea=(project.width*project.height)/10000;
   const activeCost=useProjPrice?totalCost:(totalCostKatalog??totalCost);
@@ -942,23 +942,23 @@ function OverlayPanel({type,project,zones,walls,totalCost,totalCostKatalog,netCo
   const activeKdv=activeNetCost*KDV;
 
   if(type==="report")return<div style={w}><div style={i}>{hd("PROJE RAPORU")}
-    <div style={bx}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:11,color:"#7a8390",letterSpacing:2}}>NOKTA DİZAYN</div><div style={{fontSize:16,fontWeight:600,color:"#1a2a3a",marginTop:2}}>{project.name}</div>{project.customer&&<div style={{fontSize:13,color:"#2980B9"}}>Müşteri: {project.customer}</div>}</div><Logo sz={36}/></div></div>
-    {activeCost>0&&<div style={{...bx,textAlign:"center",background:"#2980B911",border:"1px solid #2980B922"}}><div style={{fontSize:12,color:"#2980B9",letterSpacing:2}}>TOPLAM (KDV DAHİL)</div><div style={{fontSize:20,fontWeight:700,color:"#2980B9",marginTop:3}}>₺{fmt(Math.round(activeNetCost+activeKdv))}</div></div>}
-    <div style={bx}>{zones.map(z=><div key={z.id} style={{padding:"5px 0",borderBottom:"1px solid #eef0f3"}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:14,fontWeight:600,color:"#1a2a3a"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><span style={{fontSize:12,color:"#5a6370"}}>{((z.w*z.h)/10000).toFixed(1)}m²</span></div>{(z.equip||[]).map(eq=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<div key={eq.uid} style={{fontSize:12,color:"#5a6878",paddingLeft:10}}>• {eq.brand} {eq.name} — {sym}{fmt(p)}</div>})}</div>)}</div>
+    <div style={bx}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:11,color:"#64748B",letterSpacing:2}}>NOKTA DİZAYN</div><div style={{fontSize:16,fontWeight:600,color:"#0F172A",marginTop:2}}>{project.name}</div>{project.customer&&<div style={{fontSize:13,color:"#00C4CC"}}>Müşteri: {project.customer}</div>}</div><Logo sz={36}/></div></div>
+    {activeCost>0&&<div style={{...bx,textAlign:"center",background:"#2980B911",border:"1px solid #2980B922"}}><div style={{fontSize:12,color:"#00C4CC",letterSpacing:2}}>TOPLAM (KDV DAHİL)</div><div style={{fontSize:20,fontWeight:700,color:"#00C4CC",marginTop:3}}>₺{fmt(Math.round(activeNetCost+activeKdv))}</div></div>}
+    <div style={bx}>{zones.map(z=><div key={z.id} style={{padding:"5px 0",borderBottom:"1px solid #eef0f3"}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:14,fontWeight:600,color:"#0F172A"}}><span style={{color:z.color}}>■</span>{z.icon}{z.label}</span><span style={{fontSize:12,color:"#64748B"}}>{((z.w*z.h)/10000).toFixed(1)}m²</span></div>{(z.equip||[]).map(eq=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<div key={eq.uid} style={{fontSize:12,color:"#64748B",paddingLeft:10}}>• {eq.brand} {eq.name} — {sym}{fmt(p)}</div>})}</div>)}</div>
   </div></div>;
 
   if(type==="pricing")return<div style={w}><div style={i}>{hd("FİYAT TEKLİFİ")}
     {/* Katalog / Proje toggle */}
-    <div style={{display:"flex",gap:0,marginBottom:10,borderRadius:6,overflow:"hidden",border:"1px solid #dce0e5"}}>
+    <div style={{display:"flex",gap:0,marginBottom:10,borderRadius:6,overflow:"hidden",border:"1px solid #E2E8F0"}}>
       {[{v:true,l:"📁 Proje Fiyatı"},{v:false,l:"📋 Katalog Fiyatı"}].map(opt=><button key={String(opt.v)} onClick={()=>setUseProjPrice(opt.v)} style={{flex:1,padding:"7px 4px",background:useProjPrice===opt.v?"#2980B9":"#ffffff",border:"none",color:useProjPrice===opt.v?"#ffffff":"#5a6878",fontSize:12,fontWeight:useProjPrice===opt.v?700:400,cursor:"pointer"}}>{opt.l}</button>)}
     </div>
     {!useProjPrice&&<div style={{fontSize:11,color:"#E67E22",padding:"3px 6px",background:"#E67E2211",borderRadius:4,marginBottom:8}}>⚠ Anlık katalog fiyatları gösteriliyor — teklif kayıt edildiğinde farklılık oluşabilir</div>}
-    <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{background:"#f4f6f9",borderBottom:"2px solid #dce0e5"}}><th style={{textAlign:"left",padding:"6px 8px",color:"#5a6878",fontWeight:600}}>Ürün</th><th style={{textAlign:"left",padding:"6px 8px",color:"#5a6878",fontWeight:600}}>Bölge</th><th style={{textAlign:"right",padding:"6px 8px",color:"#5a6878",fontWeight:600}}>{useProjPrice?"Proje":"Katalog"} Fiyatı</th></tr></thead>
-      <tbody>{allEq.map((eq,ix)=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<tr key={eq.uid||ix} style={{borderBottom:"1px solid #eef0f3",background:ix%2===0?"#ffffff":"#fafbfc"}}><td style={{padding:"5px 8px",color:"#1a2a3a",fontSize:13}}>{eq.name}</td><td style={{padding:"5px 8px",color:"#7a8390",fontSize:12}}>{eq.zone}</td><td style={{padding:"5px 8px",textAlign:"right",color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:700,fontSize:13}}>{sym}{fmt(p)}</td></tr>})}</tbody></table></div>
+    <div style={bx}><table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{background:"#F8FAFC",borderBottom:"2px solid #dce0e5"}}><th style={{textAlign:"left",padding:"6px 8px",color:"#64748B",fontWeight:600}}>Ürün</th><th style={{textAlign:"left",padding:"6px 8px",color:"#64748B",fontWeight:600}}>Bölge</th><th style={{textAlign:"right",padding:"6px 8px",color:"#64748B",fontWeight:600}}>{useProjPrice?"Proje":"Katalog"} Fiyatı</th></tr></thead>
+      <tbody>{allEq.map((eq,ix)=>{const sym=eq.curr==="EUR"?"€":"₺";const p=activeEqPrice(eq);return<tr key={eq.uid||ix} style={{borderBottom:"1px solid #eef0f3",background:ix%2===0?"#ffffff":"#fafbfc"}}><td style={{padding:"5px 8px",color:"#0F172A",fontSize:13}}>{eq.name}</td><td style={{padding:"5px 8px",color:"#64748B",fontSize:12}}>{eq.zone}</td><td style={{padding:"5px 8px",textAlign:"right",color:eq.curr==="EUR"?"#27AE60":"#2980B9",fontWeight:700,fontSize:13}}>{sym}{fmt(p)}</td></tr>})}</tbody></table></div>
     <div style={bx}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8,paddingBottom:8,borderBottom:"1px solid #eef0f3"}}><span style={{fontSize:14,color:"#5a6878",fontWeight:600}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:70,padding:"4px 8px",background:"#f8f9fb",border:"1px solid #d0d5db",borderRadius:5,color:"#1a2a3a",fontSize:15,textAlign:"right",outline:"none"}}/></div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8,paddingBottom:8,borderBottom:"1px solid #eef0f3"}}><span style={{fontSize:14,color:"#64748B",fontWeight:600}}>İskonto (%)</span><input type="number" value={project.discount||0} onChange={e=>onDiscount(+e.target.value)} style={{width:70,padding:"4px 8px",background:"#F8FAFC",border:"1px solid #E2E8F0",borderRadius:5,color:"#0F172A",fontSize:15,textAlign:"right",outline:"none"}}/></div>
       {[{l:"Ara Toplam",v:activeCost,b:false},{l:`İskonto (%${project.discount||0})`,v:-(activeCost*(project.discount||0)/100),neg:true},{l:"Net Tutar",v:activeNetCost},{l:`KDV (%${KDV*100})`,v:activeKdv},{l:"GENEL TOPLAM",v:activeNetCost+activeKdv,b:true}].map((r,ix)=>
-        <div key={ix} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:r.b?"10px 12px":"5px 4px",marginBottom:r.b?0:0,background:r.b?"linear-gradient(135deg,#2980B9,#1a3a5f)":ix%2===0?"transparent":"#f8f9fb",borderRadius:r.b?8:0,borderTop:r.b?"none":"none",marginTop:r.b?6:0}}>
+        <div key={ix} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:r.b?"10px 12px":"5px 4px",marginBottom:r.b?0:0,background:r.b?"#00C4CC":ix%2===0?"transparent":"#f8f9fb",borderRadius:r.b?8:0,borderTop:r.b?"none":"none",marginTop:r.b?6:0}}>
           <span style={{fontSize:r.b?14:13,fontWeight:r.b?700:400,color:r.b?"#ffffff":r.neg?"#E74C3C":"#5a6878"}}>{r.l}</span>
           <span style={{fontSize:r.b?16:13,fontWeight:r.b?800:600,color:r.b?"#ffffff":r.neg?"#E74C3C":"#1a2a3a"}}>₺{fmt(Math.round(r.v))}</span>
         </div>)}
@@ -967,22 +967,22 @@ function OverlayPanel({type,project,zones,walls,totalCost,totalCostKatalog,netCo
 
   if(type==="energy")return<div style={w}><div style={i}>{hd("ENERJİ")}
     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
-      <div style={{...bx,textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"#F1C40F"}}>{(totalPower/1000).toFixed(1)}kW</div><div style={{fontSize:12,color:"#5a6370"}}>Toplam Güç</div></div>
-      <div style={{...bx,textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"#E67E22"}}>₺{fmt(Math.round(monthlyE))}</div><div style={{fontSize:12,color:"#5a6370"}}>Aylık Tahmini</div></div>
+      <div style={{...bx,textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"#F1C40F"}}>{(totalPower/1000).toFixed(1)}kW</div><div style={{fontSize:12,color:"#64748B"}}>Toplam Güç</div></div>
+      <div style={{...bx,textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"#E67E22"}}>₺{fmt(Math.round(monthlyE))}</div><div style={{fontSize:12,color:"#64748B"}}>Aylık Tahmini</div></div>
     </div>
-    <div style={bx}>{allEq.filter(e=>e.power>0).map((eq,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"2px 0",fontSize:13,borderBottom:"1px solid #eef0f3"}}><span style={{color:"#1a2a3a"}}>{eq.brand} {eq.name}</span><span style={{color:"#F1C40F"}}>{eq.power}W</span></div>)}</div>
+    <div style={bx}>{allEq.filter(e=>e.power>0).map((eq,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"2px 0",fontSize:13,borderBottom:"1px solid #eef0f3"}}><span style={{color:"#0F172A"}}>{eq.brand} {eq.name}</span><span style={{color:"#F1C40F"}}>{eq.power}W</span></div>)}</div>
   </div></div>;
 
   if(type==="status")return<div style={w}><div style={i}>{hd("PROJE DURUMU")}
     <div style={{display:"flex",gap:3,marginBottom:14,flexWrap:"wrap"}}>
       {STATUS_FLOW.map((s,idx)=>{const cur=STATUS_FLOW.findIndex(x=>x.id===project.status);const isActive=project.status===s.id;const isPast=cur>=idx;return<div key={s.id} style={{textAlign:"center",flex:1,minWidth:50}}>
         <div onClick={()=>onStatus(s.id)} style={{width:30,height:30,borderRadius:15,margin:"0 auto",background:isPast?s.color+"33":"#dce0e5",border:`2px solid ${isPast?s.color:"#ccd2d9"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,cursor:"pointer"}}>{s.icon}</div>
-        <div style={{fontSize:11,color:isActive?s.color:"#7a8390",marginTop:3,fontWeight:isActive?700:400}}>{s.label}</div>
+        <div style={{fontSize:11,color:isActive?s.color:"#64748B",marginTop:3,fontWeight:isActive?700:400}}>{s.label}</div>
       </div>})}
     </div>
-    <div style={{display:"flex",gap:6,marginBottom:10}}>{[{l:"Sunum",c:"#9B59B6"},{l:"Detay",c:"#2980B9"},{l:"Uygulama",c:"#27AE60"}].map(p=><div key={p.l} style={{flex:1,padding:6,background:p.c+"11",borderRadius:6,textAlign:"center"}}><div style={{fontSize:12,color:p.c,fontWeight:600}}>{p.l}</div><div style={{fontSize:11,color:"#7a8390",marginTop:2}}>{STATUS_FLOW.filter(s=>s.phase===p.l.toLowerCase()).map(s=>s.label).join(" → ")}</div></div>)}</div>
-    {project.approvedAt&&<div style={{...bx,textAlign:"center"}}><div style={{fontSize:16,color:"#27AE60"}}>✅ Konsept Onaylandı</div><div style={{fontSize:13,color:"#5a6878",marginTop:2}}>{new Date(project.approvedAt).toLocaleString("tr-TR")}{project.approvedBy&&` — ${project.approvedBy}`}</div></div>}
-    {(project.versions||[]).length>0&&<div style={bx}><div style={{fontSize:12,color:"#2980B9",letterSpacing:2,marginBottom:4}}>VERSİYONLAR</div>{(project.versions||[]).map((v,i)=><div key={v.id} style={{fontSize:13,color:"#5a6878",padding:"2px 0",borderBottom:"1px solid #eef0f3"}}>Rev.{i+1} — {new Date(v.date).toLocaleString("tr-TR")}</div>)}</div>}
+    <div style={{display:"flex",gap:6,marginBottom:10}}>{[{l:"Sunum",c:"#9B59B6"},{l:"Detay",c:"#2980B9"},{l:"Uygulama",c:"#27AE60"}].map(p=><div key={p.l} style={{flex:1,padding:6,background:p.c+"11",borderRadius:6,textAlign:"center"}}><div style={{fontSize:12,color:p.c,fontWeight:600}}>{p.l}</div><div style={{fontSize:11,color:"#64748B",marginTop:2}}>{STATUS_FLOW.filter(s=>s.phase===p.l.toLowerCase()).map(s=>s.label).join(" → ")}</div></div>)}</div>
+    {project.approvedAt&&<div style={{...bx,textAlign:"center"}}><div style={{fontSize:16,color:"#27AE60"}}>✅ Konsept Onaylandı</div><div style={{fontSize:13,color:"#64748B",marginTop:2}}>{new Date(project.approvedAt).toLocaleString("tr-TR")}{project.approvedBy&&` — ${project.approvedBy}`}</div></div>}
+    {(project.versions||[]).length>0&&<div style={bx}><div style={{fontSize:12,color:"#00C4CC",letterSpacing:2,marginBottom:4}}>VERSİYONLAR</div>{(project.versions||[]).map((v,i)=><div key={v.id} style={{fontSize:13,color:"#64748B",padding:"2px 0",borderBottom:"1px solid #eef0f3"}}>Rev.{i+1} — {new Date(v.date).toLocaleString("tr-TR")}</div>)}</div>}
   </div></div>;
 
   return null;
@@ -997,19 +997,19 @@ class ThreeErrorBoundary extends React.Component{
     return this.props.children
   }
 }
-function View3D({project}){return<div style={{minHeight:"calc(100vh - 57px)",overflow:"auto",background:"#f4f6f9",padding:16,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><div style={{width:"100%",maxWidth:820,textAlign:"center"}}><div style={{fontSize:16,fontWeight:800,color:"#1a3a5f",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#ffffff",borderRadius:10,border:"1px solid #dce0e5",padding:12,boxShadow:"0 2px 12px rgba(0,0,0,0.07)"}}><ThreeErrorBoundary><ThreeD3D project={project}/></ThreeErrorBoundary></div></div></div>}
+function View3D({project}){return<div style={{minHeight:"calc(100vh - 57px)",overflow:"auto",background:"#F8FAFC",padding:16,display:"flex",justifyContent:"center",alignItems:"flex-start"}}><div style={{width:"100%",maxWidth:820,textAlign:"center"}}><div style={{fontSize:16,fontWeight:800,color:"#0F172A",letterSpacing:2,marginBottom:10}}>3D KUŞ BAKIŞI — {project.name}</div><div style={{background:"#ffffff",borderRadius:10,border:"1px solid #E2E8F0",padding:12,boxShadow:"0 2px 12px rgba(0,0,0,0.07)"}}><ThreeErrorBoundary><ThreeD3D project={project}/></ThreeErrorBoundary></div></div></div>}
 
 function FieldView({project}){
   const zones=project.zones||[];
   return<div style={{flex:1,overflow:"auto",background:"#eef1f5",padding:16}}><div style={{maxWidth:600,margin:"0 auto"}}>
-    <div style={{fontSize:16,color:"#2980B9",letterSpacing:2,marginBottom:4}}>🔧 SAHA GÖRÜNÜMÜ</div>
-    <div style={{fontSize:13,color:"#5a6370",marginBottom:12}}>{project.name}{project.customer&&` — ${project.customer}`}</div>
+    <div style={{fontSize:16,color:"#00C4CC",letterSpacing:2,marginBottom:4}}>🔧 SAHA GÖRÜNÜMÜ</div>
+    <div style={{fontSize:13,color:"#64748B",marginBottom:12}}>{project.name}{project.customer&&` — ${project.customer}`}</div>
     {zones.map(z=><div key={z.id} style={{background:"#ffffff",borderRadius:8,padding:12,border:`1px solid ${z.color}33`,marginBottom:8}}>
       <div style={{fontSize:16,fontWeight:600,color:z.color,marginBottom:4}}>{z.icon}{z.label}</div>
-      <div style={{fontSize:13,color:"#5a6370",marginBottom:4}}>({z.x},{z.y}) — {z.w}×{z.h}cm — {((z.w*z.h)/10000).toFixed(1)}m²</div>
-      {(z.equip||[]).length>0&&<table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{borderBottom:"1px solid #ccd2d9"}}><th style={{textAlign:"left",padding:2,color:"#5a6878"}}>Ekipman</th><th style={{textAlign:"left",padding:2,color:"#5a6878"}}>Model</th><th style={{textAlign:"center",padding:2,color:"#5a6878"}}>✓</th></tr></thead>
-        <tbody>{(z.equip||[]).map(eq=><tr key={eq.uid} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:2,color:"#1a2a3a"}}>{eq.brand} {eq.name}</td><td style={{padding:2,color:"#5a6878"}}>{eq.model}</td><td style={{padding:2,textAlign:"center"}}>☐</td></tr>)}</tbody></table>}
-      {z.notes&&<div style={{fontSize:12,color:"#5a6878",marginTop:3,fontStyle:"italic"}}>📝 {z.notes}</div>}
+      <div style={{fontSize:13,color:"#64748B",marginBottom:4}}>({z.x},{z.y}) — {z.w}×{z.h}cm — {((z.w*z.h)/10000).toFixed(1)}m²</div>
+      {(z.equip||[]).length>0&&<table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}><thead><tr style={{borderBottom:"1px solid #E2E8F0"}}><th style={{textAlign:"left",padding:2,color:"#64748B"}}>Ekipman</th><th style={{textAlign:"left",padding:2,color:"#64748B"}}>Model</th><th style={{textAlign:"center",padding:2,color:"#64748B"}}>✓</th></tr></thead>
+        <tbody>{(z.equip||[]).map(eq=><tr key={eq.uid} style={{borderBottom:"1px solid #eef0f3"}}><td style={{padding:2,color:"#0F172A"}}>{eq.brand} {eq.name}</td><td style={{padding:2,color:"#64748B"}}>{eq.model}</td><td style={{padding:2,textAlign:"center"}}>☐</td></tr>)}</tbody></table>}
+      {z.notes&&<div style={{fontSize:12,color:"#64748B",marginTop:3,fontStyle:"italic"}}>📝 {z.notes}</div>}
     </div>)}
   </div></div>;
 }
