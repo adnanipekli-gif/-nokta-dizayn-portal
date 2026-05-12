@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
+// Her zaman yetkili admin e-postaları (authorized_emails tablosuna ek güvence)
+const ALWAYS_ALLOWED = [
+  'ndgroupcompnies@gmail.com',
+  'adnan.ipekli@gmail.com',
+  'gozdeipekli@gmail.com',
+  'turnaertan@gmail.com',
+]
+
 function adminClient() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -33,18 +41,16 @@ export async function POST(request) {
     if (serviceRoleOk) {
       const admin = adminClient()
 
-      // email_confirmed_at kontrolü: sadece e-posta linkine tıklamış kullanıcılar
-      // direkt giriş yapar. Onaysız/yeni kullanıcılar magic link alır.
+      // ── 1. Halihazırda doğrulanmış portal kullanıcısı → direkt giriş ──
       const { data: { users }, error: listErr } = await admin.auth.admin.listUsers({
-        page: 1,
-        perPage: 1000,
+        page: 1, perPage: 1000,
       })
 
       if (!listErr) {
         const authUser = users?.find(u => u.email === email)
 
         if (authUser?.email_confirmed_at) {
-          // Onaylı kullanıcı → e-posta göndermeden doğrudan giriş linki oluştur
+          // Onaylı kullanıcı → e-posta göndermeden magic link oluştur
           const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({
             type: 'magiclink',
             email,
@@ -62,9 +68,28 @@ export async function POST(request) {
           return NextResponse.json({ redirect: linkData.properties.action_link })
         }
       }
+
+      // ── 2. Yeni kullanıcı → CRM yetki kontrolü ──
+      const isAdmin = ALWAYS_ALLOWED.includes(email)
+
+      if (!isAdmin) {
+        const { data: authRow } = await admin
+          .from('authorized_emails')
+          .select('id')
+          .eq('email', email)
+          .eq('is_active', true)
+          .maybeSingle()
+
+        if (!authRow) {
+          return NextResponse.json(
+            { error: 'Bu e-posta portala erişim yetkisine sahip değil. CRM üzerinden yetkilendirme talep edin.' },
+            { status: 403 }
+          )
+        }
+      }
     }
 
-    // Yeni veya onaylanmamış kullanıcı → magic link e-postası gönder
+    // ── 3. Yetkili yeni kullanıcı → magic link e-postası gönder ──
     const { error: otpErr } = await anonClient().auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${origin}/auth/callback` },
