@@ -25,6 +25,9 @@ export default function ProjectsPage() {
   const [form, setForm]             = useState({ name: '', customer_name: '' })
   const [creating, setCreating]     = useState(false)
   const [formError, setFormError]   = useState('')
+  const [deleteTarget, setDeleteTarget] = useState(null)
+  const [deleting, setDeleting]         = useState(false)
+  const [deleteError, setDeleteError]   = useState('')
   const router = useRouter()
 
   const fetchProjects = useCallback(async () => {
@@ -73,6 +76,24 @@ export default function ProjectsPage() {
     setShowModal(false)
     setForm({ name: '', customer_name: '' })
     setFormError('')
+  }
+
+  async function deleteProject() {
+    if (!deleteTarget) return
+    setDeleting(true)
+    setDeleteError('')
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('projects')
+      .delete()
+      .eq('id', deleteTarget.id)
+    if (error) {
+      setDeleteError(error.message)
+    } else {
+      setProjects((prev) => prev.filter((p) => p.id !== deleteTarget.id))
+      setDeleteTarget(null)
+    }
+    setDeleting(false)
   }
 
   return (
@@ -125,11 +146,22 @@ export default function ProjectsPage() {
                 <h3 className="font-semibold text-slate-900 text-sm leading-snug line-clamp-2 flex-1">
                   {project.name}
                 </h3>
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${STATUS_COLORS[project.status] ?? 'bg-slate-100 text-slate-600'}`}
-                >
-                  {STATUS_LABELS[project.status] ?? project.status}
-                </span>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[project.status] ?? 'bg-slate-100 text-slate-600'}`}
+                  >
+                    {STATUS_LABELS[project.status] ?? project.status}
+                  </span>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setDeleteTarget(project); setDeleteError('') }}
+                    className="w-6 h-6 flex items-center justify-center rounded-lg text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+                    title="Projeyi sil"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
               </div>
               <p className="text-slate-500 text-xs truncate mb-3">👤 {project.customer_name}</p>
               <p className="text-slate-300 text-xs">
@@ -141,6 +173,52 @@ export default function ProjectsPage() {
               </p>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Proje Silme Onay Modalı */}
+      {deleteTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(0,0,0,0.5)' }}
+          onClick={(e) => e.target === e.currentTarget && !deleting && setDeleteTarget(null)}
+        >
+          <div className="bg-white rounded-2xl w-full max-w-sm shadow-2xl">
+            <div className="p-6">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ background: '#FEF2F2' }}>
+                <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </div>
+              <h2 className="text-base font-semibold text-slate-900 mb-1">Projeyi Sil</h2>
+              <p className="text-slate-500 text-sm mb-1">
+                <strong className="text-slate-700">{deleteTarget.name}</strong> projesini silmek istediğinizden emin misiniz?
+              </p>
+              <p className="text-slate-400 text-xs mb-5">Bu işlem geri alınamaz.</p>
+
+              {deleteError && (
+                <p className="text-red-500 text-sm bg-red-50 px-3 py-2 rounded-lg mb-4">{deleteError}</p>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setDeleteTarget(null)}
+                  disabled={deleting}
+                  className="flex-1 py-2.5 rounded-xl border text-slate-600 text-sm font-medium hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                  style={{ borderColor: 'var(--portal-border)' }}
+                >
+                  İptal
+                </button>
+                <button
+                  onClick={deleteProject}
+                  disabled={deleting}
+                  className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-sm font-medium hover:bg-red-600 disabled:opacity-60 transition-colors"
+                >
+                  {deleting ? 'Siliniyor...' : 'Evet, Sil'}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
