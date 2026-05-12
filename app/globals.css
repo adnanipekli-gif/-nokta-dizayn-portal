@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --portal-page:    #F8FAFC;
+  --portal-sidebar: #1B3D4F;
+  --portal-card:    #FFFFFF;
+  --portal-border:  #E2E8F0;
+  --portal-cyan:    #00C4CC;
+  --portal-magenta: #D4006A;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background-color: var(--portal-page);
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
+  }
+  input:focus, button:focus {
+    outline: none;
+  }
+}

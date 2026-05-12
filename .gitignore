@@ -1,7 +1,32 @@
+# Bağımlılıklar
 node_modules/
+
+# Next.js build çıktısı
+.next/
+out/
 dist/
+
+# Ortam değişkenleri (gizli)
 .env
 .env.local
 .env.*.local
+
+# Vercel
+.vercel
+
+# Loglar
 *.log
+npm-debug.log*
+
+# Editor
 .DS_Store
+*.swp
+.vscode/settings.json
+
+# Geçici dosyalar
+*.tmp
+
+# Hassas / yerel dosyalar
+CREDENTIALS.txt
+*.msi
+.claude/
