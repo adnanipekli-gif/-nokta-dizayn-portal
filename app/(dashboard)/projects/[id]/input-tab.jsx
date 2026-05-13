@@ -275,7 +275,7 @@ export default function InputTab({ project }) {
   const result = expandedId ? jsonResults[expandedId] : null
 
   return (
-    <div className="p-8 space-y-6 max-w-4xl">
+    <div className="p-8 space-y-6 max-w-4xl overflow-y-auto h-full">
 
       {/* Drag-Drop Yükleme Alanı */}
       <div

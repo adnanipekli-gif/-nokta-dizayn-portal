@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useParams, useRouter } from 'next/navigation'
 import InputTab from './input-tab'
+import StudioTab from './studio-tab'
 
 const TABS = [
   { key: 'input',       label: 'Input',       icon: '📐', desc: 'Rölöve & Analiz' },
@@ -128,10 +129,10 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Sekme İçeriği */}
-      <div className="flex-1 overflow-auto">
-        {activeTab === 'input' ? (
-          <InputTab project={project} />
-        ) : (
+      <div className="flex-1 overflow-hidden">
+        {activeTab === 'input' && <InputTab project={project} />}
+        {activeTab === '2d'    && <StudioTab project={project} />}
+        {activeTab !== 'input' && activeTab !== '2d' && (
           <div className="flex items-center justify-center h-full">
             <div className="text-center p-8">
               <div
