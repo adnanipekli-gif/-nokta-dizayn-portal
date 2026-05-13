@@ -147,12 +147,14 @@ export default function InputTab({ project }) {
     pollRef.current = setInterval(async () => {
       const ids = versions.map((v) => v.id)
       const newJobs = await loadJobs(ids)
+      // Her turda JSON sonuçlarını da kontrol et
+      // Vercel timeout durumunda job 'running' kalsa bile sonuç gelmiş olabilir
+      await loadJsonResults(ids)
       const stillActive = Object.values(newJobs ?? {}).some(
         (j) => j.status === 'queued' || j.status === 'running'
       )
       if (!stillActive) {
         clearInterval(pollRef.current)
-        await loadJsonResults(ids)
       }
     }, POLL_INTERVAL)
 
@@ -331,8 +333,9 @@ export default function InputTab({ project }) {
               const name    = meta.original_name ?? ver.file_url?.split('/').pop() ?? 'dosya'
               const size    = meta.size_bytes ? fmtSize(meta.size_bytes) : '—'
               const jobItem = jobs[ver.id]
-              const busy    = analyzingId === ver.id || jobItem?.status === 'queued' || jobItem?.status === 'running'
-              const done    = jobItem?.status === 'done'
+              const busy    = analyzingId === ver.id || (jobItem?.status === 'queued' || jobItem?.status === 'running') && !jsonResults[ver.id]
+              // Vercel timeout sonrası: job 'running' takılsa bile sonuç varsa göster
+              const done    = jobItem?.status === 'done' || !!jsonResults[ver.id]
 
               return (
                 <div key={ver.id} className="px-5 py-4 flex items-center gap-3">
