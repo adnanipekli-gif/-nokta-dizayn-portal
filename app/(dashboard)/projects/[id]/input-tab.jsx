@@ -385,8 +385,8 @@ export default function InputTab({ project }) {
         </div>
       )}
 
-      {/* Sonuç Paneli */}
-      {expandedId && job?.status === 'done' && result && (
+      {/* Sonuç Paneli — job status'undan bağımsız, result varsa göster */}
+      {expandedId && result && (
         <div className="bg-white border rounded-2xl overflow-hidden" style={{ borderColor: 'var(--portal-border)' }}>
           <div className="px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--portal-border)' }}>
             <div className="flex items-center gap-2">
@@ -453,8 +453,8 @@ export default function InputTab({ project }) {
         </div>
       )}
 
-      {/* Analiz sırasında placeholder */}
-      {expandedId && (job?.status === 'queued' || job?.status === 'running') && (
+      {/* Analiz sırasında placeholder — sadece sonuç yokken göster */}
+      {expandedId && !result && (job?.status === 'queued' || job?.status === 'running') && (
         <div className="bg-white border rounded-2xl p-8 flex flex-col items-center gap-3" style={{ borderColor: 'var(--portal-border)' }}>
           <svg className="animate-spin w-8 h-8 text-[#00C4CC]" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -465,7 +465,7 @@ export default function InputTab({ project }) {
         </div>
       )}
 
-      {expandedId && job?.status === 'failed' && (
+      {expandedId && !result && job?.status === 'failed' && (
         <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
           <p className="text-sm font-medium text-red-700 mb-1">Analiz başarısız oldu</p>
           <p className="text-xs text-red-500">{job.error}</p>
