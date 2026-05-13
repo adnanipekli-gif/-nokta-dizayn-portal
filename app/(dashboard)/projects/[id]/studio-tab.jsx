@@ -731,7 +731,10 @@ export default function StudioTab({ project }) {
   const [approved,      setApproved]      = useState(false)
   const [showVersions,  setShowVersions]  = useState(false)
 
-  const saveTimerRef = useRef(null)
+  const saveTimerRef  = useRef(null)
+  // Undo/Redo: history dizisi ref ile (gereksiz re-render önlemek için)
+  const historyRef    = useRef([])          // studioData snapshot'ları
+  const [historyIdx,  setHistoryIdx]  = useState(-1)  // mevcut konum
 
   // ── Veri yükleme ──────────────────────────────────────────────────
   useEffect(() => {
@@ -764,8 +767,11 @@ export default function StudioTab({ project }) {
         setApproved(true)
       }
 
-      // Stüdyo verisini hazırla
-      setStudioData(defaultStudio(latest.ai_metadata ?? {}))
+      // Stüdyo verisini hazırla ve history'yi başlat
+      const initial = defaultStudio(latest.ai_metadata ?? {})
+      historyRef.current = [initial]
+      setHistoryIdx(0)
+      setStudioData(initial)
 
       // Üst input versiyonunu bul
       if (latest.parent_version_id) {
@@ -798,7 +804,10 @@ export default function StudioTab({ project }) {
     setActiveVersionId(ver.id)
     setDraftVersionId(ver.approved ? null : ver.id)
     setApproved(!!ver.approved)
-    setStudioData(defaultStudio(ver.ai_metadata ?? {}))
+    const newData = defaultStudio(ver.ai_metadata ?? {})
+    historyRef.current = [newData]
+    setHistoryIdx(0)
+    setStudioData(newData)
     setSelectedEl(null)
     setSaveStatus('saved')
     setShowVersions(false)
@@ -837,12 +846,50 @@ export default function StudioTab({ project }) {
     }
   }, [draftVersionId, project.id, inputVersion, supabase])
 
-  function updateData(newData) {
+  function updateData(newData, skipHistory = false) {
     setStudioData(newData)
     setSaveStatus('unsaved')
+
+    if (!skipHistory) {
+      // Gelecekteki redo geçmişini sil, yeni snapshot ekle
+      const MAX_HISTORY = 100
+      const curr = historyIdx
+      const trimmed = historyRef.current.slice(0, curr + 1)
+      trimmed.push(newData)
+      if (trimmed.length > MAX_HISTORY) trimmed.shift()
+      historyRef.current = trimmed
+      setHistoryIdx(trimmed.length - 1)
+    }
+
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
     saveTimerRef.current = setTimeout(() => saveDraft(newData), 2000)
   }
+
+  // ── Undo / Redo ────────────────────────────────────────────────────
+  function undo() {
+    if (historyIdx <= 0) return
+    const newIdx  = historyIdx - 1
+    const prevData = historyRef.current[newIdx]
+    setHistoryIdx(newIdx)
+    setStudioData(prevData)
+    setSaveStatus('unsaved')
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(() => saveDraft(prevData), 2000)
+  }
+
+  function redo() {
+    if (historyIdx >= historyRef.current.length - 1) return
+    const newIdx  = historyIdx + 1
+    const nextData = historyRef.current[newIdx]
+    setHistoryIdx(newIdx)
+    setStudioData(nextData)
+    setSaveStatus('unsaved')
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(() => saveDraft(nextData), 2000)
+  }
+
+  const canUndo = historyIdx > 0
+  const canRedo = historyIdx < historyRef.current.length - 1
 
   // ── Onaylama ──────────────────────────────────────────────────────
   async function handleApprove() {
@@ -945,6 +992,10 @@ export default function StudioTab({ project }) {
             setActiveTool={setActiveTool}
             selectedEl={selectedEl}
             onSelectEl={handleSelectEl}
+            onUndo={undo}
+            onRedo={redo}
+            canUndo={canUndo}
+            canRedo={canRedo}
           />
         </div>
 
